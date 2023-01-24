@@ -16,7 +16,7 @@ import ReactSpinner from "./reusable_components/ReactSpinner";
 import Cameras from "./pages/Cameras";
 import OnlyPublicRoute from "./Authentication/OnlyPublicRoute";
 
-export const backend_url = 'https://api.tpilums.org.pk'
+export const backend_url = 'http://139.162.11.234'
 
 
 export default function App () {
