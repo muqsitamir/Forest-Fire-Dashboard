@@ -15,6 +15,7 @@ import NotFound from "./reusable_components/NotFound";
 import ReactSpinner from "./reusable_components/ReactSpinner";
 import Cameras from "./pages/Cameras";
 import OnlyPublicRoute from "./Authentication/OnlyPublicRoute";
+import GoogleMap from "./pages/components/GoogleMap.js"
 
 export const backend_url = 'http://139.162.11.234'
 
@@ -28,6 +29,7 @@ export default function App () {
                 <ProtectedRoute exact path='/' Component={Home} />
                 <ProtectedRoute exact path='/cameras' Component={Cameras} />
                 <OnlyPublicRoute exact path='/login' Component={Login} />
+                <OnlyPublicRoute exact path='/arand' Component={GoogleMap} />
                 <Route exact path='/logout' render={(props) => <Logout {...props}/>}/>
                 <Route path='/reset-password' render={(props) => <ResetPassword {...props}/>}/>
                 {/*    <Route exact path='/register' render={(props) => <Register {...props}/>}/>*/}
