@@ -1,4 +1,4 @@
-// import sensors from "../static/sensors"
+import sensors from "../static/sensors"
 import { AiOutlineCamera } from 'react-icons/ai';
 import { CiTempHigh } from 'react-icons/ci';
 import { WiHumidity } from 'react-icons/wi';
@@ -13,7 +13,7 @@ function EventList() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/events`)
+        fetch(`https://forest-fire-dashboard.vercel.app/api/events`)
           .then((response) => {
             if (!response.ok) {
                 throw new Error(

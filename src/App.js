@@ -15,7 +15,8 @@ import NotFound from "./reusable_components/NotFound";
 import ReactSpinner from "./reusable_components/ReactSpinner";
 import Cameras from "./pages/Cameras";
 import OnlyPublicRoute from "./Authentication/OnlyPublicRoute";
-import GoogleMap from "./pages/components/GoogleMap.js"
+import GoogleMap from "./components/GoogleMap.js"
+import testing from "./components/testing"
 
 export const backend_url = 'http://139.162.11.234'
 
@@ -26,12 +27,14 @@ export default function App () {
                 <TopAppBarProtection Component={TopAppBar} />
                 <ReactSpinner/>
                 <Switch>
-                <ProtectedRoute exact path='/' Component={Home} />
+                <OnlyPublicRoute exact path='/' Component={GoogleMap} />
+                {/* <ProtectedRoute exact path='/' Component={Home} />
                 <ProtectedRoute exact path='/cameras' Component={Cameras} />
                 <OnlyPublicRoute exact path='/login' Component={Login} />
                 <OnlyPublicRoute exact path='/arand' Component={GoogleMap} />
+                <OnlyPublicRoute exact path='/testing' Component={testing} />
                 <Route exact path='/logout' render={(props) => <Logout {...props}/>}/>
-                <Route path='/reset-password' render={(props) => <ResetPassword {...props}/>}/>
+                <Route path='/reset-password' render={(props) => <ResetPassword {...props}/>}/> */}
                 {/*    <Route exact path='/register' render={(props) => <Register {...props}/>}/>*/}
                 {/*    <Route path='/new-password/:token' render={(props) => <NewPassword {...props}/>}/>*/}
                 {/*    <Route exact path='/resend/new-password' render={(props) => <ResendPassword {...props}/>}/>*/}

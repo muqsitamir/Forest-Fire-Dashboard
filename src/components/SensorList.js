@@ -13,7 +13,7 @@ function SensorList({sensorSelect}) {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        fetch(`http://127.0.0.1:8000/api/towerDetails`)
+        fetch(`https://forest-fire-dashboard.vercel.app/api/towerDetails`)
           .then((response) => {
             if (!response.ok) {
                 throw new Error(

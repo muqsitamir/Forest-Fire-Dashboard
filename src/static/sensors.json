@@ -1,0 +1,7 @@
+[
+    {"id":"1", "group":"1", "icon": "camera", "name": "camera 1", "location": {"lat":31.582045, "lng":74.329376} },
+    {"id":"2", "group":"1", "icon": "camera", "name": "camera 2", "location": {"lat":31.582965770098767, "lng": 74.32795318698079} },
+    {"id":"3", "group":"1", "icon": "camera", "name": "camera 3", "location": {"lat":31.58192483366368, "lng":74.32661205776625} },
+    {"id":"4", "group":"1", "icon": "temperature", "name": "temperature 1", "location": {"lat":31.582673801296256, "lng":74.32780417262363} },
+    {"id":"5", "group":"1", "icon": "humidity", "name": "humidity 1", "location": {"lat":31.581150470969348, "lng":74.32863865302379} }
+]

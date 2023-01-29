@@ -17,7 +17,7 @@ export default function Login() {
   let HandleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let res = await fetch("http://127.0.0.1:8000/api/login", {
+      let res = await fetch("https://forest-fire-dashboard.vercel.app/api/login", {
         method: "POST",
         body: JSON.stringify({
           username: name,
@@ -72,7 +72,7 @@ export default function Login() {
                     <div className="d-grid gap-2 col-6 mx-auto">
                         <button className="btn btn-dark" type="submit">Login</button>
                         </div>
-                    <p className="mt-2 pt-1 mb-0 text-center"> <a href="http://127.0.0.1:8000/admin/" target="_blank"
+                    <p className="mt-2 pt-1 mb-0 text-center"> <a href="https://forest-fire-dashboard.vercel.app/admin/" target="_blank"
                             >Admin Dashbord</a></p>
                 </div>
 
