@@ -50,9 +50,14 @@ export default function Login() {
 <div className="py-5 back vh-100">
     <div className="card d-flex justify-content-center my-0" style={{width: "20rem"}}>
         <div className="card-body mx-2">
-            <div className="d-flex justify-content-center my-2">
-                <img className="w-50" src='https://i0.wp.com/www.thenews-chronicle.com/wp-content/uploads/2020/12/world-wildlife-fun-wwf.jpg?fit=799%2C448&ssl=1'></img>
+            <div className="d-flex justify-content-center my-2 row">
+                <div className="col-md-6 mx-0"><img className="w-100" src='https://tpi.lums.edu.pk/wp-content/uploads/tpi-logo.png'></img>
+                </div>
+                <div className="col-md-6 mx-0">
+                <img className="mycontent-left d-flex justify content-end w-100 px-2" src='https://lums.edu.pk/sites/default/files/inline-images/LUMS%20Logo.png'></img>
+                </div>
             </div>
+                
             <form onSubmit={HandleSubmit}>
                 <div className="form-outline mb-4" >
                     <label className="form-label" htmlFor="form3Example3">Username</label>
@@ -70,7 +75,7 @@ export default function Login() {
                 
                 <div className="text-center text-lg-start mt-4 pt-0">
                     <div className="d-grid gap-2 col-6 mx-auto">
-                        <button className="btn btn-dark" type="submit">Login</button>
+                        <button className="btn btn-primary" type="submit">Login</button>
                         </div>
                     <p className="mt-2 pt-1 mb-0 text-center"> <a href="https://forest-fire-dashboard.vercel.app/admin/" target="_blank"
                             >Admin Dashbord</a></p>
