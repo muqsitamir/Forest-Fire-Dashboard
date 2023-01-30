@@ -37,6 +37,7 @@ function SensorList({sensorSelect}) {
           });
       }, []);
 
+    let n=["home","dashboard","orders"]
     
     return (
         <>
@@ -50,12 +51,15 @@ function SensorList({sensorSelect}) {
     {!loading && data.map((item, index) => {
                         let cam=item.cameras;
                         let sen=item.sensors;
+                        let nn=n[index]+"-collapse";
+                        let xx="#"+nn
+                        console.log(nn)
                         return (
                             <li className="mb-1">
-                                <button className="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                                <button onClick={() => sensorSelect(item)} className="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target={xx} aria-expanded="true">
                                 Tower: {item.name}
                                 </button>
-                                <div className="collapse show" id="home-collapse">
+                                <div className="collapse show" id={nn}>
                                 <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                                 {
                                     cam.map((i2,ind2)=>{
