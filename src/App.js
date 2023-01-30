@@ -27,10 +27,10 @@ export default function App () {
                 <TopAppBarProtection Component={TopAppBar} />
                 <ReactSpinner/>
                 <Switch>
-                <OnlyPublicRoute exact path='/' Component={GoogleMap} />
+                <ProtectedRoute exact path='/' Component={GoogleMap} />
+                <OnlyPublicRoute exact path='/login' Component={Login} />
                 {/* <ProtectedRoute exact path='/' Component={Home} />
                 <ProtectedRoute exact path='/cameras' Component={Cameras} />
-                <OnlyPublicRoute exact path='/login' Component={Login} />
                 <OnlyPublicRoute exact path='/arand' Component={GoogleMap} />
                 <OnlyPublicRoute exact path='/testing' Component={testing} />
                 <Route exact path='/logout' render={(props) => <Logout {...props}/>}/>
