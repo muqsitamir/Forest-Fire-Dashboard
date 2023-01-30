@@ -1,0 +1,79 @@
+.cameraWrapper {
+    height: 100vh;
+  }
+  
+  .mainContainer {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .container-1 {
+    height: 10%;
+  }
+  .container-2 {
+    height: 50%;
+  }
+  .container-3 {
+    height: 40%;
+  }
+  
+  .subContainer {
+    height: 100%;
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .dropdownContainer {
+    background-color: plum;
+  }
+  
+  .camerabtn {
+    cursor: pointer;
+    background-color: purple;
+  }
+  
+  .mapbtn {
+    cursor: pointer;
+    background-color: yellow;
+  }
+  
+  .additionalinfo {
+    flex: 1.5;
+    background-color: green;
+  }
+  
+  .events {
+    /* background-color: red; */
+    flex: 4;
+    overflow: overlay;
+    flex-wrap: wrap;
+  }
+  
+  .controls {
+    background-color: blue;
+  }
+  
+  .view1 {
+    background-color: antiquewhite;
+    display: flex;
+    flex: 4;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .view2 {
+    background-color: pink;
+  }
+  
+  .containerr {
+    display: flex;
+    flex-direction: column;
+    flex: 1.5;
+    height: 100%;
+  }
+  
