@@ -16,7 +16,9 @@ import ReactSpinner from "./reusable_components/ReactSpinner";
 import Cameras from "./pages/Cameras";
 import OnlyPublicRoute from "./Authentication/OnlyPublicRoute";
 import GoogleMap from "./components/GoogleMap.js"
-import testing from "./components/testing"
+import testing from "./components/testing";
+import EventPage from './components/EventPage';
+import SensorPage from './components/SensorPage';
 
 export const backend_url = 'http://139.162.11.234'
 
@@ -29,6 +31,8 @@ export default function App () {
                 <Switch>
                 <ProtectedRoute exact path='/' Component={GoogleMap} />
                 <OnlyPublicRoute exact path='/login' Component={Login} />
+                <Route path="sensor/:id" element={<SensorPage/>} />
+                <Route path="camera/:id" element={<EventPage/>} />
                 {/* <ProtectedRoute exact path='/' Component={Home} />
                 <ProtectedRoute exact path='/cameras' Component={Cameras} />
                 <OnlyPublicRoute exact path='/arand' Component={GoogleMap} />
