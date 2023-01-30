@@ -160,8 +160,8 @@ function MapContainer() {
                     : <button type="button" class="btn btn-primary btn-sm"  style={{font:"15px" }} onClick={() => setCenter({center:selected.item.location, zoom:15, isZoom:true})}>Zoom into this tower</button>}
                   </span>
                   <span style={{align:"centre" }}>
-                    {selected.item.device == "camera" ? <Link  target="_blank" to="camera"><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20}/> </Link> : ""}
-                    {(selected.item.device == "sensor")  ? <Link  target="_blank" to="sensor"><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20} /> </Link> : ""}
+                    {selected.item.device == "camera" ? <Link  target="framename" to="camera"><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20}/> </Link> : ""}
+                    {(selected.item.device == "sensor")  ? <Link  target="framename" to="sensor"><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20} /> </Link> : ""}
                   </span>
                 </div>
                 </div>
