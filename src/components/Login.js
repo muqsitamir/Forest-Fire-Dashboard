@@ -1,10 +1,10 @@
 import './Login.css'
 import {useState, useEffect, Redirect} from 'react';
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 export default function Login() {
 
-  let history = useNavigate();
+  let history = useHistory();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
@@ -27,13 +27,13 @@ export default function Login() {
             'Content-type': 'application/json;',
           },
       });
-
       let resJson = await res.json();
       if (res.status === 200) {
-            setName("");
-            setPassword("");
-            setMessage("Logged in successfully");
-            history('/map');
+            // setName("");
+            // setPassword("");
+            // setMessage("Logged in successfully");
+            console.log("Logged in successfully")
+            history.push('/map');
       } else {
         setMessage(resJson.error);
       }

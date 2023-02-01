@@ -9,17 +9,17 @@ import EventList from './EventList'
 import sensors from "../static/sensors.json";
 import {Link} from 'react-router-dom';
 import NavBar from './NavBar';
-import { AiOutlineCamera } from 'react-icons/ai';
+import { AiOutlineCamera, AiOutlineTable, AiOutlineZoomIn, AiOutlineZoomOut } from 'react-icons/ai';
 import { CiTempHigh } from 'react-icons/ci';
 import { WiHumidity } from 'react-icons/wi';
 import { BsArrowUpRightSquare } from 'react-icons/bs';
 
 function MapContainer() {
   console.log("Came here")
-  const defaultCenter = {lat: 31.582045, lng: 74.329376}
+  const defaultCenter = {lat: 31.471318829883582, lng: 74.41048250055398}
   const radius = 500
   const phi = 60 //* Math.PI / 180;
-  
+  var sensorList = []
   const [ center, setCenter ] = useState({center:defaultCenter, zoom: 12, isZoom:false});
   const [ selected, setSelected ] = useState({ theta : 0, item: {}});
 
@@ -65,7 +65,7 @@ function MapContainer() {
 
     useEffect(() => {
       // fetch(`https://forest-fire-dashboard.vercel.app/api/towers`)
-      fetch(`http://127.0.0.1:8000/api/towers`)
+      fetch(`http://127.0.0.1:8000/api/towerDetails`)
       .then((response) => {
             if (!response.ok) {
                 throw new Error(
@@ -130,13 +130,28 @@ function MapContainer() {
               (
                 <div>
                   {
-                  sensors.map((item, index) => {
-                          return (
-                            <Marker key={item.id} position={item.location} onClick={() => onSelect(item)} />)
-                      })
+                    data && data.map((item, index) => {
+                      return (
+                          item.cameras.map((i, idx) => {
+                            // icon={{ url: (require('../static/camera.png')), fillColor: '#ffffff', scale: 0.5}}
+                            return(
+                              <Marker key={i.name} position={{lat:i.lat, lng:i.lng}} onClick={() => sensorSelect(i)} />)
+                          })
+                      )
+                    })
+                  }
+                  {
+                    data && data.map((item, index) => {
+                      return (
+                          item.sensors.map((i, idx) => {
+                            return(
+                              <Marker key={i.name} position={{lat:i.lat, lng:i.lng}} onClick={() => sensorSelect(i)} />)
+                          })
+                      )
+                    })
                   }
                   <Circle options={circleOptions} center={center.center} ></Circle>
-                  <Arc center={center.center} radius={radius} phi={phi} theta={0} />
+                  {(selected.item.device != "sensor") ? <Arc center={center.center} radius={radius} phi={phi} theta={0} /> : <></>}
                   <HeatMap />
                 </div>
               )
@@ -148,20 +163,17 @@ function MapContainer() {
                 position={selected.item.location}
                 clickable={true}
                 onCloseClick={() => setSelected({paths: selected.paths, theta: selected.theta, item : {}})}
-              >
-                <div>
-                <h5>{selected.item.name}</h5>
-                <p style={{marginBottom:"0px" }}>This is some information about it:</p><br/>
-                <p style={{marginBottom:"0px"}}>Latitude: {selected.item.location.lat}</p><br/>
-                <p>Longitude: {selected.item.location.lng}</p>
+                >
+                <div className='p-2'>
+                <h6>{selected.item.name}</h6>
                 <div style={{ display: "flex",  justifyContent: "space-between" }}>
                   <span>
-                    {center.isZoom ? <button type="button" class="btn btn-primary btn-sm" style={{font:"15px" }} onClick={() => setCenter({center:defaultCenter, zoom:12, isZoom:false})}>Back to Default</button>
-                    : <button type="button" class="btn btn-primary btn-sm"  style={{font:"15px" }} onClick={() => setCenter({center:selected.item.location, zoom:15, isZoom:true})}>Zoom into this tower</button>}
+                    {center.isZoom ? <AiOutlineZoomOut size={15} onClick={() => setCenter({center:defaultCenter, zoom:12, isZoom:false})} />
+                    : <AiOutlineZoomIn size={15} onClick={() => setCenter({center:selected.item.location, zoom:15, isZoom:true})} /> }
                   </span>
-                  <span style={{align:"centre" }}>
-                    {selected.item.device == "camera" ? <Link  target="_blank" to="camera"><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20}/> </Link> : ""}
-                    {(selected.item.device == "sensor")  ? <Link  target="_blank" to="sensor"><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20} /> </Link> : ""}
+                  <span>
+                    {selected.item.device == "camera" ? <Link  target="_blank" to="camera"><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={15}/> </Link> : ""}
+                    {(selected.item.device == "sensor")  ? <Link  target="_blank" to="sensor"><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={15} /> </Link> : ""}
                   </span>
                 </div>
                 </div>
@@ -180,3 +192,4 @@ function MapContainer() {
 }
 
 export default MapContainer;
+
