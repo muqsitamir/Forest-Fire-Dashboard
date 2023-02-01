@@ -7,7 +7,8 @@ import MessageSnackbar from "./reusable_components/SnackBar";
 import ResetPassword from "./Authentication/ResetPassword";
 import Home from "./pages/Home";
 import ProtectedRoute from "./Authentication/ProtectedRoute";
-import Login from './components/Login';
+// import Login from './Authentication/Login'
+import Login from "./components/Login"
 import Logout from "./Authentication/Logout";
 import TopAppBarProtection from "./Headers/TopAppBar/TopAppBarProtection";
 import TopAppBar from "./Headers/TopAppBar/TopAppBar";
@@ -29,7 +30,8 @@ export default function App () {
                 <TopAppBarProtection Component={TopAppBar} />
                 <ReactSpinner/>
                 <Switch>
-                <ProtectedRoute exact path='/' Component={GoogleMap} />
+                <OnlyPublicRoute exact path='/' Component={GoogleMap} />
+                {/* <ProtectedRoute exact path='/map' Component={GoogleMap} /> */}
                 <OnlyPublicRoute exact path='/login' Component={Login} />
                 <OnlyPublicRoute exact path="sensor/:id" Component={SensorPage} />
                 <OnlyPublicRoute exact path="camera/:id" Component={Camera} />
