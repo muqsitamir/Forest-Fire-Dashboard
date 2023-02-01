@@ -11,12 +11,10 @@ function NavBar() {
           <Navbar.Brand href="/home" className="m-1 px-4">
             <img
               alt=""
-              src= {pic}
-              width="45"
-              height="60"
-              className="d-inline-block align-top bg-light"
+              src= "https://lums.edu.pk/sites/default/files/inline-images/LUMS%20Logo.png"
+              width="120" 
             />{' '}
-          </Navbar.Brand>
+            </Navbar.Brand>
           <Nav className="nav-item mx-1">
             <Nav.Link as={Link} to="/home"><h6 className='p-0 m-0'>Home</h6></Nav.Link>
           </Nav>
@@ -28,6 +26,9 @@ function NavBar() {
           </Nav>
       </Navbar>
       <Navbar className='col d-flex justify-content-end px-4 mx-4 py-0 my-0'>
+      <Nav className="nav-item mx-2" style={{textDecoration: "underline"}}>
+        <Nav.Link href="https://forest-fire-dashboard.vercel.app/admin" target="_blank"><h6 className='p-0 m-0'>Admin Panel</h6></Nav.Link>
+      </Nav>
       <Nav className="btn btn-dark px-2 py-0">
             { 5==5 ?
             <Nav.Link className="text-white" as={Link} to="/login">Logout</Nav.Link> : 
