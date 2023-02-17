@@ -15,7 +15,7 @@ export default function TopAppBar(){
     }
 
     const handle_admin_click = () => {
-        window.location = 'https://api.tpilums.org.pk/admin';
+        window.location = 'https://api.forestwatch.org.pk/admin';
     }
 
     const handle_map_click = () => {

@@ -10,6 +10,11 @@ import {Link} from 'react-router-dom';
 import NavBar from './NavBar';
 import { AiOutlineZoomIn, AiOutlineZoomOut } from 'react-icons/ai';
 import { BsArrowUpRightSquare } from 'react-icons/bs';
+import {useSelector} from "react-redux";
+import {selectSiteData} from "../reusable_components/site_data/siteDataSlice";
+import SideNav from "../Headers/SideNav/SideNav";
+// import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 
 function MapContainer() {
   console.log("Came here")
@@ -20,6 +25,8 @@ function MapContainer() {
   const [ center, setCenter ] = useState({center:defaultCenter, zoom: 10, isZoom:false});
   const [ selected, setSelected ] = useState({ theta : 0, item: {}});
 
+  const { side_nav: side_nav_check } = useSelector(selectSiteData);
+  let side_nav = side_nav_check ? <SideNav /> : null;
   
   const mapStyles = {        
     height: "80vh",
@@ -83,8 +90,11 @@ function MapContainer() {
   }
 
   return (
-    <div style={{paddingTop: 70}}>
-  <div style={{ display: 'block' , margin: 5 }}>
+   <div className="page">
+      <div className="page__content">
+        <div className="main-wrapper">
+          {side_nav}
+    <div style={{ display: 'block' , margin: 5 }}>
         <Row>
           <Col className='col-md-1 mx-0 my-0' style={{width: "20.499999995%",flex: "0 0 20.499%",maxWidth: "20.499%"}}>
             <Row style={{maxHeight:"50%" }}>
@@ -96,7 +106,6 @@ function MapContainer() {
           </Col>
           <Col>
             <div>
-          <LoadScript googleMapsApiKey='AIzaSyDhUG9a3aSzkdUT5cnKlTZAkhPy2790zEY' libraries={["visualization"]}>
           <GoogleMap mapContainerStyle={mapStyles} zoom={center.zoom} center={center.center}>
           {
             data && data.map((item, index) => {
@@ -110,7 +119,7 @@ function MapContainer() {
             })
           }
           {
-            center.isZoom && 
+            center.isZoom &&
             (
               <div>
               {
@@ -141,10 +150,10 @@ function MapContainer() {
             )
           }
           {
-            
-            selected.item.location && 
+
+            selected.item.location &&
             (
-              
+
               <InfoWindow
               position={selected.item.location}
               clickable={true}
@@ -156,7 +165,7 @@ function MapContainer() {
                   {center.isZoom ? <a className="px-1" type="button"  onClick={() => setCenter({center:defaultCenter, zoom:10, isZoom:false})}><AiOutlineZoomOut tyle={{verticalAlign: 'baseline'}} color='#000000' size={20}/></a>
                   : <a className="px-1" type="button" onClick={() => setCenter({center:selected.item.location, zoom:12, isZoom:true})}><AiOutlineZoomIn tyle={{verticalAlign: 'baseline'}} color='#000000' size={20}/></a>}
                 </span>
-                <span style={{align:"centre" }}>    
+                <span style={{align:"centre" }}>
                   {selected.item.device == "camera" ? <Link  target="framename" to={`/live/${selected.item.name}`}><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20}/> </Link> : ""}
                   {/* {(selected.item.device == "sensor")  ? <Link  target="framename" to={`/sensor/${selected.item.name}`}><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20} /> </Link> : ""} */}
                   {(selected.item.device == "sensor")  ? <a  target="framename1" href='https://thingsboard.cloud/dashboard/4d9f5cb0-a201-11ed-9f28-5358e02f9b82?publicId=84e5cbd0-9b1e-11ed-9dfd-cfdf96a89571'><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20} /> </a> : ""}
@@ -167,12 +176,13 @@ function MapContainer() {
           }
           </GoogleMap>
 
-        </LoadScript> 
             </div>
           </Col>
         </Row>
-  </div>
-  </div>
+        </div>
+        </div>
+      </div>
+   </div>
   )
 }
 

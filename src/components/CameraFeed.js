@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {Bars} from 'react-loader-spinner'
-import { useBeforeUnload } from 'react-router-dom';
+// import { useBeforeUnload } from 'react-router-dom';
 
 export default function CameraFeed({cameraId,view,live}) {
     const [picture, setPicture] = useState({pic: "", rnd: 0})
@@ -22,7 +22,7 @@ export default function CameraFeed({cameraId,view,live}) {
            
           if(event==1) {setPicture({pic: cameraId.link, rnd: randNum});setLoading(false);}
            else if(live){
-             console.log("url is", useBeforeUnload)
+             // console.log("url is", useBeforeUnload)
                fetch(url)
                .then((response) => {
                  if (!response.ok) {

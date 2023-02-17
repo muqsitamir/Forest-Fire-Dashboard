@@ -40,7 +40,6 @@ export default function Home() {
                   <h2 className="bold">Dashboard</h2>
                 </div>
               </header>
-              {/*<div className="content">*/}
               <div className="row">
                 <div className="shadow border rounded-sm db mb1">
                   <div className="content tc">
@@ -52,7 +51,6 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-
               <div className="row">
                 <div className="col s12 m6">
                   <div className="shadow border rounded-sm db mb3">
@@ -77,9 +75,7 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              {/*<div className="fr">*/}
                   <Filters />
-              {/*</div>*/}
               {event_component}
             </div>
           </div>

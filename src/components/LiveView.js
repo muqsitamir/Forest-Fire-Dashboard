@@ -8,10 +8,16 @@ import Table from 'react-bootstrap/esm/Table';
 import Container from 'react-bootstrap/esm/Container';
 import image from "../static/OIP.jpeg"
 import { GoogleMap, LoadScript, Circle ,Marker, InfoWindow  } from "@react-google-maps/api"
-
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import "./live.css"
 import CameraFeed from './CameraFeed';
 import LiveEvents from './LiveEvents';
+import {useSelector} from "react-redux";
+import {selectSiteData} from "../reusable_components/site_data/siteDataSlice";
+import SideNav from "../Headers/SideNav/SideNav";
+
+
 export default function LiveView() {
   const { id } = useParams();
   const full = useParams()
@@ -29,6 +35,9 @@ export default function LiveView() {
   const [live, setLive] = useState(true)
   const [success, setSuccess] = useState(false)
   var timer = ""
+
+  const { side_nav: side_nav_check } = useSelector(selectSiteData);
+  let side_nav = side_nav_check ? <SideNav /> : null;
 
   const defaultCenter = {lat: 31.582045, lng: 74.329376}
   const [ center, setCenter ] = useState({center:defaultCenter, zoom: 12, isZoom:false});
@@ -89,7 +98,10 @@ export default function LiveView() {
   };
   
   return (
-    <div>
+    <div className="page">
+      <div className="page__content">
+        <div className="main-wrapper">
+          {side_nav}
         <div className='row navbar bg-dark'>
             <div className='col-md-4'>
                 <div className='row mx-0 px-0'>
@@ -108,7 +120,7 @@ export default function LiveView() {
                     </Dropdown.Item>
                     <Dropdown.Item href="#" onClick={() => { setCamera({cam:"Palm Gali",link:""}); }}>
                         Palm Gali
-                    </Dropdown.Item>    
+                    </Dropdown.Item>
                     <Dropdown.Item disabled href="#">
                         Event
                     </Dropdown.Item>
@@ -157,10 +169,8 @@ export default function LiveView() {
                 <div className='col-md-8' style={{backgroundColor:'#eeee'}}>
                 <div className='mb-3 d-flex justify-content-center'> 
                 {view == "camera" ? <CameraFeed cameraId={camera} view={view} live={live}/> :
-                            <LoadScript googleMapsApiKey='AIzaSyDhUG9a3aSzkdUT5cnKlTZAkhPy2790zEY' libraries={["visualization"]}>
-                                <GoogleMap mapContainerStyle={mapStyles} zoom={center.zoom} center={center.center} >        
+                                <GoogleMap mapContainerStyle={mapStyles} zoom={center.zoom} center={center.center} >
                                 </GoogleMap>
-                            </LoadScript> 
                 }
                 </div>
                     
@@ -169,17 +179,16 @@ export default function LiveView() {
                 <div className='col-md-4 px-4 py-2 d-flex justify-content-center' style={{backgroundColor:'#fffff'}}>
 
                         {view == "map" ? <CameraFeed cameraId={camera} view={view} live={live}/> :
-                            <LoadScript googleMapsApiKey='AIzaSyDhUG9a3aSzkdUT5cnKlTZAkhPy2790zEY' libraries={["visualization"]}>
-                                <GoogleMap mapContainerStyle={mapStyles} zoom={center.zoom} center={center.center}>        
+                                <GoogleMap mapContainerStyle={mapStyles} zoom={center.zoom} center={center.center}>
                                 </GoogleMap>
-                            </LoadScript> 
                         }
-
                 </div>
                 <div className='col-md-8 pe-0 me-0'>
                     <LiveEvents eventClick={eventClick}/>
                 </div>
             
+                    </div>
+                </div>
             </div>
         </div>
     </div>

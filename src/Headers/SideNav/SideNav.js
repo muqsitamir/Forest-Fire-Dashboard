@@ -4,7 +4,7 @@ import {Link} from "react-router-dom";
 
 export default function SideNav(){
     return(
-          <div className="side-menu-panel hide-scrollbar ph3">
+          <div className="side-menu-panel hide-scrollbar ph3" style={{zIndex: 1}}>
                 <ul className="side-menu pl0 pb4">
                     <li className={"item item-active"}>
                         <Link className="db text-decoration-none" to="/">
