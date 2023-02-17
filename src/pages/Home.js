@@ -39,9 +39,6 @@ export default function Home() {
                 <div className="col s12 m6">
                   <h2 className="bold">Dashboard</h2>
                 </div>
-                <div className="fr">
-                  <Filters />
-                </div>
               </header>
               {/*<div className="content">*/}
               <div className="row">
@@ -80,15 +77,10 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              {/*<EventsTable />*/}
-              {event_component}
-              {/*{/<div className="row">/}*/}
-              {/*/!*    <div className="col s12">*!/*/}
-              {/*/!*        <h1 className="bold pb2">Loreum Ipsum</h1>*!/*/}
-              {/*/!*    </div>*!/*/}
-              {/*{/</div>/}*/}
-
+              {/*<div className="fr">*/}
+                  <Filters />
               {/*</div>*/}
+              {event_component}
             </div>
           </div>
         </div>

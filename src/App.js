@@ -15,8 +15,9 @@ import NotFound from "./reusable_components/NotFound";
 import ReactSpinner from "./reusable_components/ReactSpinner";
 import Cameras from "./pages/Cameras";
 import OnlyPublicRoute from "./Authentication/OnlyPublicRoute";
+import GoogleMap from "./components/GoogleMap";
 
-export const backend_url = 'http://139.162.11.234'
+export const backend_url = 'https://api.forestwatch.org.pk'
 
 
 export default function App () {
@@ -26,6 +27,7 @@ export default function App () {
                 <ReactSpinner/>
                 <Switch>
                 <ProtectedRoute exact path='/' Component={Home} />
+                <ProtectedRoute exact path="/map" Component={GoogleMap} />
                 <ProtectedRoute exact path='/cameras' Component={Cameras} />
                 <OnlyPublicRoute exact path='/login' Component={Login} />
                 <Route exact path='/logout' render={(props) => <Logout {...props}/>}/>

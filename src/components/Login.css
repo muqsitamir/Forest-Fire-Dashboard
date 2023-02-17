@@ -1,0 +1,19 @@
+.divider:after,
+    .divider:before {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: #eee;
+    }
+.card {
+        margin: 0 auto; /* Added */
+        float: none; /* Added */
+        margin-bottom: 10px; /* Added */
+}
+.back{
+    background-color: #eee;
+}
+
+.mycontent-left {
+    border-left: 1px solid rgb(99, 92, 92);
+  }
