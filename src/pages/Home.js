@@ -33,7 +33,7 @@ export default function Home() {
       <div className="page__content">
         <div className="main-wrapper">
           {side_nav}
-          <div className="main" style={{ backgroundColor: "var(--dark-mode-gray)", minHeight: "100vh" }}>
+          <div className="main" style={{ backgroundColor: "var(--dark-mode-gray)", minHeight: "100vh", paddingLeft:"3%", paddingRight:"3%" }}>
             <div className="container l mb7">
               <header className="row mb4 db">
                 <div className="col s12 m6">
@@ -41,7 +41,7 @@ export default function Home() {
                 </div>
               </header>
               <div className="row">
-                <div className="shadow border rounded-sm db mb1">
+                <div className="border rounded-sm db mb1">
                   <div className="content tc">
                     <div className="pa3">
                       <div className="mv3">
@@ -53,7 +53,7 @@ export default function Home() {
               </div>
               <div className="row">
                 <div className="col s12 m6">
-                  <div className="shadow border rounded-sm db mb3">
+                  <div className="border rounded-sm db mb3">
                     <div className="content tc">
                       <div className="pa3">
                         <div className="mv3">
@@ -64,7 +64,7 @@ export default function Home() {
                   </div>
                 </div>
                 <div className="col s12 m6">
-                  <div className="shadow border rounded-sm db mb3">
+                  <div className="border rounded-sm db mb3">
                     <div className="content tc">
                       <div className="pa3">
                         <div className="mv3">
