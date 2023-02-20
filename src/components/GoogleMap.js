@@ -16,7 +16,6 @@ import SideNav from "../Headers/SideNav/SideNav";
 import {backend_url} from "../App";
 
 function MapContainer() {
-  console.log("Came here")
   const defaultCenter = {lat: 34.19167584003779, lng: 73.23095807365446}
   const radius = 300
   const phi = 60 //* Math.PI / 180;
@@ -45,9 +44,7 @@ function MapContainer() {
     zIndex: 1
   }
   const onSelect = item => {
-    console.log("I was called", selected)
-    item.location = {lat: item.lat, lng: item.lng}
-    console.log(item)
+    item.location = item.user ? {lat: item.latitude, lng: item.longitude} : {lat: item.lat, lng: item.lng};
     setSelected({theta: selected.theta, item : item});
   }
   const [data, setData] = useState(null);
@@ -82,16 +79,7 @@ function MapContainer() {
           });
       }, []);
 
-  
-  const sensorSelect = (item) => {
-    console.log(item)
-    item.location = {lat: item.lat, lng: item.lng}
-    // setCenter({center:item.location, zoom:15, isZoom:true})
-    setSelected({theta: selected.theta, item : item});
 
-  }
-
-  debugger
   return (
    <div className="page">
       <div className="page__content">
@@ -101,7 +89,7 @@ function MapContainer() {
         <Row>
           <Col className='col-md-1 mx-0 my-0' style={{width: "20.499999995%",flex: "0 0 20.499%",maxWidth: "20.499%"}}>
             <Row style={{maxHeight:"50%" }}>
-            <SensorList sensorSelect={sensorSelect}/>
+            <SensorList sensorSelect={onSelect}/>
             </Row>
             <Row style={{maxHeight:"50%" }}>
             <EventList />
@@ -113,7 +101,6 @@ function MapContainer() {
           {
             data && data.map((item, index) => {
               item.location = {lat: item.lat, lng: item.lng}
-              console.log("hello")
               return (
                 // console.log("tower markers")
                 <Marker icon={"http://maps.google.com/mapfiles/ms/icons/red-dot.png"} key={item.name} position={item.location} onClick={() => onSelect(item)} />
@@ -131,7 +118,7 @@ function MapContainer() {
                       item.cameras.map((i, idx) => {
                         // icon={{ url: (require('../static/camera.png')), fillColor: '#ffffff', scale: 0.5}}
                         return(
-                          <Marker icon={"http://maps.google.com/mapfiles/ms/icons/blue-dot.png"} key={i.name} position={{lat:i.latitude, lng:i.longitude}} onClick={() => sensorSelect(i)} />)
+                          <Marker icon={"http://maps.google.com/mapfiles/ms/icons/blue-dot.png"} key={i.description} position={{lat:i.latitude, lng:i.longitude}} onClick={() => onSelect(i)} />)
                       })
                   )
                 })
@@ -141,13 +128,13 @@ function MapContainer() {
                   return (
                       item.sensors.map((i, idx) => {
                         return(
-                          <Marker icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"} key={i.name} position={{lat:i.lat, lng:i.lng}} onClick={() => sensorSelect(i)} />)
+                          <Marker icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"} key={i.name} position={{lat:i.lat, lng:i.lng}} onClick={() => onSelect(i)} />)
                       })
                   )
                 })
               }
               <Circle options={circleOptions} center={center.center} ></Circle>
-              {(selected.item.device != "sensor") ? <Arc center={center.center} radius={radius} phi={phi} theta={0} /> : <></>}
+              {selected.item.user ? <Arc center={center.center} radius={radius} phi={phi} theta={0} /> : <></>}
               <HeatMap />
             </div>
             )
@@ -163,16 +150,16 @@ function MapContainer() {
               onCloseClick={() => setSelected({paths: selected.paths, theta: selected.theta, item : {}})}
             >
               <div style={{ display: "flex",  justifyContent: "space-between" }}>
-              <p className='mx-2' style={{fontSize:"15px" }}>{selected.item.name}</p>
+              <p className='mx-2' style={{fontSize:"15px" }}>{selected.item.user ? selected.item.description: selected.item.name}</p>
                 <span>
                   {center.isZoom ? <a className="px-1" type="button"  onClick={() => setCenter({center:defaultCenter, zoom:10, isZoom:false})}><AiOutlineZoomOut tyle={{verticalAlign: 'baseline'}} color='#000000' size={20}/></a>
                   : <a className="px-1" type="button" onClick={() => setCenter({center:selected.item.location, zoom:12, isZoom:true})}><AiOutlineZoomIn tyle={{verticalAlign: 'baseline'}} color='#000000' size={20}/></a>}
                 </span>
                 <span style={{align:"centre" }}>
-                  {/*{selected.item.user ? <Link  target="framename" to={`/live/${selected.item.name}`}><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20}/> </Link> : <a  target="framename1" href='https://thingsboard.cloud/dashboard/4d9f5cb0-a201-11ed-9f28-5358e02f9b82?publicId=84e5cbd0-9b1e-11ed-9dfd-cfdf96a89571'><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20} /> </a> }*/}
-                  {selected.item.device == "camera" ? <Link  target="framename" to={`/live/${selected.item.name}`}><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20}/> </Link> : ""}
+                  {selected.item.user ? <Link to={{pathname: `/live/${selected.item.id}` , state: {cam_id: selected.item.id}}}><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20}/> </Link> : <a  target="framename1" href='https://thingsboard.cloud/dashboard/4d9f5cb0-a201-11ed-9f28-5358e02f9b82?publicId=84e5cbd0-9b1e-11ed-9dfd-cfdf96a89571'><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20} /> </a> }
+                  {/*{selected.item.device == "camera" ? <Link  target="framename" to={`/live/${selected.item.name}`}><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20}/> </Link> : ""}*/}
                   {/*/!* {(selected.item.device == "sensor")  ? <Link  target="framename" to={`/sensor/${selected.item.name}`}><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20} /> </Link> : ""} *!/*/}
-                  {(selected.item.device == "sensor")  ? <a  target="framename1" href='https://thingsboard.cloud/dashboard/4d9f5cb0-a201-11ed-9f28-5358e02f9b82?publicId=84e5cbd0-9b1e-11ed-9dfd-cfdf96a89571'><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20} /> </a> : ""}
+                  {/*{(selected.item.device == "sensor")  ? <a  target="framename1" href='https://thingsboard.cloud/dashboard/4d9f5cb0-a201-11ed-9f28-5358e02f9b82?publicId=84e5cbd0-9b1e-11ed-9dfd-cfdf96a89571'><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20} /> </a> : ""}*/}
                 </span>
               </div>
             </InfoWindow>

@@ -16,13 +16,14 @@ import LiveEvents from './LiveEvents';
 import {useSelector} from "react-redux";
 import {selectSiteData} from "../reusable_components/site_data/siteDataSlice";
 import SideNav from "../Headers/SideNav/SideNav";
+import {useLocation, withRouter} from "react-router-dom";
 
 
-export default function LiveView() {
+ function LiveView() {
+  const location = useLocation();
+  const cam_id = location.state.cam_id;
   const { id } = useParams();
   const full = useParams()
-  console.log(id);
-  console.log(full);
   const [view, setView] = useState("camera");
   const [camera, setCamera] = useState({cam:"Hawa Gali",link:""});
   const date = new Date().toLocaleDateString();
@@ -55,7 +56,6 @@ export default function LiveView() {
 
   useEffect(()=>{
     var sid = id.split(" ")
-    console.log("sid", sid)
     if(id == "Camera 1") setCamera({cam:"Hawa Gali",link:""})
     else if(id == "Camera 2") setCamera({cam:"Panja Gali",link:""})
     else if(id == "Camera 3") setCamera({cam:"Palm Gali",link:""})
@@ -63,7 +63,6 @@ export default function LiveView() {
   }, [])
 
   const eventClick = (item) => {
-    console.log(item)
     let x=item.camera==1?'Hawa Gali':item.camera==2?'Panja Gali':'Palm Gali';
     setCamera({cam:x,link:item.file})
   }
@@ -93,7 +92,6 @@ export default function LiveView() {
       }
     } catch (err) {
       console.log(err);
-   
     }
   };
   
@@ -184,7 +182,7 @@ export default function LiveView() {
                         }
                 </div>
                 <div className='col-md-8 pe-0 me-0'>
-                    <LiveEvents eventClick={eventClick}/>
+                    <LiveEvents eventClick={eventClick} cam_id={cam_id}/>
                 </div>
             
                     </div>
@@ -250,3 +248,5 @@ const data = [
     camera: "camera ",
 },
 ];
+
+export default withRouter(LiveView);

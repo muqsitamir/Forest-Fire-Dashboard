@@ -1,16 +1,23 @@
 import React, {useState, useEffect} from 'react'
 import Container from 'react-bootstrap/esm/Container';
 import Table from 'react-bootstrap/esm/Table';
-export default function LiveEvents({eventClick}) {
+import {backend_url} from "../App";
+export default function LiveEvents(props) {
     const [row, setRow] = useState();
     const [view, setView] = useState("camera");
 
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const Header = {};
+    Header['Authorization'] = `Token ${localStorage.getItem("token")}`;
+    let config = {
+       headers: Header,
+    };
+    const cam_id = props.cam_id ? `?cameras=${props.cam_id}` :  "";
 
     useEffect(() => {
-        fetch(`http://139.162.11.234/core/api/event`, {headers: {'Authorization': 'Token c6b660105249117a0677894f23334166698c9fff'}})
+        fetch(`${backend_url}/core/api/event/${cam_id}`, config)
           .then((response) => {
             if (!response.ok) {
                 throw new Error(
@@ -38,29 +45,26 @@ export default function LiveEvents({eventClick}) {
         <table className='table table-dark table-hover px-0 mx-0' style={{overflowY: "scroll", height: "16em",display: "block"}}>
                 <thead style={{position: "sticky",top:"0"}}>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Image</th>
-                    <th scope="col">Headline</th>
-                    <th scope="col">Severety</th>
-                    <th scope="col" style={{textAlign:"center"}}>Detail</th>
-                    <th scope="col">Location</th>
+                    <th scope="col">Event</th>
+                    <th scope="col">File</th>
+                    <th scope="col">Created At</th>
+                    <th scope="col">Updated At</th>
                     <th scope="col">Date</th>
-                    <th scope="col">Time</th>
                 </tr>
                 </thead>
                 <tbody>
                 {data && data.map((item) => (
                     <tr
                     onClick={() => {
-                        eventClick(item)
+                        props.eventClick(item)
 
                         setRow(item);
                         setView("video");
                     }}
                     >
-                    <td>id</td>
+                    <td>{item.species}</td>
                     <td>
-                        <img src={item.file} alt="" height={50} width={50} />
+                        <img src={item.file} alt="" height={80} width={80} />
                     </td>
                     <td
                         style={{
@@ -68,7 +72,16 @@ export default function LiveEvents({eventClick}) {
                         verticalAlign: "middle",
                         }}
                     >
-                        Random Headline
+                        {item.created_at}
+                    </td>
+
+                    <td
+                        style={{
+                        textAlign: "center",
+                        verticalAlign: "middle",
+                        }}
+                    >
+                        {item.updated_at}
                     </td>
                     <td
                         style={{
@@ -76,39 +89,8 @@ export default function LiveEvents({eventClick}) {
                         verticalAlign: "middle",
                         }}
                     >
-                        Random severety
+                        {item.date}
                     </td>
-                    <td
-                        style={{
-                        textAlign: "center",
-                        verticalAlign: "middle",
-                        }}
-                    >
-                        Random Detail
-                    </td>
-                    <td
-                        style={{
-                        textAlign: "center",
-                        verticalAlign: "middle",
-                        }}
-                    >
-                        {item.camera==1?'Hawa Gali':item.camera==2?'Panja Gali':'Palm Gali'}
-                    </td>
-                    <td
-                        style={{
-                        textAlign: "center",
-                        verticalAlign: "middle",
-                        }}
-                    >
-                        {(new Date(item.date)).getDate()}/{(new Date(item.date)).getMonth()+1}/{(new Date(item.date)).getFullYear()}
-                    </td>
-                    <td
-                        style={{
-                        textAlign: "center",
-                        verticalAlign: "middle",
-                        }}
-                    >
-                        {(new Date(item.date)).toLocaleTimeString()}</td>
                     </tr>
                 ))}
                 </tbody>
