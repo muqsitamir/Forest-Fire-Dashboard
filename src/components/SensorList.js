@@ -6,14 +6,21 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import {useState, useEffect} from 'react';
 
 import './SensorList.css'
+import {backend_url} from "../App";
 
 function SensorList({sensorSelect}) {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const Header = {};
+    Header['Authorization'] = `Token ${localStorage.getItem("token")}`;
+    let config = {
+       headers: Header,
+    };
+
 
     useEffect(() => {
-        fetch(`https://forest-fire-dashboard.vercel.app/api/towerDetails`)
+        fetch(`${backend_url}/core/api/towers/`, config)
           .then((response) => {
             if (!response.ok) {
                 throw new Error(
@@ -23,12 +30,10 @@ function SensorList({sensorSelect}) {
               return response.json();
           })
           .then((actualData) => {
-            console.log(actualData.data);
-            setData(actualData.data);
+            setData(actualData.results);
             setError(null);
           })
           .catch((err) => {
-            console.log(err);
             setError(err.message);
             setData(null);
           })
@@ -53,7 +58,6 @@ function SensorList({sensorSelect}) {
                         let sen=item.sensors;
                         let nn=n[index]+"-collapse";
                         let xx="#"+nn
-                        console.log(nn)
                         return (
                             <li className="mb-1">
                                 <button onClick={() => sensorSelect(item)} className="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target={xx} aria-expanded="true">
@@ -66,7 +70,7 @@ function SensorList({sensorSelect}) {
                                         return(
                                     <li onClick={() => sensorSelect(i2)}>  
                                     <a  className="link-dark d-inline-flex text-decoration-none rounded">
-                                    <AiOutlineCamera />&nbsp;&nbsp;{i2.name}
+                                    <AiOutlineCamera />&nbsp;&nbsp;{i2.description}
                                     </a>
                                     </li>
                         )})

@@ -27,8 +27,8 @@ export default function App () {
                 <TopAppBarProtection Component={TopAppBar} />
                 <ReactSpinner/>
                 <Switch>
-                <ProtectedRoute exact path='/' Component={Home} />
-                <ProtectedRoute exact path="/map" Component={GoogleMap} />
+                <ProtectedRoute exact path='/' Component={GoogleMap} />
+                <ProtectedRoute exact path="/dashboard" Component={Home} />
                 <ProtectedRoute exact path='/cameras' Component={Cameras} />
                 <ProtectedRoute exact path='/live/:id' Component={LiveView} />
                 <OnlyPublicRoute exact path='/login' Component={Login} />

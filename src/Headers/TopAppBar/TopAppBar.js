@@ -18,8 +18,8 @@ export default function TopAppBar(){
         window.location = 'https://api.forestwatch.org.pk/admin';
     }
 
-    const handle_map_click = () => {
-        window.location = '/map';
+    const handle_dashboard_click = () => {
+        window.location = '/dashboard';
     }
 
     const handle_home_click = () => {
@@ -35,7 +35,7 @@ export default function TopAppBar(){
                         <MenuIcon sx={{ color: '#082344', marginTop: -2}} fontSize='medium'/>
                     </button>
                     <Link to="/" className="mdc-top-app-bar__title">
-                        <img width='50' src={require("../../images/wwf_logo.png")} alt="Project Logo"/>
+                        <img width='120' src="https://lums.edu.pk/sites/default/files/inline-images/LUMS%20Logo.png" alt="Project Logo"/>
                     </Link>
                 </section>
                 <section className="mdc-top-app-bar__section app-shop mdc-top-app-bar__section--align-end mr4"
@@ -44,9 +44,9 @@ export default function TopAppBar(){
                             <span className="mdc-button__ripple"/>
                             <span className="mdc-button__label">Home</span>
                         </button>
-                        <button className="mdc-button mdc-theme--primary mdc-top-app-bar__action-item" onClick={handle_map_click}>
+                        <button className="mdc-button mdc-theme--primary mdc-top-app-bar__action-item" onClick={handle_dashboard_click}>
                             <span className="mdc-button__ripple"/>
-                            <span className="mdc-button__label">Map</span>
+                            <span className="mdc-button__label">Dashboard</span>
                         </button>
                         <button className="mdc-button mdc-theme--primary mdc-top-app-bar__action-item" onClick={handle_camera_click}>
                             <span className="mdc-button__ripple"/>

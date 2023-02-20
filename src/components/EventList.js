@@ -12,9 +12,15 @@ function EventList({eventClick}) {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const Header = {};
+    Header['Authorization'] = `Token ${localStorage.getItem("token")}`;
+    let config = {
+        headers: Header,
+    };
 
     useEffect(() => {
-        fetch(`https://api.forestwatch.org.pk/core/api/event/`, {headers: {'Authorization': 'Token c6b660105249117a0677894f23334166698c9fff'}})
+
+        fetch(`https://api.forestwatch.org.pk/core/api/event/`, config)
           .then((response) => {
             if (!response.ok) {
                 throw new Error(

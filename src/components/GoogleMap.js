@@ -13,8 +13,7 @@ import { BsArrowUpRightSquare } from 'react-icons/bs';
 import {useSelector} from "react-redux";
 import {selectSiteData} from "../reusable_components/site_data/siteDataSlice";
 import SideNav from "../Headers/SideNav/SideNav";
-// import 'bootstrap/dist/css/bootstrap.min.css';
-// import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+import {backend_url} from "../App";
 
 function MapContainer() {
   console.log("Came here")
@@ -52,11 +51,16 @@ function MapContainer() {
     setSelected({theta: selected.theta, item : item});
   }
   const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const Header = {};
+  Header['Authorization'] = `Token ${localStorage.getItem("token")}`;
+  let config = {
+      headers: Header,
+  };
 
     useEffect(() => {
-        fetch(`https://forest-fire-dashboard.vercel.app/api/towerDetails`)
+        fetch(`${backend_url}/core/api/towers/`, config)
           .then((response) => {
             if (!response.ok) {
                 throw new Error(
@@ -66,12 +70,10 @@ function MapContainer() {
               return response.json();
           })
           .then((actualData) => {
-            console.log(actualData.data);
-            setData(actualData.data);
+            setData(actualData.results);
             setError(null);
           })
           .catch((err) => {
-            console.log(err);
             setError(err.message);
             setData(null);
           })
@@ -89,6 +91,7 @@ function MapContainer() {
 
   }
 
+  debugger
   return (
    <div className="page">
       <div className="page__content">
@@ -128,7 +131,7 @@ function MapContainer() {
                       item.cameras.map((i, idx) => {
                         // icon={{ url: (require('../static/camera.png')), fillColor: '#ffffff', scale: 0.5}}
                         return(
-                          <Marker icon={"http://maps.google.com/mapfiles/ms/icons/blue-dot.png"} key={i.name} position={{lat:i.lat, lng:i.lng}} onClick={() => sensorSelect(i)} />)
+                          <Marker icon={"http://maps.google.com/mapfiles/ms/icons/blue-dot.png"} key={i.name} position={{lat:i.latitude, lng:i.longitude}} onClick={() => sensorSelect(i)} />)
                       })
                   )
                 })
@@ -166,8 +169,9 @@ function MapContainer() {
                   : <a className="px-1" type="button" onClick={() => setCenter({center:selected.item.location, zoom:12, isZoom:true})}><AiOutlineZoomIn tyle={{verticalAlign: 'baseline'}} color='#000000' size={20}/></a>}
                 </span>
                 <span style={{align:"centre" }}>
+                  {/*{selected.item.user ? <Link  target="framename" to={`/live/${selected.item.name}`}><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20}/> </Link> : <a  target="framename1" href='https://thingsboard.cloud/dashboard/4d9f5cb0-a201-11ed-9f28-5358e02f9b82?publicId=84e5cbd0-9b1e-11ed-9dfd-cfdf96a89571'><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20} /> </a> }*/}
                   {selected.item.device == "camera" ? <Link  target="framename" to={`/live/${selected.item.name}`}><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20}/> </Link> : ""}
-                  {/* {(selected.item.device == "sensor")  ? <Link  target="framename" to={`/sensor/${selected.item.name}`}><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20} /> </Link> : ""} */}
+                  {/*/!* {(selected.item.device == "sensor")  ? <Link  target="framename" to={`/sensor/${selected.item.name}`}><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20} /> </Link> : ""} *!/*/}
                   {(selected.item.device == "sensor")  ? <a  target="framename1" href='https://thingsboard.cloud/dashboard/4d9f5cb0-a201-11ed-9f28-5358e02f9b82?publicId=84e5cbd0-9b1e-11ed-9dfd-cfdf96a89571'><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20} /> </a> : ""}
                 </span>
               </div>
