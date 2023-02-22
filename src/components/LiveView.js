@@ -70,7 +70,8 @@ import {backend_url} from "../App";
   let HandleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let res = await fetch(`${backend_url}/core/api/camera/`, {
+      let nam = camera.cam.split(" ")[0]
+      let res = await fetch(`${backend_url}/controls/ptzControls${nam}`, {
         method: "POST",
         body: JSON.stringify({
           pan: pan,
@@ -79,6 +80,7 @@ import {backend_url} from "../App";
         }),
         headers: {
             'Content-type': 'application/json;',
+            'Authorization':`Token ${localStorage.getItem("token")}`
           },
       });
       let resJson = await res.json();
