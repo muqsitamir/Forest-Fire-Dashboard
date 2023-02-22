@@ -1,12 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import {Bars} from 'react-loader-spinner'
-// import { useBeforeUnload } from 'react-router-dom';
+import {backend_url} from "../App";
 
 export default function CameraFeed({cameraId,view,live}) {
     const [picture, setPicture] = useState({pic: "", rnd: 0})
     const [loading, setLoading] = useState(true);
     var url = ``
     var headers={};
+    const Header = {};
+    Header['Authorization'] = `Token ${localStorage.getItem("token")}`;
+    let config = {
+       headers: Header,
+    };
+
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -14,16 +20,17 @@ export default function CameraFeed({cameraId,view,live}) {
           var event = 0
           console.log("fetching again", cameraId)
           console.log(cameraId.link, cameraId.cam, url,event)
+          
           if(cameraId.link!=''){event = 1}
-           else if(cameraId.cam == "Hawa Gali") {url = `https://forest-fire-dashboard.vercel.app/api/cameraView/1`;}
-           else if(cameraId.cam == "Panja Gali") {url = `https://forest-fire-dashboard.vercel.app/api/cameraView/2`;}
-           else if(cameraId.cam == "Palm Gali") {url = `https://forest-fire-dashboard.vercel.app/api/cameraView/3`;}
+           else if(cameraId.cam == "Hawa Gali") {url = `${backend_url}/core/api/camera/1`;}
+           else if(cameraId.cam == "Panja Gali") {url = `${backend_url}/core/api/camera/2`;}
+           else if(cameraId.cam == "Palm Gali") {url = `${backend_url}/core/api/camera/3`;}
            else if(cameraId.cam == "Event") {setPicture({pic: cameraId.link, rnd: randNum});setLoading(false);live=0;}
-           
+           console.log(url)
           if(event==1) {setPicture({pic: cameraId.link, rnd: randNum});setLoading(false);}
            else if(live){
              // console.log("url is", useBeforeUnload)
-               fetch(url)
+               fetch(url, config)
                .then((response) => {
                  if (!response.ok) {
                      throw new Error(
@@ -33,8 +40,8 @@ export default function CameraFeed({cameraId,view,live}) {
                    return response.json();
                })
                .then((actualData) => {
-                 console.log(actualData.imageLink);
-                  setPicture({pic: actualData.imageLink+'?ver='+randNum, rnd: randNum});}
+                //  console.log(actualData.imageLink);
+                  setPicture({pic: actualData.live_image+'?ver='+randNum, rnd: randNum});}
                )
                .catch((err) => {
                  console.log(err);
@@ -52,9 +59,11 @@ export default function CameraFeed({cameraId,view,live}) {
 
   return (
     <>
-    {console.log("picc",picture.pic)}
+    {/* {console.log("picc",picture.pic)} */}
     <div className='my-5 py-5' style={{display:loading?"block":"none"}}><Bars radius="9" color="#0D6EFD" height="50" width='50'/></div>
-    <div className='d-flex justify-content-center' style={{display:loading?"none":"block",maxWidth:view=='map'?"75%":"50%",maxHeight:view=='map'?"75%":"50%", paddingTop:view=='map'?"20px":"10px"}}><img style={{display:loading?"none":"block"}} src={picture.pic} alt="camera feed" className="w-100"/></div>
+    <div className='d-flex justify-content-center' style={{display:loading?"none":"block",maxWidth:view=='map'?"75%":"50%",maxHeight:view=='map'?"75%":"50%", paddingTop:view=='map'?"20px":"10px"}}>
+      <img style={{display:loading?"none":"block"}} src={picture.pic} alt="camera feed" className="w-100"/>
+      </div>
 
     </>
   )

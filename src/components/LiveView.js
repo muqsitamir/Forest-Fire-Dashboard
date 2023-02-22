@@ -17,11 +17,11 @@ import {useSelector} from "react-redux";
 import {selectSiteData} from "../reusable_components/site_data/siteDataSlice";
 import SideNav from "../Headers/SideNav/SideNav";
 import {useLocation, withRouter} from "react-router-dom";
+import {backend_url} from "../App";
 
 
  function LiveView() {
   const location = useLocation();
-  const cam_id = location.state.cam_id;
   const { id } = useParams();
   const full = useParams()
   const [view, setView] = useState("camera");
@@ -56,9 +56,9 @@ import {useLocation, withRouter} from "react-router-dom";
 
   useEffect(()=>{
     var sid = id.split(" ")
-    if(id == "Camera 1") setCamera({cam:"Hawa Gali",link:""})
-    else if(id == "Camera 2") setCamera({cam:"Panja Gali",link:""})
-    else if(id == "Camera 3") setCamera({cam:"Palm Gali",link:""})
+    if(id == "1") setCamera({cam:"Hawa Gali",link:""})
+    else if(id == "2") setCamera({cam:"Panja Gali",link:""})
+    else if(id == "3") setCamera({cam:"Palm Gali",link:""})
     else if(sid[0] == "event") setCamera({cam:"Event",link:sid[2].replaceAll('(','/')})
   }, [])
 
@@ -70,7 +70,7 @@ import {useLocation, withRouter} from "react-router-dom";
   let HandleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let res = await fetch("https://forest-fire-dashboard.vercel.app/api/ptzControls", {
+      let res = await fetch(`${backend_url}/core/api/camera/`, {
         method: "POST",
         body: JSON.stringify({
           pan: pan,
@@ -182,7 +182,7 @@ import {useLocation, withRouter} from "react-router-dom";
                         }
                 </div>
                 <div className='col-md-8 pe-0 me-0'>
-                    <LiveEvents eventClick={eventClick} cam_id={cam_id}/>
+                    <LiveEvents eventClick={eventClick} cam_id={id}/>
                 </div>
             
                     </div>
