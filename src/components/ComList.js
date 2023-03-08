@@ -55,7 +55,7 @@ function EventList({eventClick}) {
      <main className="d-flex flex-nowrap">
   <div className="flex-shrink-0 p-1 w-100 bg-white">
     <a href="/" className="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
-      <span className="fs-6 fw-semibold">Camera Events</span>
+      <span className="fs-6 fw-semibold">Community Events</span>
     </a>
     <div className='px-0 mx-0'> 
         <table className='table table-hover px-0 mx-0' style={{overflowY: "scroll",height: "16em",display: "block", fontSize:"12px"}}>

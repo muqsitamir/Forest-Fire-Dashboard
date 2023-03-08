@@ -14,6 +14,8 @@ import {useSelector} from "react-redux";
 import {selectSiteData} from "../reusable_components/site_data/siteDataSlice";
 import SideNav from "../Headers/SideNav/SideNav";
 import {backend_url} from "../App";
+import ComList from './ComList';
+
 
 function MapContainer() {
   const defaultCenter = {lat: 34.19167584003779, lng: 73.23095807365446}
@@ -22,6 +24,7 @@ function MapContainer() {
   
   const [ center, setCenter ] = useState({center:defaultCenter, zoom: 10, isZoom:false});
   const [ selected, setSelected ] = useState({ theta : 0, item: {}});
+  const [ view, setView] = useState("camera")
 
   const { side_nav: side_nav_check } = useSelector(selectSiteData);
   let side_nav = side_nav_check ? <SideNav /> : null;
@@ -93,7 +96,16 @@ function MapContainer() {
             <SensorList sensorSelect={onSelect}/>
             </Row>
             <Row style={{maxHeight:"50%" }}>
-            <EventList />
+            <ul class="nav nav-pills"  style={{fontSize: "80%", paddingLeft:"10%"}}>
+              <li class="nav-item">
+                <a class="nav-link " aria-current="page" onClick={() => setView("Camera")}>Camera</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" onClick={() => setView("Community")}>Community</a>
+              </li>
+
+            </ul>
+            {view === "Camera" ? <EventList /> : <ComList />}
             </Row>
           </Col>
           <Col>
