@@ -44,6 +44,7 @@ function MapContainer() {
     zIndex: 1
   }
   const onSelect = item => {
+    console.log(item)
     item.location = item.user ? {lat: item.latitude, lng: item.longitude} : {lat: item.lat, lng: item.lng};
     setSelected({theta: selected.theta, item : item});
   }
@@ -134,8 +135,8 @@ function MapContainer() {
                 })
               }
               <Circle options={circleOptions} center={center.center} ></Circle>
-              {selected.item.user ? <Arc center={center.center} radius={radius} phi={phi} theta={0} /> : <></>}
-              <HeatMap />
+              {/* {selected.item.user ? <Arc center={center.center} radius={radius} phi={phi} theta={0} /> : <></>} */}
+              {/* <HeatMap /> */}
             </div>
             )
           }
@@ -147,7 +148,8 @@ function MapContainer() {
               <InfoWindow
               position={selected.item.location}
               clickable={true}
-              onCloseClick={() => setSelected({paths: selected.paths, theta: selected.theta, item : {}})}
+              // onCloseClick={() => setSelected({paths: selected.paths, theta: selected.theta, item : {}})}
+              onCloseClick={() => setSelected({ theta: selected.theta, item : {}})}
             >
               <div style={{ display: "flex",  justifyContent: "space-between" }}>
               <p className='mx-2' style={{fontSize:"15px" }}>{selected.item.user ? selected.item.description: selected.item.name}</p>
