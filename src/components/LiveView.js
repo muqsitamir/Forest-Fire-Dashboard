@@ -71,12 +71,13 @@ import {backend_url} from "../App";
     e.preventDefault();
     try {
       let nam = camera.cam.split(" ")[0]
-      let res = await fetch(`${backend_url}/controls/ptzControls${nam}`, {
+      let res = await fetch(`${backend_url}/core/api/camera/ptzControls/`, {
         method: "POST",
         body: JSON.stringify({
           pan: pan,
           tilt: tilt,
           zoom: zoom,
+          camera: nam
         }),
         headers: {
             'Content-type': 'application/json;',
