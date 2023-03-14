@@ -25,7 +25,7 @@ import {backend_url} from "../App";
   const { id } = useParams();
   const full = useParams()
   const [view, setView] = useState("camera");
-  const [camera, setCamera] = useState({cam:"Hawa Gali",link:""});
+  const [camera, setCamera] = useState({cam:"",link:"", id:0});
   const date = new Date().toLocaleDateString();
   const [row, setRow] = useState();
   const [tilt, setTilt] = useState(0)
@@ -36,6 +36,8 @@ import {backend_url} from "../App";
   const [live, setLive] = useState(true)
   const [success, setSuccess] = useState(false)
   var timer = ""
+
+  const [towers, setTowers] = useState(null);
 
   const { side_nav: side_nav_check } = useSelector(selectSiteData);
   let side_nav = side_nav_check ? <SideNav /> : null;
@@ -53,18 +55,45 @@ import {backend_url} from "../App";
     height: "40vh",
     width: "100%"
   };
-
+  const Header = {}
+  Header['Authorization'] = `Token ${localStorage.getItem("token")}`;
+  let config = {
+     headers: Header,
+  };
   useEffect(()=>{
     var sid = id.split(" ")
-    if(id == "1") setCamera({cam:"Hawa Gali",link:""})
-    else if(id == "2") setCamera({cam:"Panja Gali",link:""})
-    else if(id == "3") setCamera({cam:"Palm Gali",link:""})
-    else if(sid[0] == "event") setCamera({cam:"Event",link:sid[2].replaceAll('(','/')})
+    fetch(`${backend_url}/core/api/towers/`, config)
+      .then((response) => {
+        if (!response.ok) {
+            throw new Error(
+              `This is an HTTP error: The status is ${response.status}`
+            );
+          }
+          return response.json();
+      })
+      .then((actualData) => {
+        setTowers(actualData.results);
+        var temp_id = Number(id) - 1
+        console.log(actualData.results)
+        if(sid[0] == "event") setCamera({cam:"Select a Camera",link:sid[2].replaceAll('(','/'), id: camera.id})
+        else {
+          setCamera({cam:actualData.results[temp_id]["name"],link:"", id:temp_id+1})
+          // setCenter({center:{lat:actualData.results[temp_id]["lat"], lng:actualData.results[temp_id]["lng"]}, zoom: 12, isZoom:false})
+        }
+      })
+      .catch((err) => {
+        setTowers(null);
+      })
+    
+    
   }, [])
 
   const eventClick = (item) => {
-    let x=item.camera==1?'Hawa Gali':item.camera==2?'Panja Gali':'Palm Gali';
-    setCamera({cam:x,link:item.file})
+    // let x=item.camera==1?'Hawa Gali':item.camera==2?'Panja Gali':'Palm Gali';
+    console.log("inside events", item)
+    let x= item.camera_name
+
+    setCamera({cam:x,link:item.file, id: item.id})
   }
   
   let HandleSubmit = async (e) => {
@@ -113,18 +142,17 @@ import {backend_url} from "../App";
                     {camera.cam}
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
-                    <Dropdown.Item href="#" onClick={() => { setCamera({cam:"Hawa Gali",link:""}); }}>
-                        Hawa Gali
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#" onClick={() => { setCamera({cam:"Panja Gali",link:""}); }}>
-                        Panja Gali
-                    </Dropdown.Item>
-                    <Dropdown.Item href="#" onClick={() => { setCamera({cam:"Palm Gali",link:""}); }}>
-                        Palm Gali
-                    </Dropdown.Item>
-                    <Dropdown.Item disabled href="#">
-                        Event
-                    </Dropdown.Item>
+                      {
+                        towers && towers.map((item, index) => {
+                          return (
+                            // <Dropdown.Item href="#" onClick={() => { setCamera({cam:item.name,link:"", id:item.id}); towers && setCenter({center:{lat:towers[item.id].lat, lng:towers[item.id].lat}, zoom: 12, isZoom:false})
+                            <Dropdown.Item href="#" onClick={() => { setCamera({cam:item.name,link:"", id:item.id}); 
+                          }}>
+                              {item.name}
+                            </Dropdown.Item>
+                          )
+                        })
+                      }
                 </Dropdown.Menu>
                 </Dropdown>
                 </div>
@@ -171,6 +199,7 @@ import {backend_url} from "../App";
                 <div className='mb-3 d-flex justify-content-center'> 
                 {view == "camera" ? <CameraFeed cameraId={camera} view={view} live={live}/> :
                                 <GoogleMap mapContainerStyle={mapStyles} zoom={center.zoom} center={center.center} >
+          
                                 </GoogleMap>
                 }
                 </div>
@@ -181,11 +210,13 @@ import {backend_url} from "../App";
 
                         {view == "map" ? <CameraFeed cameraId={camera} view={view} live={live}/> :
                                 <GoogleMap mapContainerStyle={mapStyles} zoom={center.zoom} center={center.center}>
+                                  {/* {towers && console.log("hello there", towers[camera.id-1])}
+                                  {towers && <Marker icon={"http://maps.google.com/mapfiles/ms/icons/red-dot.png"} key={camera.id} position={{lat:towers[camera.id-1].lat, lng:towers[camera.id-1].lng}} />} */}
                                 </GoogleMap>
                         }
                 </div>
                 <div className='col-md-8 pe-0 me-0'>
-                    <LiveEvents eventClick={eventClick} cam_id={id}/>
+                    <LiveEvents eventClick={eventClick} cam_id={camera.id}/>
                 </div>
             
                     </div>
@@ -206,50 +237,5 @@ const VideoComponent = ({ row }) => {
     );
   };
   
-
-const data = [
-{
-    id: 1,
-    event: "https://via.placeholder.com/150",
-    createdat: "2020-10-10",
-    updatedat: "2020-10-10",
-    camera: "camera ",
-},
-{
-    id: 2,
-    event: "https://via.placeholder.com/150",
-    createdat: "2020-10-10",
-    updatedat: "2020-10-10",
-    camera: "camera ",
-},
-{
-    id: 3,
-    event: "https://via.placeholder.com/150",
-    createdat: "2020-10-10",
-    updatedat: "2020-10-10",
-    camera: "camera ",
-},
-{
-    id: 4,
-    event: "https://via.placeholder.com/150",
-    createdat: "2020-10-10",
-    updatedat: "2020-10-10",
-    camera: "camera ",
-},
-{
-    id: 5,
-    event: "https://via.placeholder.com/150",
-    createdat: "2020-10-10",
-    updatedat: "2020-10-10",
-    camera: "camera ",
-},
-{
-    id: 6,
-    event: "https://via.placeholder.com/150",
-    createdat: "2020-10-10",
-    updatedat: "2020-10-10",
-    camera: "camera ",
-},
-];
 
 export default withRouter(LiveView);

@@ -42,7 +42,7 @@ export default function LiveEvents(props) {
       }, []);
 
   return (
-        <table className='table table-dark table-hover px-0 mx-0' style={{overflowY: "scroll", height: "16em",display: "block"}}>
+        <table className='table table-hover px-0 mx-0' style={{overflowY: "scroll", height: "16em",display: "block"}}>
                 <thead style={{position: "sticky",top:"0"}}>
                 <tr>
                     <th scope="col">Event</th>

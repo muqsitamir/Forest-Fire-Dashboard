@@ -58,7 +58,7 @@ function EventList({eventClick}) {
       <span className="fs-6 fw-semibold">Events</span>
     </a>
     <div className='px-0 mx-0'> 
-        <table className='table table-dark table-hover px-0 mx-0' style={{overflowY: "scroll",height: "16em",display: "block", fontSize:"12px"}}>
+        <table className='table table-hover px-0 mx-0' style={{overflowY: "scroll",height: "16em",display: "block", fontSize:"12px"}}>
                 <thead style={{position: "sticky",top:"0"}} >
                 <tr>
                     <th scope="col">Event</th>
