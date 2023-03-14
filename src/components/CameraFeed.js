@@ -6,7 +6,6 @@ export default function CameraFeed({cameraId,view,live}) {
     const [picture, setPicture] = useState({pic: "", rnd: 0})
     const [loading, setLoading] = useState(true);
     var url = ``
-    var headers={};
     const Header = {};
     Header['Authorization'] = `Token ${localStorage.getItem("token")}`;
     let config = {
@@ -26,6 +25,7 @@ export default function CameraFeed({cameraId,view,live}) {
            else if(cameraId.cam == "Panja Gali") {url = `${backend_url}/core/api/camera/2`;}
            else if(cameraId.cam == "Palm Gali") {url = `${backend_url}/core/api/camera/3`;}
            else if(cameraId.cam == "Event") {setPicture({pic: cameraId.link, rnd: randNum});setLoading(false);live=0;}
+           else {url = `${backend_url}/core/api/camera/` + cameraId.id;}
            console.log(url)
           if(event==1) {setPicture({pic: cameraId.link, rnd: randNum});setLoading(false);}
            else if(live){
