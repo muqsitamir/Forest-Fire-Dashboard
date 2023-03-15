@@ -18,7 +18,7 @@ import {selectSiteData} from "../reusable_components/site_data/siteDataSlice";
 import SideNav from "../Headers/SideNav/SideNav";
 import {useLocation, withRouter} from "react-router-dom";
 import {backend_url} from "../App";
-
+import MiniMap from './MiniMap';
 
  function LiveView() {
   const location = useLocation();
@@ -42,24 +42,22 @@ import {backend_url} from "../App";
   const { side_nav: side_nav_check } = useSelector(selectSiteData);
   let side_nav = side_nav_check ? <SideNav /> : null;
 
-  const defaultCenter = {lat: 31.582045, lng: 74.329376}
-  const [ center, setCenter ] = useState({center:defaultCenter, zoom: 12, isZoom:false});
-
   const views = {
     camera: "camera component",
     map: "map component", //<MapContainer />
     video: <VideoComponent row={row} />,
   };
 
-  const mapStyles = {        
-    height: "40vh",
-    width: "100%"
-  };
+  
   const Header = {}
   Header['Authorization'] = `Token ${localStorage.getItem("token")}`;
   let config = {
      headers: Header,
   };
+
+
+
+
   useEffect(()=>{
     var sid = id.split(" ")
     fetch(`${backend_url}/core/api/towers/`, config)
@@ -99,7 +97,9 @@ import {backend_url} from "../App";
   let HandleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let nam = camera.cam.split(" ")[0]
+      // let nam = camera.cam.split(" ")[0]
+      let nam = "PTZ-" + camera.cam.replace(" ", "-")
+      console.log("nam is", nam)
       let res = await fetch(`${backend_url}/core/api/camera/ptzControls/`, {
         method: "POST",
         body: JSON.stringify({
@@ -198,22 +198,16 @@ import {backend_url} from "../App";
                 <div className='col-md-8' style={{backgroundColor:'#eeee'}}>
                 <div className='mb-3 d-flex justify-content-center'> 
                 {view == "camera" ? <CameraFeed cameraId={camera} view={view} live={live}/> :
-                                <GoogleMap mapContainerStyle={mapStyles} zoom={center.zoom} center={center.center} >
-          
-                                </GoogleMap>
+                  <MiniMap />
                 }
                 </div>
                     
                 </div>
             <div className='row'>
                 <div className='col-md-4 px-4 py-2 d-flex justify-content-center' style={{backgroundColor:'#fffff'}}>
-
-                        {view == "map" ? <CameraFeed cameraId={camera} view={view} live={live}/> :
-                                <GoogleMap mapContainerStyle={mapStyles} zoom={center.zoom} center={center.center}>
-                                  {/* {towers && console.log("hello there", towers[camera.id-1])}
-                                  {towers && <Marker icon={"http://maps.google.com/mapfiles/ms/icons/red-dot.png"} key={camera.id} position={{lat:towers[camera.id-1].lat, lng:towers[camera.id-1].lng}} />} */}
-                                </GoogleMap>
-                        }
+                  {view == "map" ? <CameraFeed cameraId={camera} view={view} live={live}/> :
+                    <MiniMap />
+                  }
                 </div>
                 <div className='col-md-8 pe-0 me-0'>
                     <LiveEvents eventClick={eventClick} cam_id={camera.id}/>

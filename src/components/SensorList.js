@@ -61,7 +61,7 @@ function SensorList({sensorSelect}) {
                         return (
                             <li className="mb-1">
                                 <button onClick={() => sensorSelect(item)} className="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target={xx} aria-expanded="true">
-                                Tower: {item.name}
+                                {item.name}
                                 </button>
                                 <div className="collapse show" id={nn}>
                                 <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
@@ -80,7 +80,7 @@ function SensorList({sensorSelect}) {
                                         return(
                                         <li onClick={() => sensorSelect(i3)}>
                                         <a  className="link-dark d-inline-flex text-decoration-none rounded">
-                                        {i3.sensor_type=="Temperature"?<CiTempHigh />:<WiHumidity />}&nbsp;&nbsp;{i3.name}-&nbsp;{i3.sensor_type}</a></li>
+                                        {i3.sensor_type=="Temperature"?<CiTempHigh />:<WiHumidity />}&nbsp;&nbsp;{i3.name}</a></li>
                                     )})
                                 }
                                 </ul> 
