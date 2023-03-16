@@ -23,6 +23,7 @@ import MiniMap from './MiniMap';
  function LiveView() {
   const location = useLocation();
   const { id } = useParams();
+  debugger;
   const full = useParams()
   const [view, setView] = useState("camera");
   const [camera, setCamera] = useState({cam:"",link:"", id:0});
@@ -210,7 +211,7 @@ import MiniMap from './MiniMap';
                   }
                 </div>
                 <div className='col-md-8 pe-0 me-0'>
-                    <LiveEvents eventClick={eventClick} cam_id={camera.id}/>
+                    <LiveEvents eventClick={eventClick} cam_id={id}/>
                 </div>
             
                     </div>
