@@ -35,7 +35,7 @@ export const eventsSlice = createSlice({
 
 const Header = {};
 export const getEvents =
-  (page, filterApplied, status = null, rowsPerPage = 10) =>
+  (page, filterApplied, status = null, rowsPerPage = 20) =>
   (dispatch, getState) => {
     dispatch(showLoadingScreen(true));
     Header["Authorization"] = `Token ${localStorage.getItem("token")}`;

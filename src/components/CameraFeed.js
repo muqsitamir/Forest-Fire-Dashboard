@@ -27,7 +27,12 @@ export default function CameraFeed({cameraId,view,live}) {
            else if(cameraId.cam == "Event") {setPicture({pic: cameraId.link, rnd: randNum});setLoading(false);live=0;}
            else {url = `${backend_url}/core/api/camera/` + cameraId.id;}
            console.log(url)
-          if(event==1) {setPicture({pic: cameraId.link, rnd: randNum});setLoading(false);}
+
+           let link=cameraId.link;
+           if(link.includes('http://127.0.0.1:8000')){
+            link= link.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
+           }
+          if(event==1) {setPicture({pic: link, rnd: randNum});setLoading(false);}
            else if(live){
              // console.log("url is", useBeforeUnload)
                fetch(url, config)
@@ -40,8 +45,12 @@ export default function CameraFeed({cameraId,view,live}) {
                    return response.json();
                })
                .then((actualData) => {
-                //  console.log(actualData.imageLink);
-                  setPicture({pic: actualData.live_image+'?ver='+randNum, rnd: randNum});}
+                //  console.log(actualData.imageLink)
+                let link=actualData.live_image;
+                if(link.includes('http://127.0.0.1:8000')){
+                  link=link.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
+                }
+                  setPicture({pic: link+'?ver='+randNum, rnd: randNum});}
                )
                .catch((err) => {
                  console.log(err);
@@ -55,13 +64,13 @@ export default function CameraFeed({cameraId,view,live}) {
         return () => {
             clearTimeout(timer);
         }
-    })
+    }, [cameraId, view, live]);
 
   return (
     <>
     {/* {console.log("picc",picture.pic)} */}
     <div className='my-5 py-5' style={{display:loading?"block":"none"}}><Bars radius="9" color="#0D6EFD" height="50" width='50'/></div>
-    <div className='d-flex justify-content-center' style={{display:loading?"none":"block",maxWidth:view=='map'?"75%":"50%",maxHeight:view=='map'?"75%":"50%", paddingTop:view=='map'?"20px":"10px"}}>
+    <div className='d-flex justify-content-center' style={{display:loading?"none":"block",maxWidth:view=='map'?"75%":"fit-content",maxHeight:view=='map'?"75%":"fit-content", paddingTop:view=='map'?"20px":"10px"}}>
       <img style={{display:loading?"none":"block"}} src={picture.pic} alt="camera feed" className="w-100"/>
       </div>
 

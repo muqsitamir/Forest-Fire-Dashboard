@@ -1,99 +1,66 @@
-import React, {useState, useEffect} from 'react'
-import Container from 'react-bootstrap/esm/Container';
-import Table from 'react-bootstrap/esm/Table';
-import {backend_url} from "../App";
+import React, { useState, useEffect } from 'react';
+import { backend_url } from "../App";
+import LiveWeather from './LiveWeather';
+import { Table,TableBody, TableCell,TableRow} from "@mui/material";
+
 export default function LiveEvents(props) {
-    const [row, setRow] = useState();
-    const [view, setView] = useState("camera");
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [row, setRow] = useState(); // Define the 'setRow' function
+  const [view, setView] = useState('camera'); // Define the 'setView' function
 
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const Header = {};
-    Header['Authorization'] = `Token ${localStorage.getItem("token")}`;
-    let config = {
-       headers: Header,
-    };
-    const cam_id = props.cam_id ? `?cameras=${props.cam_id}` :  "";
+  const Header = {};
+  Header['Authorization'] = `Token ${localStorage.getItem("token")}`;
+  let config = {
+    headers: Header,
+  };
+  const cam_id = props.cam_id ? `?cameras=${props.cam_id}` :  "";
 
-    useEffect(() => {
-        fetch(`${backend_url}/core/api/event/${cam_id}`, config)
-          .then((response) => {
-            if (!response.ok) {
-                throw new Error(
-                  `This is an HTTP error: The status is ${response.status}`
-                );
-              }
-              return response.json();
-          })
-          .then((actualData) => {
-            console.log("here", actualData);
-            setData(actualData.results);
-            setError(null);
-          })
-          .catch((err) => {
-            console.log(err);
-            setError(err.message);
-            setData(null);
-          })
-          .finally(() => {
-            setLoading(false);
-          });
-      }, []);
+  useEffect(() => {
+    fetch(`${backend_url}/core/api/event/${cam_id}`, config)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `This is an HTTP error: The status is ${response.status}`
+          );
+        }
+        return response.json();
+      })
+      .then((actualData) => {
+        console.log("here", actualData);
+        setData(actualData.results);
+        setError(null);
+      })
+      .catch((err) => {
+        console.log(err);
+        setError(err.message);
+        setData(null);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
-  return (
-        <table className='table table-hover px-0 mx-0' style={{overflowY: "scroll", height: "16em",display: "block"}}>
-                <thead style={{position: "sticky",top:"0"}}>
-                <tr>
-                    <th scope="col">Event</th>
-                    <th scope="col">File</th>
-                    <th scope="col">Created At</th>
-                    <th scope="col">Updated At</th>
-                    <th scope="col">Date</th>
-                </tr>
-                </thead>
-                <tbody>
-                {data && data.map((item) => (
-                    <tr
-                    onClick={() => {
-                        props.eventClick(item)
-
-                        setRow(item);
-                        setView("video");
-                    }}
-                    >
-                    <td>{item.species}</td>
-                    <td>
-                        <img src={item.file} alt="" height={80} width={80} />
-                    </td>
-                    <td
-                        style={{
-                        textAlign: "center",
-                        verticalAlign: "middle",
-                        }}
-                    >
-                        {item.created_at}
-                    </td>
-
-                    <td
-                        style={{
-                        textAlign: "center",
-                        verticalAlign: "middle",
-                        }}
-                    >
-                        {item.updated_at}
-                    </td>
-                    <td
-                        style={{
-                        textAlign: "center",
-                        verticalAlign: "middle",
-                        }}
-                    >
-                        {item.date}
-                    </td>
-                    </tr>
-                ))}
-                </tbody>
-        </table>
-    )
+  return (<center>
+    <h3 style={{background:"#2c3e50",color:"#f39c12",width: "95%",marginBottom:'0px'}}>Events</h3>
+    <div style={{overflow:'scroll',height:'48vh'}}>
+    <Table className='table table-hover px-0 mx-0' 
+    style={{ boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",overflowY: "scroll",width: "95%", }}>
+      
+      <TableBody>
+        {data && data.map((item,index) => (
+          <TableRow key={index+1} >
+            <TableCell onClick={() => {
+              props.eventClick(item);
+              setRow(item);
+              setView("video");
+            }}><LiveWeather data={item}/></TableCell>
+            
+           
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table></div></center>
+  );
 }

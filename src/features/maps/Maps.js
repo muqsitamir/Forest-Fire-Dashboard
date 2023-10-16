@@ -1,61 +1,73 @@
-import React, {useEffect} from "react";
-import {getCameraNodes, selectMaps} from "./mapsSlice";
-import {useDispatch, useSelector} from "react-redux";
-
+import React, { useEffect } from "react";
+import { getCameraNodes, selectMaps } from "./mapsSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { googleMapsApiKey } from "../../App";
 const google = window.google;
 
-export function Maps(){
-    const camera_nodes = useSelector(selectMaps);
-    const dispatch = useDispatch();
+export function Maps() {
+  const camera_nodes = useSelector(selectMaps);
+  const dispatch = useDispatch();
 
-     useEffect(() => {
-        dispatch(getCameraNodes());
-    }, [])
+  useEffect(() => {
+    dispatch(getCameraNodes());
 
-    const initMap = () => {
-        if(camera_nodes){
-            const map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 5,
-                center: {
-                    lng: 73.406149,
-                    lat: 34.067195
-                }
-            });
-            const markers = camera_nodes.map((camera)=>{
-                if (!camera.live)
-                    return null;
-                return new google.maps.Marker({
-                    position: { lat: camera.latitude, lng: camera.longitude },
-                    title: camera.description,
-                    map: map,
-                    // icon: {
-                    //     scaledSize: new google.maps.Size(10, 10),
-                    //     labelOrigin: new google.maps.Point(0, -20),
-                    //     backgroundColor: "#383838",
-                    //     origin: new google.maps.Point(0, 0),
-                    //     anchor: new google.maps.Point(0, -20),
-                    // }, // For map with pin
-                    // icon: '/images/transparent-1x1.png', // For map without pin
-                    label: {
-                        text: String(camera.id),
-                        color: 'black',
-                        fontSize: "10px"
-                    }
-                })
-            })
-        }
+    // Load Google Maps asynchronously
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}`;
+    script.async = true;
+    script.defer = true;
+    document.head.appendChild(script);
+
+    // Clean up the script on component unmount
+    return () => {
+      document.head.removeChild(script);
     };
+  }, []);
 
-    initMap();
+  useEffect(() => {
+    if (camera_nodes && window.google) {
+      initMap();
+    }
+  }, [camera_nodes]);
 
-    return (
-        <div id="map" style={{
-            height: "300px", width: '100%', display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-        }}>
-        </div>
-    );
+  const initMap = () => {
+    if (camera_nodes) {
+      const map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 5,
+        center: {
+          lng: 74.4098,
+          lat: 31.4707
+        }
+      });
+      camera_nodes.forEach((camera) => {
+        if (camera.live) {
+          new google.maps.Marker({
+            position: { lat: camera.latitude, lng: camera.longitude },
+            title: camera.description,
+            map: map,
+            label: {
+              text: String(camera.id),
+              color: "black",
+              fontSize: "10px"
+            },
+            icon: {
+              url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png",
+              labelOrigin: new google.maps.Point(12, 12)
+            }
+          });
+        }
+      });
+    }
+  };
+
+  return (
+    <div
+      id="map"
+      style={{
+        height: "inherit",
+        width: "100%",
+        marginBottom: "20px"
+      }}
+    ></div>
+  );
 }
-
-

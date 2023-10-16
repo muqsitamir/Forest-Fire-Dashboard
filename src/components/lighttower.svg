@@ -1,0 +1,18 @@
+<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Tower -->
+  <rect x="90" y="100" width="20" height="100" fill="#333" />
+  <rect x="80" y="90" width="40" height="10" fill="#666" />
+
+  <!-- Light beam -->
+  <rect x="88" y="40" width="24" height="50" fill="#FFD700">
+    <!-- Rotation animation -->
+    <animateTransform
+      attributeName="transform"
+      type="rotate"
+      from="0 100 100"
+      to="360 100 100"
+      dur="3s"
+      repeatCount="indefinite"
+    />
+  </rect>
+</svg>

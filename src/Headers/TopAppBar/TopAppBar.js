@@ -31,9 +31,6 @@ export default function TopAppBar(){
                 data-mdc-auto-init="MDCTopAppBar">
             <div className="mdc-top-app-bar__row contain-full-bleed links--muted ">
                 <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
-                    <button className="mdc-icon-button" onClick={handle_side_nav}>
-                        <MenuIcon sx={{ color: '#082344', marginTop: -2}} fontSize='medium'/>
-                    </button>
                     <Link to="/" className="mdc-top-app-bar__title">
                         <img width='120' src="https://lums.edu.pk/sites/default/files/inline-images/LUMS%20Logo.png" alt="Project Logo"/>
                     </Link>
@@ -56,6 +53,10 @@ export default function TopAppBar(){
                             <span className="mdc-button__ripple"/>
                             <span className="mdc-button__label">Admin</span>
                         </button>
+                        <Link className="db text-decoration-none" to="/logout" >
+                            <i className="material-icons-outlined v-mid mr2">lock</i>
+                            <span>Logout</span>
+                        </Link>
                     <button
                         className="menu-mobile material-icons mdc-theme--primary mdc-top-app-bar__navigation-icon mdc-icon-button dn-l js-trigger-mdc-drawer"
                         aria-label="Open navigation menu">menu
