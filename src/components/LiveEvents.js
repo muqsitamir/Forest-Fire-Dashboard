@@ -5,7 +5,7 @@ import {backend_url} from "../App";
 export default function LiveEvents(props) {
     const [row, setRow] = useState();
     const [view, setView] = useState("camera");
-
+    debugger
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -62,7 +62,7 @@ export default function LiveEvents(props) {
                         setView("video");
                     }}
                     >
-                    <td>{item.species}</td>
+                    <td>{item.species.name}</td>
                     <td>
                         <img src={item.file} alt="" height={80} width={80} />
                     </td>

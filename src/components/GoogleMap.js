@@ -71,6 +71,7 @@ function MapContainer() {
           .catch((err) => {
             setError(err.message);
             setData(null);
+            debugger
           })
           .finally(() => {
             setLoading(false);
