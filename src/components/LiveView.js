@@ -3,6 +3,10 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import "./live.css";
+import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome } from '@fortawesome/free-solid-svg-icons';
+
 import CameraFeed from './CameraFeed';
 import LiveEvents from './LiveEvents';
 import { useSelector } from "react-redux";
@@ -27,6 +31,8 @@ function LiveView() {
   const [eventItem, setEventItem] = useState({ exist: 0, item: "" });
   const [live, setLive] = useState(true);
   const [success, setSuccess] = useState(false);
+  const [ptzControl, setPtzControl] = useState({ pan: 0, tilt: 0, zoom: 0});
+  
   var timer = "";
 
   const [towers, setTowers] = useState(null);
@@ -84,31 +90,11 @@ function LiveView() {
   let HandleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // let nam = camera.cam.split(" ")[0]
-      let nam = "PTZ-" + camera.cam.replace(" ", "-");
-      console.log("nam is", nam);
-      let res = await fetch(`${backend_url}/core/api/camera/ptzControls/`, {
-        method: "POST",
-        body: JSON.stringify({
-          pan: pan,
-          tilt: tilt,
-          zoom: zoom,
-          camera: nam,
-        }),
-        headers: {
-          'Content-type': 'application/json;',
-          'Authorization': `Token ${localStorage.getItem("token")}`,
-        },
-      });
-      let resJson = await res.json();
-      if (res.status === 200) {
-        setSuccess(true);
-        setZoom(0);
-        setTilt(0);
-        setPan(0);
-      } else {
-        console.log(resJson.error);
-      }
+     
+      setPtzControl({ pan: pan, tilt: tilt, zoom: zoom});
+          
+  
+     
     } catch (err) {
       console.log(err);
     }
@@ -120,8 +106,13 @@ function LiveView() {
         <div className="main-wrapper">
           {side_nav}
           <div className='row navbar bg-dark'>
+          <div>
+                <Link to="/" className="mdc-top-app-bar__title">
+                <FontAwesomeIcon icon={faHome} />Home
+                    </Link></div>
             <div className='col-md-4'>
               <div className='row mx-0 px-0'>
+              
                 <div className='col-md-4 lead text-light'>Tower Panel</div>
                 <div className='col-md-8'>
                   <Dropdown>
@@ -169,7 +160,7 @@ function LiveView() {
               </ul>
             </div>
           </div>
-          <div className='row' style={{ height: "60%" }}>
+          <div className='row' style={{ height: "50%" }}>
             <div className='col-md-4 d-flex justify-content-center'>
               <div className=' row mx-2 px-2 d-flex justify-content-center' style={{ backgroundColor: "white" }}>
                 <form className='' onSubmit={HandleSubmit}>
@@ -188,16 +179,17 @@ function LiveView() {
                       <input type="range" className="form-range" id="customRange3" value={tilt} onChange={(e) => setTilt(e.target.value)} min="0" max="90" step="1" />
                     </div>
                     <br></br>
+                   
                     <div className="py-2">
-                      <button className="btn btn-primary" type="submit">Confirm</button>
+                     <button className="btn btn-primary" type="submit">Confirm</button>
                     </div>
                   </div>
                 </form>
               </div>
             </div>
-            <div className='col-md-8' style={{ backgroundColor: '#eeee' }}>
-              <div className='mb-3 d-flex justify-content-center' style={{height:'400px'}}>
-                {view === "camera" ? <CameraFeed cameraId={camera} view={view} live={live} /> :
+            <div className='col-md-8' style={{ backgroundColor: '#eeee',    paddingBottom: "20px"}}>
+              <div className='mb-3 d-flex justify-content-center' style={{height:'50%',width:"100%"}}>
+                {view === "camera" ? <CameraFeed cameraId={camera} view={view} live={live} ptzControl={ptzControl} /> :
                   <MiniMap camId={id} />
                 }
               </div>
@@ -205,7 +197,7 @@ function LiveView() {
           </div>
           <div className='row'>
             <div className='col-md-4 px-4 py-2 d-flex justify-content-center' style={{ backgroundColor: '#fffff' }}>
-              {view === "map" ? <CameraFeed cameraId={camera} view={view} live={live} /> :
+              {view === "map" ? <CameraFeed cameraId={camera} view={view} live={live}  ptzControl={ptzControl}/> :
                 <MiniMap camId={id}/>
               }
             </div>

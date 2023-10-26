@@ -370,7 +370,7 @@ export function EventsTable() {
           <Grid container spacing={2} style={{ justifyContent: "center" }}>
           {events.slice(state.page * state.rowsPerPage, state.page * state.rowsPerPage + state.rowsPerPage).map((event) => {
        return (
-        <div className="card rounded my-3 shadow-lg back-card" style={{width:"275px",margin:'10px',height: '460px'}}>
+        <div className="card rounded my-3 shadow-lg back-card" style={{width:"275px",margin:'10px',height:"fit-content",maxHeight: '460px'}}>
         <Typography variant="subtitle2" gutterBottom component="div" marginTop={1} marginLeft={2} style={{display: 'inline-flex',
     marginLeft: '0px',
     justifyContent: 'center',alignItems:'flex-start'}}>
