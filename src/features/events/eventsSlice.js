@@ -23,6 +23,7 @@ export const eventsSlice = createSlice({
       state.events.results = action.payload.filterApplied ? action.payload.results : state.events.results.concat(action.payload.results);
     },
     resetEvents: (state) => {
+      debugger
       state.events = {
         count: 0,
         next: null,
@@ -42,6 +43,7 @@ export const getEvents =
     let config = {
       headers: Header,
     };
+    debugger
     const filters = selectFilters(getState());
     let result = convert_to_request_parameters(filters.range, filters.startTime, filters.endTime);
     let cameras_selected = filters.cameras.join(",");

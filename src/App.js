@@ -18,8 +18,9 @@ import OnlyPublicRoute from "./Authentication/OnlyPublicRoute";
 import GoogleMap from "./components/GoogleMap";
 import LiveView from "./components/LiveView";
 
-export const backend_url = 'https://api.forestwatch.org.pk'
-
+//export const backend_url = 'http://127.0.0.1:8000';
+export const backend_url = 'https://api.forestwatch.org.pk';
+export const googleMapsApiKey='AIzaSyBup6K7zk3Hp7u53HmAVCMwqeEfFCEf70Q';
 
 export default function App () {
         return (
@@ -37,7 +38,7 @@ export default function App () {
                 {/*    <Route exact path='/register' render={(props) => <Register {...props}/>}/>*/}
                 {/*    <Route path='/new-password/:token' render={(props) => <NewPassword {...props}/>}/>*/}
                 {/*    <Route exact path='/resend/new-password' render={(props) => <ResendPassword {...props}/>}/>*/}
-                <Route path='/not-found' component={NotFound}/>
+                <Route path='/not-found' Component={NotFound}/>
                 <Redirect to='/not-found'/>
                 </Switch>
                 <MessageSnackbar/>

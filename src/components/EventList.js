@@ -12,6 +12,7 @@ function EventList({eventClick}) {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    
     const Header = {};
     Header['Authorization'] = `Token ${localStorage.getItem("token")}`;
     let config = {
@@ -51,14 +52,14 @@ function EventList({eventClick}) {
     
     return (
         <>
-        <div>
+        <div style={{height:"35vh" ,paddingRight:'0px'}}>
      <main className="d-flex flex-nowrap">
   <div className="flex-shrink-0 p-1 w-100 bg-white">
-    <a href="/" className="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
-      <span className="fs-6 fw-semibold">Events</span>
+    <a href="/" className="d-flex align-items-center  mb-3 link-dark text-decoration-none border-bottom"  style={{background:'#2c3e50' ,paddingLeft:'5px'}}>
+      <span className="fs-6 fw-semibold" style={{color:'#f39c12'}}>Events</span>
     </a>
     <div className='px-0 mx-0'> 
-        <table className='table table-hover px-0 mx-0' style={{overflowY: "scroll",height: "16em",display: "block", fontSize:"12px"}}>
+        <table className='table table-hover px-0 mx-0' style={{overflowY: "scroll",height:'20em',display: "block", fontSize:"12px"}}>
                 <thead style={{position: "sticky",top:"0"}} >
                 <tr>
                     <th scope="col">Event</th>
@@ -67,8 +68,8 @@ function EventList({eventClick}) {
                 </tr>
                 </thead>
                 <tbody>
-                {data && data.map((item) => (
-                      <tr
+                {data && data.map((item,index) => (
+                      <tr key={index}
                         onClick={() => {
                             
                             eventClick(item)
@@ -83,9 +84,9 @@ function EventList({eventClick}) {
                             verticalAlign: "middle",
                             }}
                         >
-                        <a href={`/live/event ${item.camera} ${item.file.replaceAll('/','(')}`} target={"framename"} style={{textDecoration:"none", color:"white"}}>
-                            <img src={item.file} style = {{width: "100%"}} />
-                        </a>
+                       <a href={`/live/${item.camera}`} target="framename" style={{ textDecoration: "none", color: "white" }}>
+  <img src={item.file} style={{ width: "100%" }} />
+</a>
                         </td>
                       <td
                           style={{

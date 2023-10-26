@@ -1,0 +1,60 @@
+.light-beam {
+  position: absolute;
+  width: 2px;
+  height: 180px; /* Adjust the length of the light beam as needed */
+  background-color: yellow;
+  transform-origin: top;
+  fill:"url(#torchGradient)";
+animation: flickerLightBeam 2s infinite alternate, rotateLightBeam 8s infinite ease-in-out;
+}
+
+@keyframes flickerLightBeam {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.light-beam.paused {
+  animation-play-state: paused;
+}
+@keyframes rotateLightBeam {
+  0% {
+    transform: rotate(30deg);
+  }
+  10% {
+    transform: rotate(60deg);
+  }
+  20% {
+    transform: rotate(90deg);
+  }
+  30% {
+    transform: rotate(120deg);
+  }
+  40% {
+    transform: rotate(150deg);
+  }
+  50% {
+    transform: rotate(180deg);
+  }
+  60% {
+    transform: rotate(210deg);
+  }
+  70% {
+    transform: rotate(240deg);
+  }
+  80% {
+    transform: rotate(270deg);
+  }
+  90% {
+    transform: rotate(300deg);
+  }
+  95% {
+    transform: rotate(330deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

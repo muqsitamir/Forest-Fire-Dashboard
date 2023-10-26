@@ -17,11 +17,12 @@ export const pieChartSlice = createSlice({
   reducers: {
       setPieChart: (state, action) => {
           state.pie_chart = {
-            labels: action.payload.labels,
+            labels: ['Fire','Smoke'],
             datasets: [
                 {
                     data: action.payload.data,
-                    backgroundColor: action.payload.colors,
+                    backgroundColor: ['rgb(255, 187, 51)',
+                                      'rgb(179, 179, 203)'],
                     borderWidth: 1,
                 },
             ]

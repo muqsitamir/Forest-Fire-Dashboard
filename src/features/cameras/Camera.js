@@ -6,10 +6,18 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 
 
-
 export default function Camera(props){
     let content = props.content;
     let live = content.live ? "success" : "disabled";
+    let createDate= new Date(content.created_at).toUTCString();
+    let lastUpdateDate=new Date(content.last_reported_at).toUTCString();
+    let sunrise=new Date(content.sunrise).toUTCString();
+    let sunset=new Date(content.sunset).toUTCString();
+    let img=content.live_image;
+    if(img.includes('http://127.0.0.1:8000')){
+
+    img= img.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
+    }
     return(
         <Box
           sx={{
@@ -25,7 +33,7 @@ export default function Camera(props){
             },
           }}
         >
-          <Paper elevation={4} sx={{overflow: 'auto'}} >
+          <Paper elevation={4} sx={{overflow: 'auto'}} style={{height:'615px'}}>
                 <div style={{position:"relative"}}>
                     <FiberManualRecordIcon color={live} sx={{position: 'absolute', top:10, right:10, bottom:0 }} />
                 </div>
@@ -34,8 +42,10 @@ export default function Camera(props){
                 </Typography>
                 <CardMedia
                 component="img"
-                height="194"
-                image={require('../../images/placeholder.jpg')}
+                style={{width:'100%',
+                height:'fit-content'}}
+                
+                image={img}
                 alt="Camera Image"
                 />
                 <div>
@@ -44,7 +54,7 @@ export default function Camera(props){
                             Created:
                           </Typography>
                         <Typography variant="body2" gutterBottom component="span" sx={{marginLeft: 1}}>
-                            {content.created_at}
+                            {createDate}
                         </Typography>
                     </div>
                     <div className='camera-info' >
@@ -52,7 +62,7 @@ export default function Camera(props){
                             Last Report:
                         </Typography>
                         <Typography variant="body2" gutterBottom component="span" sx={{marginLeft: 1}}>
-                            {content.last_reported_at}
+                            {lastUpdateDate}
                         </Typography>
                     </div>
                     <div className='camera-info' >
@@ -97,7 +107,7 @@ export default function Camera(props){
                                 Sunrise:
                             </Typography>
                             <Typography variant="body2" gutterBottom component="span" sx={{marginLeft: 1}}>
-                                {content.sunrise}
+                                {sunrise}
                             </Typography>
                         </div>
                         <div className='camera-sub-info'>
@@ -105,7 +115,7 @@ export default function Camera(props){
                                 Sunset:
                             </Typography>
                             <Typography variant="body2" gutterBottom component="span" sx={{marginLeft: 1}}>
-                                {content.sunset}
+                                {sunset}
                             </Typography>
                         </div>
                     </div>

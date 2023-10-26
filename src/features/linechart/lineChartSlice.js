@@ -11,14 +11,21 @@ export const lineChartSlice = createSlice({
           labels: [],
           datasets: [
 
-          ]
+          ],
       }
   },
   reducers: {
       setLineChart: (state, action) => {
           state.line_chart = {
             labels: action.payload.labels,
-            datasets: action.payload.datasets
+            datasets: action.payload.datasets.map(dataset => ({
+                ...dataset,
+                backgroundColor: ['rgb(255, 187, 51)',
+                'rgb(179, 179, 203)'], 
+                // Modify the backgroundColor property here
+                borderColor: ['rgb(255, 187, 51)',
+                'rgb(179, 179, 203)'],
+              })),
           }
       },
   },

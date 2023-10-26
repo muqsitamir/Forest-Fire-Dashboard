@@ -13,7 +13,8 @@ export const cameraSlice = createSlice({
           "count": 0,
           "next": null,
           "previous": null,
-          "results": []
+          "results": [],
+          "img":null
       },
   },
   reducers: {
@@ -22,9 +23,20 @@ export const cameraSlice = createSlice({
           state.cameras.next = action.payload.next;
           state.cameras.previous = action.payload.previous;
           state.cameras.results = action.payload.results;
+          state.cameras.img=action.payload.results.map(camera => ({
+            ...camera,
+            lastRecordedImage: null,
+          }));
+        },
+        setLastRecordedImage: (state, action) => {
+          const { cameraId, imageUrl } = action.payload;
+          const cameraIndex = state.cameras.results.findIndex(camera => camera.id === cameraId);
+          if (cameraIndex !== -1) {
+            state.cameras.results[cameraIndex].lastRecordedImage = imageUrl;
+          }
+        },
       },
-  },
-})
+    });
 
 const Header = {};
 export const getCameras = () => (dispatch, getState) => {
@@ -35,6 +47,32 @@ export const getCameras = () => (dispatch, getState) => {
     };
     axios.get(`${backend_url}/core/api/camera/`, config).then((res) => {
         dispatch(setCameras(res.data));
+        res.data.results.forEach(camera => {
+            // Fetch the latest image for each camera
+            console.log("camera id: "+camera.id)
+            fetch(`${backend_url}/core/api/event/?cameras=${camera.id}`, config)
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error(
+                      `This is an HTTP error: The status is ${response.status}`
+                    );
+                  }
+                  return response.json();
+              }).then((actualData) => {
+               
+                   console.log("actualData here: "+actualData)
+                  const latestImage = actualData.results[0].thumbnail;
+                  console.log("latestImage here: "+latestImage)
+                  dispatch(setLastRecordedImage({ cameraId: camera.id, imageUrl: latestImage}));
+                
+              })
+              .catch((err) => {
+                // Handle error if image fetch fails
+                console.log(err);
+              });
+          });
+
+
     }).catch((err) => {
         dispatch(setSnackBar(err.response.data.non_field_errors[0]));
     }).finally(() => {
@@ -44,7 +82,7 @@ export const getCameras = () => (dispatch, getState) => {
 
 
 // Action creators are generated for each case reducer function
-export const { setCameras } = cameraSlice.actions
+export const { setCameras, setLastRecordedImage} = cameraSlice.actions
 export const selectCameras = (state) => state.cameras.cameras;
 export default cameraSlice.reducer
 
