@@ -43,6 +43,7 @@ import { selectFilters, setFilterApplied, resetFilters } from "../filters/filter
 import { selectOrganization } from "../organization/organizationSlice";
 import WeatherCard from './WeatherCard';
 import WeatherGrid from './WeatherGrid';
+
 export function EventsTable() {
   const [state, setState] = useState({ page: 0, rowsPerPage: 10 });
   const [selected, setSelected] = useState([]);
@@ -60,6 +61,8 @@ export function EventsTable() {
   const { results: events, count } = useSelector(selectEvents);
   const filters = useSelector(selectFilters);
   const dispatch = useDispatch();
+  const isFirstRun = useRef(true);
+
 
   const status = (tab) => {
     switch (tab) {
@@ -73,13 +76,19 @@ export function EventsTable() {
         return "NONE";
     }
   };
-
+  debugger
   const { page, rowsPerPage } = state;
-
+  debugger
   useEffect(() => {
+    if (isFirstRun.current) {
+      isFirstRun.current = false;
+      return;
+    }
     setSelected([]);
     dispatch(resetEvents());
+    debugger
     showChanges(true);
+    debugger
   }, [rowsPerPage]);
 
   useEffect(() => {
@@ -91,6 +100,7 @@ export function EventsTable() {
       justRan.current = false;
       return;
     }
+    debugger
     dispatch(getEvents(state.page + 1, filters.filterApplied, status(tab), rowsPerPage));
     justRan.current = true;
     let check = filters.filterApplied ? false : filters.filterApplied;
@@ -123,15 +133,18 @@ export function EventsTable() {
       }
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
+    debugger
     dispatch(getEvents(state.page + 1, filters.filterApplied, status(tab), rowsPerPage));
   };
 
   const reloadEvents = (pageSize = 10) => {
     justRan.current = false;
     setState({ page: 0, rowsPerPage: pageSize });
+    debugger;
     setSelected([]);
     dispatch(resetEvents());
     showChanges(true);
+    debugger
   };
 
   const handleChangePage = (event, newPage) => {
@@ -142,6 +155,7 @@ export function EventsTable() {
 
   const handleChangeRowsPerPage = (event) => {
     setState({ page: 0, rowsPerPage: parseInt(event.target.value, 10) });
+    debugger
   };
 
   const handleArchive = () => {
@@ -191,16 +205,18 @@ export function EventsTable() {
   const changeUrl=(img)=>{
     img= img.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
     return img;
-  
+    debugger
   }
-    const changeName=(name)=>{
-      let nameC
-      if(name.includes('PTZ')){
-        nameC=name.split('-');
-        name=nameC[1];
-      }
-      return name;
+
+  const changeName=(name)=>{
+    let nameC
+    if(name.includes('PTZ')){
+      nameC=name.split('-');
+      name=nameC[1];
     }
+    return name;
+    debugger
+  }
     
   return (
     <Paper className="mb4">
@@ -372,8 +388,8 @@ export function EventsTable() {
        return (
         <div className="card rounded my-3 shadow-lg back-card" style={{width:"275px",margin:'10px',height: '460px'}}>
         <Typography variant="subtitle2" gutterBottom component="div" marginTop={1} marginLeft={2} style={{display: 'inline-flex',
-    marginLeft: '0px',
-    justifyContent: 'center',alignItems:'flex-start'}}>
+        marginLeft: '0px',
+        justifyContent: 'center',alignItems:'flex-start'}}>
         {selectMode ? (
               <Checkbox sx={{marginBottom: '-6px', color: "black",padding:'0px'}}
                 checked={selected.includes(event.uuid)}
@@ -391,7 +407,7 @@ export function EventsTable() {
         
          </div>
         
-  <WeatherGrid data={event}  />
+      <WeatherGrid data={event}  />
 
          </div>) 
         })}

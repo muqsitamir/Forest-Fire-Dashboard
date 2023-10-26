@@ -23,6 +23,7 @@ export const eventsSlice = createSlice({
       state.events.results = action.payload.filterApplied ? action.payload.results : state.events.results.concat(action.payload.results);
     },
     resetEvents: (state) => {
+      debugger
       state.events = {
         count: 0,
         next: null,
@@ -35,13 +36,14 @@ export const eventsSlice = createSlice({
 
 const Header = {};
 export const getEvents =
-  (page, filterApplied, status = null, rowsPerPage = 20) =>
+  (page, filterApplied, status = null, rowsPerPage = 10) =>
   (dispatch, getState) => {
     dispatch(showLoadingScreen(true));
     Header["Authorization"] = `Token ${localStorage.getItem("token")}`;
     let config = {
       headers: Header,
     };
+    debugger
     const filters = selectFilters(getState());
     let result = convert_to_request_parameters(filters.range, filters.startTime, filters.endTime);
     let cameras_selected = filters.cameras.join(",");
