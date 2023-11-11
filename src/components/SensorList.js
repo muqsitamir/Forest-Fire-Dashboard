@@ -3,8 +3,8 @@ import { AiOutlineCamera } from 'react-icons/ai';
 import { CiTempHigh } from 'react-icons/ci';
 import { WiHumidity } from 'react-icons/wi';
 import ListGroup from 'react-bootstrap/ListGroup';
+import { Tooltip } from "@mui/material";
 import {useState, useEffect} from 'react';
-
 import './SensorList.css'
 import {backend_url} from "../App";
 
@@ -74,8 +74,10 @@ function SensorList({sensorSelect}) {
                                     <li key={ind2} onClick={() => sensorSelect(i2)}>  
                                     <a  className="link-dark d-inline-flex text-decoration-none rounded">
                                     <AiOutlineCamera />&nbsp;&nbsp;{i2.description}
-                                    </a>
-                                    </li>
+                                    </a> <Tooltip title="Live View" placement="top"><button style={{border:'none',borderRadius:'10px'}} onClick={()=>{window.location.href=`/live/${i2.id}`;}}>
+                                      <img src={require("../images/live.gif")} style={{width:'15px',height: '15px', marginBottom: '3px'}} /> </button>              
+                                   </Tooltip> </li>
+                                   
                         )})
                                 }
                                 {

@@ -1,12 +1,10 @@
-import React, {useEffect} from 'react';
+import React, {useEffect,useState} from 'react';
 import { Grid } from '@mui/material';
 import Camera from "../features/cameras/Camera";
 import {useDispatch, useSelector} from "react-redux";
 import {getCameras, selectCameras} from "../features/cameras/cameraSlice";
-import {selectSiteData} from "../reusable_components/site_data/siteDataSlice";
-import SideNav from "../Headers/SideNav/SideNav";
-
-
+import CameraMap from './CameraMap';
+import { backend_url } from '../App';  
 
 export default function Cameras() {
    
@@ -14,7 +12,19 @@ export default function Cameras() {
     useEffect(() => {
         dispatch(getCameras())
     }, []);
-    const {results: cameras} = useSelector(selectCameras);
+    const { results: cameras } = useSelector(selectCameras);
+    
+   let location={ lat: 34.534508, lng: 73.003801 }
+    const [center, setCenter] = useState({
+     center:location,
+      zoom: 5      
+    }); 
+    const updateMapCenter = (lat, lng) => {
+      let location={ lat: lat, lng: lng } 
+      setCenter({ center:location, zoom: 12 });
+    };
+    //const cameraCount = cameras.length;
+   
     return(
         <div className="page">
             <div className="page__content">
@@ -24,18 +34,25 @@ export default function Cameras() {
                 <h2 className="header__title">Cameras</h2>
               </div>
             </header>
-                    
-                    <div className='grid-div-mobile grid-div' style={{marginTop:'20px'}}>
-                        <Grid container justify="center" spacing={2} >
+            <Grid style={{display:'flex',justifyContent:'center'}}>
+            <Grid container justify="center" spacing={2} style={{display:"contents"}} >
                             {cameras.map((camera) => (
                                 
-                                <Camera key={camera.id} content={camera} />
+                                <Camera  content={camera}
+                                latestEvent={camera.live_image ? `${camera.live_image}` : 'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image-300x225.png'}
+                                updateMapCenter={updateMapCenter} />
                             ))}
-                        </Grid>
-                       
+                            <div style={{width:'500px',height:'270px',marginTop: '10px',marginLeft:'12px'}}>
+                    
+                    <CameraMap camera={cameras} defaultCenter={center}/> {/* Include the GoogleMap component here */}
                     </div>
-                </div>
-            </div>
+                        </Grid>
+           
+            </Grid>
+    </div>
+          
         </div>
-    );
+      </div>
+  
+  );
 }

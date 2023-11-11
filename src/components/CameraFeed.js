@@ -4,7 +4,7 @@ import { backend_url } from "../App";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSync, faPlay, faStop } from '@fortawesome/free-solid-svg-icons';
 
-export default function CameraFeed({ cameraId, view, live,ptzControl }) {
+export default function CameraFeed({ cameraId, view, live}) {
   const [picture, setPicture] = useState({ pic: "", rnd: 0 });
   const [loading, setLoading] = useState(true);
   const [videoSrc, setVideoSrc] = useState("http://203.135.63.37:8003/ipcam/");
@@ -62,6 +62,9 @@ setLive(true);
         live = 0;
       } else {
         url = `${backend_url}/core/api/camera/` + cameraId.id;
+        if(cameraId.id===3){
+          setLive(true)
+        }
       }
       console.log(url);
 
@@ -121,7 +124,7 @@ setLive(true);
           paddingTop: view === 'map' ? '20px' : '10px', 
         }}
       >
-       {(cameraId.id === 4 ||cameraId.id===3) && !loading && livefeed ? (
+       { !loading && livefeed ? (
         
         <div className='d-flex'
             style={{
@@ -151,7 +154,7 @@ setLive(true);
             </button></div> 
             
             <iframe ref={iframeRef} src={videoSrc} 
-            style={{transform: `scale(${1 + (ptzControl.zoom / 100)}) rotateX(${ptzControl.tilt}deg) rotateY(${ptzControl.pan}deg)`,
+            style={{
                  height: "400px", 
                  width: "800px" ,
                  maxWidth: view === 'map' ? '400px' : '800px'
@@ -164,10 +167,9 @@ setLive(true);
           background:"rgb(44, 62, 80)",
           color:"rgb(243, 156, 18)",
           marginBottom:"20px",borderRadius: "5px"}}> <FontAwesomeIcon icon={faPlay} />Live View</button>)}
-          <a href={link} target="_blank"><img
-            style={{ display: loading ? 'none' : 'block',height: "400px", width: "1000px",
-            transform: `scale(${1 + (ptzControl.zoom / 100)}) rotateX(${ptzControl.tilt}deg) rotateY(${ptzControl.pan}deg)`,
-          }}
+          <a href={link} target="_blank">
+            <img
+            style={{ display: loading ? 'none' : 'block',height: "400px", width: "1000px"}}
             src={picture.pic}
             alt='camera feed'
             className='w-100'

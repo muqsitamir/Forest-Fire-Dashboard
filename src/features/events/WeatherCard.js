@@ -69,12 +69,12 @@ function WeatherCard(props){
                         <img src={img}  alt='' style={{width:'150px',height:'150px'}}/>
                       </a>
 
-                      <div>Weathet data not available... </div>
-                      <div>
-              {sms_sent ?<Chip label="SMS Sent" avatar={<Avatar src={smsIconUrl} style={{borderRadius:"0px",width:"20px",height:"20px"}}/>}/>:
-            <Chip label="SMS Not-Sent" avatar={<Avatar src={notsmsIconUrl}  style={{borderRadius:"0px" ,width:"20px",height:"20px" }}/>}/>}
+                      <div>Weather data not available... </div>
+                      <div style={{display:'flex',flexDirection:'column'}}>
+              {sms_sent ?<Chip label="SMS Sent" avatar={<Avatar src={smsIconUrl} style={{borderRadius:"0px",width:"20px",height:"20px"}}/>} style={{marginBottom:'10px'}}/>:
+            <Chip label="SMS Not-Sent" avatar={<Avatar src={notsmsIconUrl}  style={{borderRadius:"0px" ,width:"20px",height:"20px" }}/>} style={{marginBottom:'10px'}}/>}
             {species.map((item) => (
-                     <Chip label={item.name}
+                     <Chip label={item.name} style={{marginBottom:'10px'}}
                      avatar={item.name==='smoke'?
                      <Avatar src={smoke} style={{borderRadius:"0px",width:"20px",height:"20px"}} />
                     :<Avatar src={fireIconUrl} style={{borderRadius:"0px",width:"20px",height:"20px"}}/>}/>
