@@ -18,7 +18,7 @@ import OnlyPublicRoute from "./Authentication/OnlyPublicRoute";
 import GoogleMap from "./components/GoogleMap";
 import LiveView from "./components/LiveView";
 
-//export const backend_url = 'http://127.0.0.1:8000';
+// export const backend_url = 'http://127.0.0.1:8001';
 export const backend_url = 'https://api.forestwatch.org.pk';
 export const googleMapsApiKey='AIzaSyBup6K7zk3Hp7u53HmAVCMwqeEfFCEf70Q';
 
