@@ -62,23 +62,26 @@ function WeatherCard(props){
         
         <div className="booked-weather-custom-160-main">
             <a target="_blank"  className="booked-weather-custom-160-city"> {name} </a>
-            <div style={{marginRight:'12px',display: 'flex',marginTop:'5px'}}>
-            <div className="booked-weather-custom-160-date">{date}</div> 
+            <div className="booked-weather-custom-160-date" style={{color:"black"}}>{date}</div>
+            <div style={{marginRight:'12px',marginLeft:"12px",display: 'flex',marginTop:'5px',alignItems:" center",justifyContent: "space-between"}}>
+             
             <a target="_blank" href={file} rel='noreferrer'>
                         <img src={img}  alt='' style={{width:'150px',height:'150px'}}/>
                       </a>
-                      <div>
-              {sms_sent ?<Chip label="SMS Sent" avatar={<Avatar src={smsIconUrl} style={{borderRadius:"0px",width:"20px",height:"20px"}}/>}/>:
-            <Chip label="SMS Not-Sent" avatar={<Avatar src={notsmsIconUrl}  style={{borderRadius:"0px" ,width:"20px",height:"20px" }}/>}/>}
+
+                      <div>Weather data not available... </div>
+                      <div style={{display:'flex',flexDirection:'column'}}>
+              {sms_sent ?<Chip label="SMS Sent" avatar={<Avatar src={smsIconUrl} style={{borderRadius:"0px",width:"20px",height:"20px"}}/>} style={{marginBottom:'10px'}}/>:
+            <Chip label="SMS Not-Sent" avatar={<Avatar src={notsmsIconUrl}  style={{borderRadius:"0px" ,width:"20px",height:"20px" }}/>} style={{marginBottom:'10px'}}/>}
             {species.map((item) => (
-                     <Chip label={item.name}
+                     <Chip label={item.name} style={{marginBottom:'10px'}}
                      avatar={item.name==='smoke'?
                      <Avatar src={smoke} style={{borderRadius:"0px",width:"20px",height:"20px"}} />
                     :<Avatar src={fireIconUrl} style={{borderRadius:"0px",width:"20px",height:"20px"}}/>}/>
                           
                         ))}
             </div></div>
-            <div>Weathet data not available... </div>
+           
 
         </div>
        </div>

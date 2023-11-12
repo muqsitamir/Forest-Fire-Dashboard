@@ -59,7 +59,8 @@ function WeatherGrid(props){
     if (!weather_data || weather_data.length === 0) {
         // Handle the case when weather_data is empty or undefined
         return (
-            <div>Weathet data not available... </div>);
+          <div className="card-body" style={{display: 'flex',flexDirection: 'column',alignItems: 'center',justifyContent: 'center'}}>
+          <span style={{fontSize:'12px'}}>{date}</span>Weathet data not available... </div>);
       }else{
         return (
           
