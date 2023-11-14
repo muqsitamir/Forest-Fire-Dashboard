@@ -114,7 +114,7 @@ function WeatherCard(props){
                       <p>{date}</p>
                   <div className="booked-weather-custom-160-degree booked-weather-custom-Cwmd03" style={{width:'60%'}}  >
                  
-                      <img src={`http://openweathermap.org/img/wn/${icon}@2x.png`} style={{width:'40px'}} />
+                      <img src={`https://openweathermap.org/img/wn/${icon}@2x.png`} style={{width:'40px'}} />
                       <p style={{color:'#2c3e50',fontSize:'14px',paddingLeft:'10px'}}>{description}</p>
                  </div>
                  <div className="booked-weather-custom-details" > 
