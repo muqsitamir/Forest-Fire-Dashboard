@@ -73,7 +73,7 @@ class Login extends Form {
 
                             {/* */}
                             <div className="mb4 mt3">
-                            <img className="w-20 h-20" src={require("../images/LUMS.png")} alt="" style={{width:'35%', marginBottom: '10px'}}/><h4>Sign in to your account</h4>
+                            <img className="w-20 h-20" src={require("../images/firelogo.jpeg")} alt="" style={{width:'55%', marginBottom: '10px'}}/><h4>Sign in to your account</h4>
                             </div>
                             {/* */}
                             <div className="mb4">

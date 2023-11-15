@@ -32,7 +32,7 @@ export default function TopAppBar(){
             <div className="mdc-top-app-bar__row contain-full-bleed links--muted ">
                 <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
                     <Link to="/" className="mdc-top-app-bar__title">
-                        <img width='120' src="https://lums.edu.pk/sites/default/files/inline-images/LUMS%20Logo.png" alt="Project Logo"/>
+                        <img width='160' src={require("../../images/firelogo.jpeg")} alt="Project Logo"/>
                     </Link>
                 </section>
                 <section className="mdc-top-app-bar__section app-shop mdc-top-app-bar__section--align-end mr4"
