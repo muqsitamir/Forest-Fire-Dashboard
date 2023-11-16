@@ -60,7 +60,7 @@ function WeatherGrid(props){
         // Handle the case when weather_data is empty or undefined
         return (
           <div className="card-body" style={{display: 'flex',flexDirection: 'column',alignItems: 'center',justifyContent: 'center'}}>
-          <span style={{fontSize:'12px'}}>{date}</span>Weathet data not available... </div>);
+          <span style={{fontSize:'12px'}}>{date}</span>Weather data not available... </div>);
       }else{
         return (
           
@@ -69,7 +69,7 @@ function WeatherGrid(props){
           <span style={{fontSize:'12px'}}>{date}</span>
           <div style={{display:'flex',alignItems:'center',flexDirection: 'column',justifyContent: 'flex-start'}}>
             <div >
-            <img src={`http://openweathermap.org/img/wn/${icon}@2x.png`}  alt="" style={{width:'60px'}}/>
+            <img src={`https://openweathermap.org/img/wn/${icon}@2x.png`}  alt="" style={{width:'60px'}}/>
               <span style={{fontSize:'14px'}}>{description} </span>
             </div>
             
