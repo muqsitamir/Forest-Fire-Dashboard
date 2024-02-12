@@ -42,7 +42,7 @@ export default function Cameras() {
                                 latestEvent={camera.live_image ? `${camera.live_image}` : 'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image-300x225.png'}
                                 updateMapCenter={updateMapCenter} />
                             ))}
-                            <div style={{width:'500px',height:'270px',marginTop: '10px',marginLeft:'12px'}}>
+                            <div style={{width:'500px',height:'300px',marginTop: '17px',marginLeft:'12px'}}>
                     
                     <CameraMap camera={cameras} defaultCenter={center}/> {/* Include the GoogleMap component here */}
                     </div>

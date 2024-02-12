@@ -19,7 +19,7 @@ let location='Lat:'+content.latitude+' ,Lng:'+content.longitude;
     // Add 5 hours
     date.setHours(hours + 5);
     // Format the updated date and time
-    const updatedDate = date.toISOString().slice(0, 19).replace("T", " ");
+    const updatedDate = date.toISOString().slice(0, 16).replace("T", " ");
     
    // console.log("Original Date:", dateString);
     //console.log("Updated Date:", updatedDate);
@@ -82,7 +82,9 @@ let location='Lat:'+content.latitude+' ,Lng:'+content.longitude;
     }}
   />
 )} </div>
-                
+                <Typography  style={{borderTop:'groove',borderBottom:'groove',display:'flex',justifyContent:'center',marginTop:'5px'}}>
+          <span  style={{fontSize:'12px'}}>Last Reported Event: {getDate(content.last_reported_at)}</span>
+        </Typography> 
                
                 <div style={{display: 'flex',alignItems: 'center', justifyContent: 'space-around',margin:'5px'}}>
                 <Tooltip title={location} placement="top">

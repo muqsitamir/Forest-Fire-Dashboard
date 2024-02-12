@@ -406,4 +406,7 @@ body {
   .btn-toggle.btn-secondary.active {
     background-color: #ff8300;
   }
-  
+  .game{
+    border: none;
+    background: white;
+  }
