@@ -1,3 +1,6 @@
 body {
     overflow-y: auto;
 }
+#gifImage.paused {
+    animation-play-state: paused;
+  }
