@@ -85,8 +85,8 @@ function EventList({eventClick}) {
                             }}
                         >
                        <a href={`/live/${item.camera}`} target="framename" style={{ textDecoration: "none", color: "white" }}>
-  <img src={item.file} style={{ width: "100%" }} />
-</a>
+                         <img src={item.file} style={{ width: "100%" }} />
+                       </a>
                         </td>
                       <td
                           style={{

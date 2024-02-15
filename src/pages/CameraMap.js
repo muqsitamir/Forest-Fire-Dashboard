@@ -13,7 +13,7 @@ export default function CameraMap({camera,defaultCenter}) {
      
     const [selected, setSelected] = useState(null) 
     const mapStyles = {        
-        height: "263px",
+        height: "285px",
         width: "480px",
         borderRadius:'15px'
       };

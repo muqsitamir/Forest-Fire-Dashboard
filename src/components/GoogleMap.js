@@ -11,7 +11,12 @@ import SensorList from './SensorList';
 import EventList from './EventList';
 import { selectSiteData } from "../reusable_components/site_data/siteDataSlice";
 import { backend_url,googleMapsApiKey } from "../App";
+import { Polygon } from "@react-google-maps/api";
+import JSZip from 'jszip';
+import convertXmlToGeoJSON from '../features/events/convertXmlToGeoJSON';
 import './map.css';
+const icon="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACp0lEQVR4nO2ZzWtTQRTFp36i7sw7ZxLpQtoUoeha8QsUNy5duBIVt278C9q6UBCrgsuCYHFRxJWu3aqoRcGiLgQRKumbm65EWlssPJk2mlJ8kzSdmTSQA48Q8u6b87szc2feRKmulDLkNUP+FDLzeRnyezVJzgbPsSF/+DYvfyGA6eAAAjwPBSBkFhygUirtFuCiIcc7EmC11ozhcQG+dSyAqmm2UNhXBc4LMCbA144DWKtU6/0CXG6qh4A5FVOtZC51AQEPghqeKRYhwNVa41NrGp8y5EP7e6VUStYDZMgLhjyXKbUtiHFDHhJgQoCFpsayvQ+YSLU+qNqp6d7eXQJcF2CxpYWJ/G3I+6nWe9phfq8Ar3zUdkNO2uEXzbwthQJ89rpIAZ/sc4Obz5TabsgXXs3XIV5/HBzcERRAgHtBzPPfcLodzHw1SQYMuRQYYGm2UDgQBGC5VAY0L3WIRyHMF0NnX1b1Qqo1fQNciWFe6hP6klcAQz6JDPDYK4AAH2ICGPK9bwATGSD1ChBrAksdYMkrQNTxz5XLL0CLO86WL2DBN8DNaBDAogA3vAJ01ZVHdUzlyVMXgN0e2JiaqONzhhwyZJ99xxWg35DDAsxvijlgXPsiYC7V+nBO3BEXhPG9/3EAzDhMDDWIHXHEVmIBTDpM9LliBSg7eu9NFAAB7uaZaHSu86Vc3umAH40CUE2Sk44s9jeIHXDEHo8CkCm1xZDvcrI47IpdPgz+f9xkplSPiiVDnsnJ4rytNjnmj+ZVoVTrU9HMNzxmXIEYsRO2tg6Ua8fwv3Luv6PaoUyprQI829DeCHhqn6PaJdu4IW+1aH4s2N9G65UAxwz5shnjdsKmWp9Wm02ZUj3VJDlhx7QAb+3Kat9va5/2+6gtlVGrjeog/QFNjDplTSKxpwAAAABJRU5ErkJggg==";
+
 function MapContainer() {
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: googleMapsApiKey,
@@ -25,7 +30,10 @@ function MapContainer() {
   const [circleCenter, setCircleCenter] = useState({ lat: 34.534508, lng: 73.003801 });
   const [circleRadius, setCircleRadius] = useState(0);
   const [isMarkerClicked, setIsMarkerClicked] = useState(false);
+  const [fireFootprints, setFireFootprints] = useState('');
   const { side_nav: side_nav_check } = useSelector(selectSiteData);
+  const [selectedFeature, setSelectedFeature] = useState(null);
+
   const side_nav = side_nav_check ? <SideNav /> : null;
 
   const mapStyles = {
@@ -34,6 +42,50 @@ function MapContainer() {
   };
 
   
+  useEffect(() => {
+    const parseKMZ = async () => {
+      try {
+        // Fetch the KMZ file
+        const currentDate = new Date();
+        const year = currentDate.getFullYear();
+
+        const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+         const day = currentDate.getDate().toString().padStart(2, '0');
+
+         const formattedDate = `${year}${month}${day}`;
+         const url = `${backend_url}/media/kmz/${formattedDate}.kmz`;
+         //const url="/20240201.kmz"
+         console.log("kmz file url:"+url)
+        const response = await fetch(url);
+        const kmzData = await response.blob();
+
+        // Extract the KML file from the KMZ archive
+        const zip = await JSZip.loadAsync(kmzData);
+        const kmlFile = Object.values(zip.files).find((file) => file.name.endsWith('.kml'));
+
+        if (kmlFile) {
+          const kmlData = await kmlFile.async('text');
+          const convertedGeoJSON = await convertXmlToGeoJSON(kmlData);
+
+          if (convertedGeoJSON && convertedGeoJSON.features) {
+            const filteredFeatures = convertedGeoJSON.features.filter((feature) => feature);
+
+            // Update state with the filtered features
+            setFireFootprints({
+              ...convertedGeoJSON,
+              features: filteredFeatures,
+            });
+          }
+        } else {
+          console.error('No KML file found in the KMZ archive.');
+        }
+      } catch (error) {
+        console.error('Error parsing KMZ:', error);
+      }
+    };
+
+    parseKMZ();
+  }, []);
 
   const onSelect = item => {
     item.location = item.user ? { lat: item.latitude, lng: item.longitude } : { lat: item.lat, lng: item.lng };
@@ -135,6 +187,7 @@ function MapContainer() {
                       onLoad={handleMapLoad}
                       zoom={center.zoom} 
                       center={center.center}>
+                          
                         {data && data.map((item, index) => {
                           item.location = { lat: item.lat, lng: item.lng };
                           return (
@@ -223,6 +276,71 @@ function MapContainer() {
                           </div>
                         </InfoWindow>
                         )}
+                        {fireFootprints && fireFootprints.features.map((feature, featureIndex) => {
+  if (feature.geometry.type === 'Polygon') {
+    return (
+      <Polygon
+        key={featureIndex}
+        path={feature.geometry.coordinates[0].map((coordinate) => ({
+          lat: coordinate[1],
+          lng: coordinate[0],
+        }))}
+        options={{
+          fillColor: '#FF0000',
+          fillOpacity: 0.4,
+          strokeColor: '#000000',
+          strokeOpacity: 1,
+          strokeWeight: 2,
+        }}
+      />
+    );
+  } else if (feature.geometry.type === 'Point') {
+    // Handle Point geometry
+    return (
+      <Marker
+        key={featureIndex}
+        position={{
+          lat: feature.geometry.coordinates[1],
+          lng: feature.geometry.coordinates[0],
+        }}
+        icon={{
+          url: '/marker-icon-2x.png',
+          scaledSize: new window.google.maps.Size(18, 18), 
+        }}
+    
+        onClick={() => {
+          setSelectedFeature(feature);
+        }}
+      >
+     
+      </Marker>
+      
+    );
+    
+  } else {
+    // Handle other geometry types as needed
+    return null;
+  }
+  
+})}
+   {selectedFeature && (
+  <InfoWindow
+    position={{
+      lat: selectedFeature.geometry.coordinates[1],
+      lng: selectedFeature.geometry.coordinates[0],
+    }}
+    onCloseClick={() => {
+      // Clear the selected feature when InfoWindow is closed
+      setSelectedFeature(null);
+    }}
+  >
+    <div>
+      {/* Customize the content inside the InfoWindow */}
+      <h6>{selectedFeature.properties.name}</h6>
+      <p dangerouslySetInnerHTML={{ __html: selectedFeature.properties.description }} />
+   </div>
+  </InfoWindow>
+)}
                       </GoogleMap>
                     )}
                 </div>
