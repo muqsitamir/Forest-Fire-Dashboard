@@ -53,8 +53,8 @@ function MapContainer() {
          const day = currentDate.getDate().toString().padStart(2, '0');
 
          const formattedDate = `${year}${month}${day}`;
-         //const url = `${backend_url}/media/kmz/${formattedDate}.kmz`;
-         const url="/20240201.kmz"
+         const url = `${backend_url}/media/kmz/${formattedDate}.kmz`;
+         //const url="/20240201.kmz"
          console.log("kmz file url:"+url)
         const response = await fetch(url);
         const kmzData = await response.blob();
