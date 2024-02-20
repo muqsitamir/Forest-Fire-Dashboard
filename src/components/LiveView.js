@@ -129,13 +129,13 @@ if(item.uuid!==""){
       }
   
       const data = await response.json();
-      const result = data.results;
+      var result = data.results;
       console.log("data:", result);
-  
+      
       const imageUrls = result.map(item => { const updatedUrl = item.file.includes('http://127.0.0.1:8000')
       ? item.file.replace('http://127.0.0.1:8000', 'https://api.forestwatch.org.pk')
       : item.file;
-      console.log("date of image:",item.created_at)
+      console.log("date of image:",item.date)
     return updatedUrl}
 );
       setImageUrls(prevImageUrls => [...prevImageUrls, ...imageUrls]);
@@ -148,7 +148,7 @@ if(item.uuid!==""){
       console.error('Error loading GIF frames:', error);
     }
   };
-
+  
   let HandleSubmit = async (e) => {
   //  e.preventDefault();
     try {
