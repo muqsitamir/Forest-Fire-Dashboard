@@ -171,10 +171,10 @@ function MapContainer() {
           <div style={{ display: 'block', margin: 5 }}>
             <Row>
               <Col className='col-md-1 mx-0 my-0' style={{ width: "20.499999995%", flex: "0 0 20.499%", maxWidth: "20.499%" }}>
-                <Row style={{ maxHeight: "70%" }}>
+                <Row style={{ maxHeight: "58%" }}>
                   <SensorList sensorSelect={onSelect} />
                 </Row>
-                <Row style={{ maxHeight: "30%" }}>
+                <Row style={{ maxHeight: "15%" }}>
                   <EventList eventClick={itemSelect} />
                 </Row>
               </Col>
