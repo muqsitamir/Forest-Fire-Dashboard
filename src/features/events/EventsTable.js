@@ -287,7 +287,8 @@ export function EventsTable() {
             <Tab label="Featured" />
             <Button onClick={()=>setSelectMode(!selectMode)} variant="text" sx={{ position: 'absolute', right: 45, top: 5 }} style={{border:'1px solid #1a76d2'}}>Select</Button>
             {listView ?
-             <Tooltip title="Grid View"><GridViewIcon sx={{ position: 'absolute', right: 15, top: 12, color: "#1a76d2", '&:hover': {boxShadow: '0 0 5px 2px skyblue'} }} onClick={() => setListView(!listView)} /></Tooltip> : <Tooltip title="List view"><ReorderIcon sx={{ position: 'absolute', right: 15, top: 12, color: "#1a76d2", '&:hover': {boxShadow: '0 0 5px 2px skyblue'} }} onClick={() => setListView(!listView)}/></Tooltip>}
+            ( <Tooltip title="Grid View"><GridViewIcon sx={{ position: 'absolute', right: 15, top: 12, color: "#1a76d2", '&:hover': {boxShadow: '0 0 5px 2px skyblue'} }} onClick={() => setListView(!listView)} /></Tooltip> 
+             ):( <Tooltip title="List view"><ReorderIcon sx={{ position: 'absolute', right: 15, top: 12, color: "#1a76d2", '&:hover': {boxShadow: '0 0 5px 2px skyblue'} }} onClick={() => setListView(!listView)}/></Tooltip>)}
           </Tabs>
           {selected.length > 0 && (
             <div style={{ flex: 5.5, alignSelf: "center", display: "flex", justifyContent: "space-between", paddingRight: "3vw" }}>
