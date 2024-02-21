@@ -25,7 +25,11 @@ export default function MiniMap(props) {
   const { isLoaded, loadError } = useLoadScript({
     googleMapsApiKey: googleMapsApiKey,
   });
-
+  const Header = {};
+  Header['Authorization'] = `Token ${localStorage.getItem('token')}`;
+  let config = {
+    headers: Header,
+  };
   const fetchData = async () => {
     try {
       console.log(camId);
@@ -64,8 +68,9 @@ export default function MiniMap(props) {
         const formattedDate = `${year}${month}${day}`;
         const url = `${backend_url}/media/kmz/${formattedDate}.kmz`;
         console.log("kmz file url:" + url);
-
-        const response = await fetch(url);
+        const token=localStorage.getItem("token");
+        const response = await fetch(url, config)
+        ;
         const kmzData = await response.blob();
 
         const zip = await JSZip.loadAsync(kmzData);

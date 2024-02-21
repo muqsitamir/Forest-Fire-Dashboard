@@ -178,7 +178,21 @@ export default function CameraFeed(props) {
       clearInterval(timerId);
     };
   }, [timerInterval, props.imageUrls, isTimerPaused]);
+  const handleKeyDown = (e) => {
+    if (e.key === 'ArrowRight') {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % props.imageUrls.length);
+    }else if(e.key=== 'ArrowLeft'){
+      setCurrentImageIndex((prevIndex) => (prevIndex - 1 + props.imageUrls.length) % props.imageUrls.length);
   
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', marginTop: '3.0rem' }}>

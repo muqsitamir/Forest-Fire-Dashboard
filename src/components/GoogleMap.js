@@ -41,7 +41,11 @@ function MapContainer() {
     width: "100%"
   };
 
-  
+  const Header = {};
+  Header['Authorization'] = `Token ${localStorage.getItem('token')}`;
+  let config = {
+    headers: Header,
+  };
   useEffect(() => {
     const parseKMZ = async () => {
       try {
@@ -56,7 +60,7 @@ function MapContainer() {
          const url = `${backend_url}/media/kmz/${formattedDate}.kmz`;
          //const url="/20240201.kmz"
          console.log("kmz file url:"+url)
-        const response = await fetch(url);
+        const response = await fetch(url,config);
         const kmzData = await response.blob();
 
         // Extract the KML file from the KMZ archive
@@ -191,7 +195,7 @@ function MapContainer() {
                         {data && data.map((item, index) => {
                           item.location = { lat: item.lat, lng: item.lng };
                           return (
-                            <Marker icon={"http://maps.google.com/mapfiles/ms/icons/red-dot.png"} 
+                            <Marker icon={"https://maps.google.com/mapfiles/ms/icons/red-dot.png"} 
                             key={item.name}
                              position={item.location} 
                              onClick={() => onSelect(item)} />
@@ -204,7 +208,7 @@ function MapContainer() {
                             {data && data.map((item, index) => {
                               return (
                                 item.cameras.map((i, idx) => (
-                                  <Marker icon={"http://maps.google.com/mapfiles/ms/icons/blue-dot.png"}
+                                  <Marker icon={"https://maps.google.com/mapfiles/ms/icons/blue-dot.png"}
                                    key={i.description} 
                                    position={{ lat: i.latitude, lng: i.longitude }} 
                                    onClick={() => onSelect(i)} />
@@ -214,7 +218,7 @@ function MapContainer() {
                             {data && data.map((item, index) => {
                               return (
                                 item.sensors.map((i, idx) => (<>
-                                  <Marker icon={"http://maps.google.com/mapfiles/ms/icons/green-dot.png"}
+                                  <Marker icon={"https://maps.google.com/mapfiles/ms/icons/green-dot.png"}
                                    key={i.name} 
                                    position={{ lat: i.lat, lng: i.lng }} 
                                    onClick={() => onSelect(i)} />
