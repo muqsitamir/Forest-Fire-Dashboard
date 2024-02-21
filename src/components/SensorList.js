@@ -46,13 +46,13 @@ function SensorList({sensorSelect}) {
     
     return (
         <>
-        <div style={{height:"45vh" ,paddingRight:'0px' }}>
+        <div style={{ paddingRight:'0px' }}>
      <main className="d-flex flex-nowrap">
   <div className="flex-shrink-0 w-100 bg-white" >
     <a href="/" className="d-flex align-items-center  mb-3 link-dark text-decoration-none border-bottom" style={{background:'#2c3e50' ,paddingLeft:'5px'}}>
       <span className="fs-6 fw-semibold" style={{color:'#f39c12'}}>Forest Fire Dashboard</span>
     </a>
-    <ul className="list-unstyled ps-0" style={{overflowY:"scroll", maxHeight:"100%" }}>
+    <ul className="list-unstyled ps-0" style={{ maxHeight:"100%" }}>
     {!loading && data.map((item, index) => {
                         let cam=item.cameras;
                         let sen=item.sensors;

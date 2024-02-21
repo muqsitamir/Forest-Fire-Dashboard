@@ -46,7 +46,7 @@ function LiveWeather(props){
   let text;
   let description;
   let icon;
-  if(weather_data ){
+  if(weather_data!=="N/A" ){
     index = Math.floor((weather_data.data[0].wind_deg / 22.5) + 0.5) % 16;
     windDirection = windDirections[index];
     celsius = weather_data.data[0].temp - 273.15;
@@ -56,7 +56,7 @@ function LiveWeather(props){
     text=weather_data.data[0].weather[0].description
     description= text.charAt(0).toUpperCase() + text.slice(1);
   }
-    if (!weather_data || weather_data.length === 0) {
+    if (weather_data==="N/A" || weather_data.length === 0) {
         // Handle the case when weather_data is empty or undefined
         return (<>
           <div id="m-booked-custom-widget-35390">
@@ -68,7 +68,7 @@ function LiveWeather(props){
             <div style={{marginRight:'12px',marginLeft:"12px",display: 'flex',marginTop:'5px',alignItems:"center",justifyContent:"space-between"}}>
            
             <a target="_blank" href={file} rel='noreferrer'>
-                        <img src={img}  alt='' style={{width:'100px',height:'100px'}}/>
+                        <img src={img}  alt='' style={{width:'100px',height:'100px',borderRadius:'13px'}}/>
                       </a>
                       <div>Weather data not available... </div>
                       <div style={{display:'flex',flexDirection:'column'}}>

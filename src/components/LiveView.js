@@ -81,7 +81,7 @@ function LiveView() {
 
   useEffect(() => {
     var sid = id.split(" ");
-    fetch(`${backend_url}/core/api/towers/`, config)
+    fetch(`${backend_url}/core/api/camera/`, config)
       .then((response) => {
         if (!response.ok) {
           throw new Error(
@@ -91,13 +91,14 @@ function LiveView() {
         return response.json();
       })
       .then((actualData) => {
+        console.log("tower data:"+actualData.results)
         setTowers(actualData.results);
         var temp_id = Number(id);
         console.log(actualData.results);
         if (sid[0] === "event") setCamera({ cam: "Select a Camera", link: sid[2].replaceAll('(','/'), id: camera.id,eventId:"" });
         else {
           const foundObject = actualData.results.find((obj) => obj.id === temp_id);
-          setCamera({ cam: foundObject["name"], link: "", id: foundObject["id"] });
+          setCamera({ cam: foundObject["description"], link: "", id: foundObject["id"] });
           // setCenter({center:{lat:actualData.results[temp_id]["lat"], lng:actualData.results[temp_id]["lat"]}, zoom: 12, isZoom:false})
         }
       })
@@ -212,7 +213,7 @@ const changeLive=(liv)=>{
                             setCamera({ cam: item.name, link: "", id: item.id });
                           }}
                         >
-                          {item.name}
+                          {item.description}
                         </Dropdown.Item>
                       ))}
                     </Dropdown.Menu>

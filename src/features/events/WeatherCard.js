@@ -68,7 +68,7 @@ function WeatherCard(props){
             <div style={{marginRight:'12px',marginLeft:"12px",display: 'flex',marginTop:'5px',alignItems:" center",justifyContent: "space-between"}}>
              
             <a target="_blank" href={file} rel='noreferrer'>
-                        <img src={img}  alt='' style={{width:'150px',height:'150px'}}/>
+                        <img src={img}  alt='' style={{width:'200px',height:'150px',borderRadius:'13px'}}/>
                       </a>
 
                       <div>Weather data not available... </div>

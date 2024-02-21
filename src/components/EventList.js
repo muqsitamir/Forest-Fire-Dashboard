@@ -52,7 +52,7 @@ function EventList({eventClick}) {
     
     return (
         <>
-        <div style={{height:"35vh" ,paddingRight:'0px'}}>
+        <div style={{paddingRight:'0px'}}>
      <main className="d-flex flex-nowrap">
   <div className="flex-shrink-0 p-1 w-100 bg-white">
     <a href="/" className="d-flex align-items-center  mb-3 link-dark text-decoration-none border-bottom"  style={{background:'#2c3e50' ,paddingLeft:'5px'}}>

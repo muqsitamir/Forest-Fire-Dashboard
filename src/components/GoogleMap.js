@@ -41,11 +41,7 @@ function MapContainer() {
     width: "100%"
   };
 
-  const Header = {};
-  Header['Authorization'] = `Token ${localStorage.getItem('token')}`;
-  let config = {
-    headers: Header,
-  };
+ 
   useEffect(() => {
     const parseKMZ = async () => {
       try {
@@ -60,7 +56,7 @@ function MapContainer() {
          const url = `${backend_url}/media/kmz/${formattedDate}.kmz`;
          //const url="/20240201.kmz"
          console.log("kmz file url:"+url)
-        const response = await fetch(url,config);
+        const response = await fetch(url);
         const kmzData = await response.blob();
 
         // Extract the KML file from the KMZ archive
@@ -175,10 +171,10 @@ function MapContainer() {
           <div style={{ display: 'block', margin: 5 }}>
             <Row>
               <Col className='col-md-1 mx-0 my-0' style={{ width: "20.499999995%", flex: "0 0 20.499%", maxWidth: "20.499%" }}>
-                <Row style={{ maxHeight: "50%" }}>
+                <Row style={{ maxHeight: "70%" }}>
                   <SensorList sensorSelect={onSelect} />
                 </Row>
-                <Row style={{ maxHeight: "50%" }}>
+                <Row style={{ maxHeight: "30%" }}>
                   <EventList eventClick={itemSelect} />
                 </Row>
               </Col>
