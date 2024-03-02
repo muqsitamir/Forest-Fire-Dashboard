@@ -12,6 +12,7 @@ function SensorList({sensorSelect}) {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(null);
     const Header = {};
     Header['Authorization'] = `Token ${localStorage.getItem("token")}`;
     let config = {
@@ -41,7 +42,39 @@ function SensorList({sensorSelect}) {
             setLoading(false);
           });
       }, []);
+      let HandleSubmit = async (e) => {
+        //  e.preventDefault();
+          try {
+            // let nam = camera.cam.split(" ")[0]
+            
+            console.log("nam is", e.description);
+            let res = await fetch(`${backend_url}/core/api/camera/ptzControls/`, {
+              method: "POST",
+              body: JSON.stringify({
+                pan: '0',
+                tilt: '0',
+                zoom: '0',
+                POWER: '1',
+                camera: e.description,
+              }),
+              headers: {
+                'Content-type': 'application/json;',
+                'Authorization': `Token ${localStorage.getItem("token")}`,
+              },
+            });
+            let resJson = await res.json();
+            if (res.status === 200) {
+              setSuccess(true);
+             
+            } else {
+              console.log(resJson.error);
+            }
+            window.location.href=`/live/${e.id}`
+          } catch (err) {
+            console.log(err);
+          }
 
+        };
     let n=["home","dashboard","orders"]
     
     return (
@@ -50,7 +83,7 @@ function SensorList({sensorSelect}) {
      <main className="d-flex flex-nowrap">
   <div className="flex-shrink-0 w-100 bg-white" >
     <a href="/" className="d-flex align-items-center  mb-3 link-dark text-decoration-none border-bottom" style={{background:'#2c3e50' ,paddingLeft:'5px'}}>
-      <span className="fs-6 fw-semibold" style={{color:'#f39c12'}}>Forest Fire Dashboard</span>
+      <span className="fs-6 fw-semibold" style={{color:'#f39c12'}}>Cameras & Sensors</span>
     </a>
     <ul className="list-unstyled ps-0" style={{ maxHeight:"100%" }}>
     {!loading && data.map((item, index) => {
@@ -72,9 +105,9 @@ function SensorList({sensorSelect}) {
                                     cam.map((i2,ind2)=>{
                                         return(
                                     <li key={ind2} onClick={() => sensorSelect(i2)}>  
-                                    <a  className="link-dark d-inline-flex text-decoration-none rounded">
+                                    <a  className="link-dark d-inline-flex text-decoration-none rounded" href= "#">
                                     <AiOutlineCamera />&nbsp;&nbsp;{i2.description}
-                                    </a> <Tooltip title="Live View" placement="top"><button style={{border:'none',borderRadius:'10px'}} onClick={()=>{window.location.href=`/live/${i2.id}`;}}>
+                                    </a> <Tooltip title="Live View" placement="top"><button style={{border:'none',borderRadius:'10px'}} onClick={()=>{HandleSubmit(i2)}}>
                                       <img src={require("../images/live.gif")} style={{width:'15px',height: '15px', marginBottom: '3px'}} /> </button>              
                                    </Tooltip> </li>
                                    

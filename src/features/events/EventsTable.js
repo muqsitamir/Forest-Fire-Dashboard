@@ -39,7 +39,7 @@ import {
   removeAnnotations,
   setEvents
 } from "./eventsSlice";
-import { selectFilters, setFilterApplied, resetFilters } from "../filters/filterSlice";
+import { selectFilters, setFilterApplied} from "../filters/filterSlice";
 import { selectOrganization } from "../organization/organizationSlice";
 import WeatherCard from './WeatherCard';
 import WeatherGrid from './WeatherGrid';
@@ -76,9 +76,9 @@ export function EventsTable() {
         return "NONE";
     }
   };
-  debugger
+ 
   const { page, rowsPerPage } = state;
-  debugger
+ 
   useEffect(() => {
     if (isFirstRun.current) {
       isFirstRun.current = false;
@@ -86,9 +86,8 @@ export function EventsTable() {
     }
     setSelected([]);
     dispatch(resetEvents());
-    debugger
     showChanges(true);
-    debugger
+    
   }, [rowsPerPage]);
 
   useEffect(() => {
@@ -205,7 +204,7 @@ export function EventsTable() {
   const changeUrl=(img)=>{
     img= img.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
     return img;
-    debugger
+ 
   }
 
   const changeName=(name)=>{
@@ -215,7 +214,7 @@ export function EventsTable() {
       name=nameC[1];
     }
     return name;
-    debugger
+ 
   }
     
   return (
@@ -280,15 +279,17 @@ export function EventsTable() {
         </DialogActions>
       </Dialog>
       <TableContainer style={{ maxHeight: 1200 }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider", display: "flex" }}>
+        <Box style={{ borderBottom: '1px solid', borderColor: "divider", display: "flex" }}>
           <Tabs value={tab} onChange={(e, v) => setTab(v)} aria-label="basic tabs example" sx={{ flex: 9.3 }}>
             <Tab label="All" />
             <Tab label="Archived" />
             <Tab label="Featured" />
-            <Button onClick={()=>setSelectMode(!selectMode)} variant="text" sx={{ position: 'absolute', right: 45, top: 5 }} style={{border:'1px solid #1a76d2'}}>Select</Button>
+            <Button onClick={()=>setSelectMode(!selectMode)} variant="text" style={{border:'1px solid #1a76d2'}} sx={{position: 'absolute', right: 45, top: 5}}>Select</Button>
             {listView ?
-            ( <Tooltip title="Grid View"><GridViewIcon sx={{ position: 'absolute', right: 15, top: 12, color: "#1a76d2", '&:hover': {boxShadow: '0 0 5px 2px skyblue'} }} onClick={() => setListView(!listView)} /></Tooltip> 
-             ):( <Tooltip title="List view"><ReorderIcon sx={{ position: 'absolute', right: 15, top: 12, color: "#1a76d2", '&:hover': {boxShadow: '0 0 5px 2px skyblue'} }} onClick={() => setListView(!listView)}/></Tooltip>)}
+            ( <Tooltip title="Grid View">
+              <GridViewIcon style={{ position: 'absolute', right: '15', top: '12', color: "#1a76d2", '&:hover': {boxShadow: '0 0 5px 2px skyblue'} }} onClick={() => setListView(!listView)} /></Tooltip> 
+             ):( <Tooltip title="List view">
+              <ReorderIcon style={{ position: 'absolute', right:'15', top: '12', color: "#1a76d2", '&:hover': {boxShadow: '0 0 5px 2px skyblue'} }} onClick={() => setListView(!listView)}/></Tooltip>)}
           </Tabs>
           {selected.length > 0 && (
             <div style={{ flex: 5.5, alignSelf: "center", display: "flex", justifyContent: "space-between", paddingRight: "3vw" }}>
@@ -387,12 +388,12 @@ export function EventsTable() {
           <Grid container spacing={2} style={{ justifyContent: "center" }}>
           {events.slice(state.page * state.rowsPerPage, state.page * state.rowsPerPage + state.rowsPerPage).map((event) => {
        return (
-        <div className="card rounded my-3 shadow-lg back-card" style={{width:"275px",margin:'10px',height:"fit-content",maxHeight: '460px'}}>
-        <Typography variant="subtitle2" gutterBottom component="div" marginTop={1} marginLeft={2} style={{display: 'inline-flex',
+        <div className="card rounded my-3 shadow-lg back-card" style={{width:"275px",margin:'10px',height:"fit-content",maxHeight: '460px'}} key={event.uuid} >
+        <Typography variant="subtitle2" gutterBottom component="div"  style={{display: 'inline-flex', marginTop:'1', 
         marginLeft: '0px',
         justifyContent: 'center',alignItems:'flex-start'}}>
         {selectMode ? (
-              <Checkbox sx={{marginBottom: '-6px', color: "black",padding:'0px'}}
+              <Checkbox style={{marginBottom: '-6px', color: "black",padding:'0px'}}
                 checked={selected.includes(event.uuid)}
                 onChange={() => {
                   if (selected.includes(event.uuid)) {

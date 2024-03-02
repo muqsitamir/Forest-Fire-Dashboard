@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, MenuItem } from '@mui/material';
+import { Grid} from '@mui/material';
 import Camera from '../features/cameras/Camera';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCameras, selectCameras } from '../features/cameras/cameraSlice';
 import MiniMap from './MiniMap';
-import {Button,Dialog,Select,Tabs,Tab,DialogTitle} from "@mui/material";
+import {Tabs,Tab} from "@mui/material";
 export default function Cameras() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -58,13 +58,24 @@ export default function Cameras() {
     const filteredCameras = getFilteredCameras();
   //  console.log("size:"+filteredCameras.length);
     if (filteredCameras.length===0) {
-      return (
-        <Grid item xs={12} key="no-live-cameras-msg">
-          <div style={{ textAlign: 'center', marginTop: '20px' }}>
-            <p>No live cameras.</p>
-          </div>
-        </Grid>
-      )}else{
+      if(showOfline){
+        return (
+          <Grid item xs={12} key="no-live-cameras-msg">
+            <div style={{ textAlign: 'center', marginTop: '20px' }}>
+              <p>No Offline cameras.</p>
+            </div>
+          </Grid>
+        )
+      }else{
+        return (
+          <Grid item xs={12} key="no-live-cameras-msg">
+            <div style={{ textAlign: 'center', marginTop: '20px' }}>
+              <p>No live cameras.</p>
+            </div>
+          </Grid>
+        )
+      }
+      }else{
     const gridItems = filteredCameras.map((camera, index) => (
       <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
         <Camera content={camera}  latestEvent={camera.live_image ? `${camera.live_image}` : 'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image-300x225.png'}
@@ -88,10 +99,12 @@ export default function Cameras() {
     <div className="page">
       <div className="page__content">
         <div className="main-wrapper">
-          <header className="row db" style={{ marginLeft: '12%' }}>
-            <div className="col s12">
-              <h2 className="bold">{headingArea!==null? headingArea+" Cameras":"Cameras"} </h2></div>
-          </header>
+        <header className="header" >
+              <div className="container">
+              <h2 className="header__title">{headingArea!==null? headingArea+" Cameras":"Cameras"} </h2>
+              </div>
+            </header>
+         
           <div className='grid-div-mobile grid-div'>
             <div>
               <Tabs value={tab} onChange={(e, v) => setTab(v)} aria-label="basic tabs example" sx={{ flex: 9.3 }}>
