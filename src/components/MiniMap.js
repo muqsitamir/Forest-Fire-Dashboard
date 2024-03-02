@@ -69,7 +69,7 @@ export default function MiniMap(props) {
         const url = `${backend_url}/media/kmz/${formattedDate}.kmz`;
         console.log("kmz file url:" + url);
         const token=localStorage.getItem("token");
-        const response = await fetch(url, config)
+        const response = await fetch(url)
         ;
         const kmzData = await response.blob();
 

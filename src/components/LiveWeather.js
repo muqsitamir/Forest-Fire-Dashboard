@@ -30,7 +30,7 @@ function LiveWeather(props){
     if(camera.includes('PTZ')){
      let nameC=camera.split('-');
       name=nameC[1];
-      console.log('name: '+name);
+      //console.log('name: '+name);
     }
     const date=props.data.date;
     const sms_sent=props.data.sms_sent;
@@ -75,7 +75,7 @@ function LiveWeather(props){
               {sms_sent ?<Chip label="SMS Sent" avatar={<Avatar src={smsIconUrl} style={{borderRadius:"0px",width:"20px",height:"20px",}}/>} style={{marginBottom:'10px'}}/>:
             <Chip label="SMS Not-Sent" avatar={<Avatar src={notsmsIconUrl}  style={{borderRadius:"0px" ,width:"20px",height:"20px", }}/>}  style={{marginBottom:'10px'}}/>}
            {nasa ?
-           <Chip label="Confrim By Nasa" avatar={<Avatar src={nasaUrl} style={{borderRadius:"0px",width:"20px",height:"20px",}}/>} style={{marginBottom:'10px'}}/>:
+           <Chip label="Confrim By FIRMS" avatar={<Avatar src={nasaUrl} style={{borderRadius:"0px",width:"20px",height:"20px",}}/>} style={{marginBottom:'10px'}}/>:
           ''
            }
            
@@ -111,15 +111,16 @@ function LiveWeather(props){
                       </a>
                      
                       <div style={{display: 'flex',
-    flexDirection: 'column',
-    alignContent: 'center',
+                      flexDirection: 'column',
+                alignContent: 'center',
     flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'center',paddingRight:'50px'}}>
+    
                       <p>{date}</p>
                   <div className="booked-weather-custom-160-degree booked-weather-custom-Cwmd03" style={{width:'60%'}}  >
                  
-                      <img src={`https://openweathermap.org/img/wn/${icon}@2x.png`} style={{width:'40px'}} />
+                      <img src={`https://openweathermap.org/img/wn/${icon}@2x.png`}  alt='' style={{width:'40px'}} />
                       <p style={{color:'#2c3e50',fontSize:'14px',paddingLeft:'10px'}}>{description}</p>
                  </div>
                  <div className="booked-weather-custom-details" > 
@@ -155,7 +156,10 @@ function LiveWeather(props){
                         ))}
               {sms_sent ?<Chip label="SMS Sent" avatar={<Avatar src={smsIconUrl} style={{borderRadius:"0px",width:"20px",height:"20px"}}/>} style={{marginBottom:'10px'}}/>:
             <Chip label="SMS Not-Sent" avatar={<Avatar src={notsmsIconUrl}  style={{borderRadius:"0px" ,width:"20px",height:"20px" }}/>} style={{marginBottom:'10px'}}/>}
-           
+           {nasa ?
+           <Chip label="Confrim By FIRMS" avatar={<Avatar src={nasaUrl} style={{borderRadius:"0px",width:"20px",height:"20px",}}/>} style={{marginBottom:'10px'}}/>:
+          ''
+           }
             </div></div>
                 
 

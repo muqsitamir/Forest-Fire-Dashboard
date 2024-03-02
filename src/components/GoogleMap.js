@@ -37,7 +37,7 @@ function MapContainer() {
   const side_nav = side_nav_check ? <SideNav /> : null;
 
   const mapStyles = {
-    height: "80vh",
+    height: "90vh",
     width: "100%"
   };
 
@@ -164,21 +164,25 @@ function MapContainer() {
   };
 
   return (
-    <div className="page">
+    <div className="page" >
       <div className="page__content">
         <div className="main-wrapper">
+        
           {side_nav}
           <div style={{ display: 'block', margin: 5 }}>
-            <Row>
-              <Col className='col-md-1 mx-0 my-0' style={{ width: "20.499999995%", flex: "0 0 20.499%", maxWidth: "20.499%" }}>
-                <Row style={{ maxHeight: "58%" }}>
+            <Row style={{marginBottom:'0px',    alignItems: 'stretch'}}>
+              <Col className='col-md-1 mx-0 my-0' style={{ width: "15.5%", maxWidth: "20.499%" }}>
+                <Row >
                   <SensorList sensorSelect={onSelect} />
                 </Row>
-                <Row style={{ maxHeight: "15%" }}>
-                  <EventList eventClick={itemSelect} />
-                </Row>
+                {/*<Row >
+                <div style={{ paddingRight:'0px' }}>
+                <a href="/" className="d-flex align-items-center  mb-3 link-dark text-decoration-none border-bottom" style={{background:'#2c3e50' ,paddingLeft:'5px'}}>
+      <span className="fs-6 fw-semibold" style={{color:'#f39c12'}}>Legends</span>
+    </a></div>
+  </Row>*/}
               </Col>
-              <Col>
+              <Col style={{paddingRight: '0rem' }}>
                 <div>
                   {!isLoaded ? (
                     <h1>Loading...{loading}</h1>
@@ -344,7 +348,10 @@ function MapContainer() {
                       </GoogleMap>
                     )}
                 </div>
-              </Col>
+              </Col><Col style={{ width: "15.5%", padding: '0 0rem' ,flex: "0 0 .499%", maxWidth: "30.499%" }}> 
+              <Row style={{     width: 'min-content' }}>
+                  <EventList eventClick={itemSelect} />
+                </Row></Col>
             </Row>
           </div>
         </div>

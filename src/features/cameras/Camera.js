@@ -11,6 +11,7 @@ import {Link} from 'react-router-dom';
 export default function Camera(props){
     let content = props.content;
     let live = content.live ? "success" : "disabled";
+    let id=content.id;
 let location='Lat:'+content.latitude+' ,Lng:'+content.longitude;
     const getDate=(dateString)=>{
         const date = new Date(dateString);
@@ -45,12 +46,15 @@ let location='Lat:'+content.latitude+' ,Lng:'+content.longitude;
       
    return(
        <div className="card rounded my-3 shadow-lg back-card" style={{width:"230px",margin:'10px',height:"fit-content",maxHeight: '460px'}}>
+        <Tooltip title="Live View" placement="top"><button style={{border:'none',borderRadius:'10px'}} onClick={()=>{   window.location.href=`/live/${id}`}}>
+                                      <img src={require("../../images/live.gif")} alt='live' style={{width:'15px',height: '15px', marginBottom: '3px'}} /> </button>              
+                                   </Tooltip>
         <Typography variant="subtitle2" gutterBottom component="div" marginTop={1} marginLeft={2} style={{display: 'inline-flex',
     marginLeft: '10px',
     justifyContent: 'center',alignItems:'flex-start'}}>
           
                 <div >
-                    <FiberManualRecordIcon color={live} sx={{position: 'absolute', top:10, right:10, bottom:0 }} />
+                    <FiberManualRecordIcon color={live} sx={{position: 'absolute', top:0, right:10, bottom:0 }} />
                 </div>
                 <span>{content.description}</span>                
                 </Typography>

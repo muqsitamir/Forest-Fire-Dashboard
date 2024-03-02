@@ -1,33 +1,13 @@
 import React, { useEffect, useState, useRef } from "react";
-import GridViewIcon from '@mui/icons-material/GridView';
-import ReorderIcon from '@mui/icons-material/Reorder';
 import {
-  Chip,
-  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TablePagination,
   TableRow,
-  Tabs,
-  Tab,
-  Box,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
-  DialogActions,
-  Button,
-  Checkbox,
-  FormGroup,
-  FormControlLabel, Grid,Typography, Tooltip
+  
 } from "@mui/material";
-import ArchiveIcon from "@mui/icons-material/Archive";
-import StarIcon from "@mui/icons-material/Star";
-import UnarchiveIcon from "@mui/icons-material/Unarchive";
-import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getEvents,
@@ -140,12 +120,12 @@ import LiveWeather from './LiveWeather';
               })}
             </TableBody>
           ) : (
-            <div className="container tc">Loading Data....</div>
+            <div className="container tc">No event exists....</div>
           )}
         </Table></div>
            
         
-      </TableContainer>
+      </TableContainer>{events.length !== 0 ? (
       <TablePagination
         rowsPerPageOptions={[10, 20, 50, 100]}
         component="div"
@@ -155,7 +135,7 @@ import LiveWeather from './LiveWeather';
         onRowsPerPageChange={handleChangeRowsPerPage}
         onPageChange={handleChangePage}
         showFirstButton
-      />
+      />):(<></>)}
     </div></center>
   );
 }

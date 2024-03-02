@@ -73,7 +73,7 @@ const parsePlacemark = (placemark) => {
       var coordslist=coordinatesList.filter(coord => coord.trim() !== '');
       const coordinates = coordslist.map(coord => {
         const [lng, lat] = coord.split(',').map(parseFloat);
-        console.log([lng,lat])
+       // console.log([lng,lat])
         return [lng, lat];
       });
   

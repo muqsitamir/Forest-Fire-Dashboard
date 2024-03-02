@@ -19,7 +19,9 @@ function WeatherCard(props){
     'South', 'South-Southwest', 'Southwest', 'West-Southwest',
     'West', 'West-Northwest', 'Northwest', 'North-Northwest'
   ];
-    
+    let cameraId=props.data.camera
+    console.log("cameraId: "+cameraId)
+    let liveLink=`/live/${cameraId}`;
     let weather_data=props.data.weather_data;
     let species=props.data.species;
     let img=props.data.thumbnail;
@@ -29,7 +31,7 @@ function WeatherCard(props){
     if(camera.includes('PTZ')){
      let nameC=camera.split('-');
       name=nameC[1];
-      console.log('name: '+name);
+     // console.log('name: '+name);
     }
     const date=props.data.date;
     const sms_sent=props.data.sms_sent;
@@ -44,7 +46,7 @@ function WeatherCard(props){
   let text;
   let description;
   let icon;
-  console.log(weather_data)
+  //console.log(weather_data)
   if(weather_data!== "N/A" ){
     index = Math.floor((weather_data.data[0].wind_deg / 22.5) + 0.5) % 16;
     windDirection = windDirections[index];
@@ -63,7 +65,7 @@ function WeatherCard(props){
     <div className="booked-weather-custom-160 color-009fde" style={{width:'100%'}} id="width3">
         
         <div className="booked-weather-custom-160-main">
-            <a target="_blank"  className="booked-weather-custom-160-city"> {name} </a>
+            <a target="_blank" href={liveLink}  rel="noreferrer" className="booked-weather-custom-160-city"> {name} </a>
             <div className="booked-weather-custom-160-date" style={{color:"black"}}>{date}</div>
             <div style={{marginRight:'12px',marginLeft:"12px",display: 'flex',marginTop:'5px',alignItems:" center",justifyContent: "space-between"}}>
              
@@ -100,7 +102,7 @@ function WeatherCard(props){
          <div className="booked-weather-custom-160 color-009fde" style={{width:'100%'}} id="width3">
              
              <div className="booked-weather-custom-160-main">
-                 <a target="_blank"  className="booked-weather-custom-160-city"> {name} </a>
+                 <a target="_blank"  className="booked-weather-custom-160-city" href='#'> {name} </a>
                  <div style={{display: 'flex',marginTop:'5px',justifyContent:'space-around' ,alignItems:'center'}}>
               
             <a target="_blank" href={file} rel='noreferrer'>
@@ -116,7 +118,7 @@ function WeatherCard(props){
                       <p>{date}</p>
                   <div className="booked-weather-custom-160-degree booked-weather-custom-Cwmd03" style={{width:'60%'}}  >
                  
-                      <img src={`https://openweathermap.org/img/wn/${icon}@2x.png`} style={{width:'40px'}} />
+                      <img src={`https://openweathermap.org/img/wn/${icon}@2x.png`} alt ='' style={{width:'40px'}} />
                       <p style={{color:'#2c3e50',fontSize:'14px',paddingLeft:'10px'}}>{description}</p>
                  </div>
                  <div className="booked-weather-custom-details" > 
@@ -144,7 +146,7 @@ function WeatherCard(props){
                 </div></div>
                       <div style={{    display: 'flex',flexDirection: 'column'}}>
                       {species.map((item) => (
-                     <Chip label={item.name}
+                     <Chip  key={item.name} label={item.name}
                      avatar={item.name==='smoke'?
                      <Avatar src={smoke} style={{borderRadius:"0px",width:"20px",height:"20px"}} />
                     :<Avatar src={fireIconUrl} style={{borderRadius:"0px",width:"20px",height:"20px"}}/>} style={{marginBottom:'10px'}}/>

@@ -30,7 +30,7 @@ function WeatherGrid(props){
     if(camera.includes('PTZ')){
      let nameC=camera.split('-');
       name=nameC[1];
-      console.log('name: '+name);
+     // console.log('name: '+name);
     }
     const date=props.data.date;
     const sms_sent=props.data.sms_sent;
@@ -96,14 +96,14 @@ function WeatherGrid(props){
                      
                     <div style={{    display: 'flex',flexDirection: 'row'}}>
                       {species.map((item) => (
-                     <Chip label={item.name}
+                     <Chip label={item.name} key={item.name}
                      avatar={item.name==='smoke'?
                      <Avatar src={smoke} style={{borderRadius:"0px",width:"20px",height:"20px"}} />
                     :<Avatar src={fireIconUrl} style={{borderRadius:"0px",width:"20px",height:"20px"}}/>} style={{marginBottom:'10px'}}/>
                           
                         ))}
-              {sms_sent ?<Chip label="SMS Sent" avatar={<Avatar src={smsIconUrl} style={{borderRadius:"0px",width:"20px",height:"20px"}}/>} style={{marginBottom:'10px'}}/>:
-            <Chip label="SMS Not-Sent" avatar={<Avatar src={notsmsIconUrl}  style={{borderRadius:"0px" ,width:"20px",height:"20px" }}/>} style={{marginBottom:'10px'}}/>}
+              {sms_sent ?<Chip label="SMS Sent" key="sms sent" avatar={<Avatar src={smsIconUrl} style={{borderRadius:"0px",width:"20px",height:"20px"}}/>} style={{marginBottom:'10px'}}/>:
+            <Chip label="SMS Not-Sent" key="sms not sent"  avatar={<Avatar src={notsmsIconUrl}  style={{borderRadius:"0px" ,width:"20px",height:"20px" }}/>} style={{marginBottom:'10px'}}/>}
            
             </div>       
                 

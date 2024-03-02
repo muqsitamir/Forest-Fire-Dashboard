@@ -206,15 +206,18 @@ const changeLive=(liv)=>{
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
                       {towers && towers.map((item, index) => (
-                        <Dropdown.Item
-                          key={item.id}
-                          href={`/live/${item.id}`}
-                          onClick={() => {
-                            setCamera({ cam: item.name, link: "", id: item.id });
-                          }}
-                        >
-                          {item.description}
-                        </Dropdown.Item>
+                        item.live ? (
+                          <Dropdown.Item
+                            key={item.id}
+                            href={`/live/${item.id}`}
+                            onClick={() => {
+                              setCamera({ cam: item.name, link: "", id: item.id });
+                            }}
+                          >
+                            {item.description}
+                          </Dropdown.Item>
+                        ) : null
+                       
                       ))}
                     </Dropdown.Menu>
                   </Dropdown>
@@ -224,7 +227,7 @@ const changeLive=(liv)=>{
             <div className='col-md-8'>
               <ul className="nav nav-tabs" defaultActiveKey="/home">
                 <li className="nav-item">
-                  <a
+                  <a href=""
                     className={colour === "white" ? "nav-link active" : "nav-link"}
                     style={{ textDecoration: "none", color: colour === 'white' ? 'black' : 'white' }}
                     onClick={() => { setView("camera"); setColor("white") }}
@@ -253,15 +256,15 @@ const changeLive=(liv)=>{
                     <p className='lead'>PTZ Controls</p>
                     <label className="form-label" htmlFor="customRange1" style={{width:'30%'}}>Pan <span className='lead' style={{ float: 'right' }}>{pan}</span></label>
                     <div className="row range w-50">
-                      <input type="range" className="form-range" id="customRange1" value={pan} onChange={(e) => setPan(e.target.value)} min="0" max="360" step="1" />
+                      <input type="range" className="form-range" id="customRange1" value={pan} onChange={(e) => setPan(e.target.value)} min="0" max="360" step="1" disabled />
                     </div>
                     <label className="form-label" htmlFor="customRange1" style={{width:'30%'}}>Zoom <span className='lead' style={{ float: 'right' }}>{zoom}</span></label>
                     <div className="row range w-50">
-                      <input type="range" className="form-range" id="customRang32" value={zoom} onChange={(e) => setZoom(e.target.value)} min="0" max="100" step="1" />
+                      <input type="range" className="form-range" id="customRang32" value={zoom} onChange={(e) => setZoom(e.target.value)} min="0" max="100" step="1" disabled />
                     </div>
                     <label className="form-label" htmlFor="customRange1"style={{width:'30%'}}>Tilt <span className='lead' style={{ float: 'right' }}>{tilt}</span></label>
                     <div className="row range w-50">
-                      <input type="range" className="form-range" id="customRange3" value={tilt} onChange={(e) => setTilt(e.target.value)} min="0" max="90" step="1" />
+                      <input type="range" className="form-range" id="customRange3" value={tilt} onChange={(e) => setTilt(e.target.value)} min="0" max="90" step="1" disabled/>
                     </div>
                      
                    {live?(<>
