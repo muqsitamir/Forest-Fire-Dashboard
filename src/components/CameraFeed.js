@@ -146,7 +146,22 @@ export default function CameraFeed(props) {
   
    
   }, [cameraId, view, live]); // Only include necessary dependencies
-  
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowRight') {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % props.imageUrls.length);
+      } else if (e.key === 'ArrowLeft') {
+        setCurrentImageIndex((prevIndex) => (prevIndex - 1 + props.imageUrls.length) % props.imageUrls.length);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+
+    // Clear the interval on component unmount
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [props.imageUrls]);
 
   useEffect(() => {
     setImageUrls(props.imageUrls || []);
@@ -180,6 +195,7 @@ export default function CameraFeed(props) {
   }, [timerInterval, props.imageUrls, isTimerPaused]);
   const handleKeyDown = (e) => {
     if (e.key === 'ArrowRight') {
+      console.log("ArrowRight")
       setCurrentImageIndex((prevIndex) => (prevIndex + 1) % props.imageUrls.length);
     }else if(e.key=== 'ArrowLeft'){
       setCurrentImageIndex((prevIndex) => (prevIndex - 1 + props.imageUrls.length) % props.imageUrls.length);
