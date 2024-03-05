@@ -162,7 +162,52 @@ function MapContainer() {
       }
     }
   };
-
+  const getMarkerIcon = (description) => {
+    const featureTime = extractTimestamp(description);
+  
+    if (featureTime) {
+      const currentTime = new Date();
+      const timeDifference = (currentTime - featureTime) / (60 * 60 * 1000); // Convert milliseconds to hours
+  
+      // Customize the conditions and icon URLs based on your requirements
+      if (timeDifference <= 1) {
+        return 'maroon.png'; // Replace with the path to your yellow marker icon
+      } else if (timeDifference <= 3) {
+        return 'red.png'; // Replace with the path to your orange marker icon
+      } else if (timeDifference <= 6) {
+        return 'orange.png'; // Replace with the path to your green marker icon
+      } else if (timeDifference <= 12) {
+        return 'yellow.png'; // Replace with the path to your blue marker icon
+      } else if (timeDifference <= 24) {
+        return 'lime.png'; // Replace with the path to your red marker icon
+      } else {
+        return 'lime.png'; // Replace with the path to your default marker icon
+      }
+    }
+  
+    // Default icon if timestamp extraction fails
+    return 'marker-icon-2x.png';
+  };
+  
+  const extractTimestamp = (description) => {
+    const hiddenElement = document.createElement('div');
+    hiddenElement.style.display = 'none';
+    hiddenElement.innerHTML = description;
+  
+    // Find the element with the "Detection Time:" text
+    const detectionTimeElement = Array.from(hiddenElement.querySelectorAll('b')).find(
+      (element) => element.textContent.trim() === 'Detection Time:'
+    );
+  
+    if (detectionTimeElement) {
+      const timestampString = detectionTimeElement.nextSibling.nodeValue.trim();
+      return new Date(timestampString);
+    }
+  
+    return null;
+  };
+  
+  
   return (
     <div className="page" >
       <div className="page__content">
@@ -175,12 +220,32 @@ function MapContainer() {
                 <Row >
                   <SensorList sensorSelect={onSelect} />
                 </Row>
-                {/*<Row >
+                <Row >
                 <div style={{ paddingRight:'0px' }}>
                 <a href="/" className="d-flex align-items-center  mb-3 link-dark text-decoration-none border-bottom" style={{background:'#2c3e50' ,paddingLeft:'5px'}}>
-      <span className="fs-6 fw-semibold" style={{color:'#f39c12'}}>Legends</span>
+      <span className="fs-6 fw-semibold" style={{color:'#f39c12'}}>Map Fire Intervals</span>
     </a></div>
-  </Row>*/}
+    <div className="legend-item">
+              <span className="legend-color" style={{ background: 'maroon' }}></span>
+              <span className="legend-text"><img src='/maroon.png' style={{width:'25px'}}/>   &le;1 hour</span>
+            </div>
+            <div className="legend-item">
+              <span className="legend-color" style={{ background: 'yellow' }}></span>
+              <span className="legend-text"><img src='/red.png' style={{width:'25px'}}/> 1 &gt;-&le;3 hours</span>
+            </div>
+            <div className="legend-item">
+              <span className="legend-color" style={{ background: 'orange' }}></span>
+              <span className="legend-text"><img src='/orange.png' style={{width:'25px'}}/> 3 &gt;-&le;6 hours</span>
+            </div>
+            <div className="legend-item">
+              <span className="legend-color" style={{ background: 'red' }}></span>
+              <span className="legend-text"><img src='/yellow.png' style={{width:'25px'}}/> 6 &gt;-&le;12 hours</span>
+            </div>
+            <div className="legend-item">
+              <span className="legend-color" style={{ background: 'red' }}></span>
+              <span className="legend-text"><img src='/lime.png' style={{width:'25px'}}/> 12 &gt;-&le;24 hours</span>
+            </div>
+  </Row>
               </Col>
               <Col style={{paddingRight: '0rem' }}>
                 <div>
@@ -308,8 +373,8 @@ function MapContainer() {
           lng: feature.geometry.coordinates[0],
         }}
         icon={{
-          url: '/marker-icon-2x.png',
-          scaledSize: new window.google.maps.Size(18, 18), 
+          url: getMarkerIcon(feature.properties.description),
+          scaledSize: new window.google.maps.Size(20, 20), 
         }}
     
         onClick={() => {
