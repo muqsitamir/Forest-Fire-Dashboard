@@ -101,7 +101,9 @@ let location='Lat:'+content.latitude+' ,Lng:'+content.longitude;
                 <LocationOnIcon style={{width:'0.8em'}}/>Location
                 </Button>
                 </Tooltip>
-                
+                <Button size="small"  component={Link} to={`/statistics/${content.id}`} style={{border:'1px solid',color:'black',opacity:'0.8' ,fontSize:'12px'}}>
+               <LeaderboardIcon/>  Statistics
+                 </Button>
                  </div>
                 
           

@@ -1,8 +1,5 @@
 import React, { useState } from "react";
-// import "./Camera.css";
-import MapContainer from "./GoogleMap";
 import Dropdown from "react-bootstrap/Dropdown";
-import DropdownButton from "react-bootstrap/DropdownButton";
 import Table from "react-bootstrap/Table";
 import { useParams} from 'react-router';
 import Navbar from './NavBar.js';

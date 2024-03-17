@@ -18,7 +18,7 @@ import OnlyPublicRoute from "./Authentication/OnlyPublicRoute";
 import GoogleMap from "./components/GoogleMap";
 import LiveView from "./components/LiveView";
 import Nasa from './features/events/Nasa';
-
+import CameraDetailsPage from './pages/CameraDetailsPage';
  //export const backend_url = 'http://127.0.0.1:8000';
 export const backend_url = 'https://api.forestwatch.org.pk';
 export const googleMapsApiKey='AIzaSyBup6K7zk3Hp7u53HmAVCMwqeEfFCEf70Q';
@@ -34,6 +34,7 @@ export default function App () {
                 <ProtectedRoute exact path='/cameras' Component={Cameras} />
                 <ProtectedRoute exact path='/nasa' Component={Nasa} />
                 <ProtectedRoute exact path='/live/:id' Component={LiveView} />
+                <ProtectedRoute exact path='/statistics/:id' Component={CameraDetailsPage} />
                 <OnlyPublicRoute exact path='/login' Component={Login} />
                 <Route exact path='/logout' render={(props) => <Logout {...props}/>}/>
                 <Route path='/reset-password' render={(props) => <ResetPassword {...props}/>}/>
