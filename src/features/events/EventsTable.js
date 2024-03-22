@@ -99,7 +99,6 @@ export function EventsTable() {
       justRan.current = false;
       return;
     }
-    debugger
     dispatch(getEvents(state.page + 1, filters.filterApplied, status(tab), rowsPerPage));
     justRan.current = true;
     let check = filters.filterApplied ? false : filters.filterApplied;

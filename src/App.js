@@ -19,7 +19,7 @@ import GoogleMap from "./components/GoogleMap";
 import LiveView from "./components/LiveView";
 import Nasa from './features/events/Nasa';
 import CameraDetailsPage from './pages/CameraDetailsPage';
- //export const backend_url = 'http://127.0.0.1:8000';
+//export const backend_url = 'http://127.0.0.1:8000';
 export const backend_url = 'https://api.forestwatch.org.pk';
 export const googleMapsApiKey='AIzaSyBup6K7zk3Hp7u53HmAVCMwqeEfFCEf70Q';
 

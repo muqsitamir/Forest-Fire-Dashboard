@@ -9,7 +9,7 @@ const LiveChart = ({ cameraId,cameraName }) => {
  
   const isDayEvent=(updated_at)=> {
     const eventDate = new Date(updated_at );
-  console.log("Date: "+eventDate)
+ // console.log("Date: "+eventDate)
     const hour = eventDate.getHours();
     return hour >= 5 && hour < 18; 
   }
@@ -28,10 +28,11 @@ const LiveChart = ({ cameraId,cameraName }) => {
           
             if (response.data.next) {
               await getData(response.data.next);
+              
+              console.log("live chart data:")
             } else {
               setData(result);
               setIsLoading(false); 
-              console.log("live chart data:"+result)
             }
           } catch (err) {
 
@@ -40,7 +41,7 @@ const LiveChart = ({ cameraId,cameraName }) => {
           }
         };
   
-        await getData(`${backend_url}/core/api/event/?cameras=${cameraId}`);
+        await getData(`${backend_url}/core/api/event/?cameras=${cameraId}&&page_size=1000`);
       };
   
       fetchData();

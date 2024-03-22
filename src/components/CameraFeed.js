@@ -10,9 +10,10 @@ export default function CameraFeed(props) {
   const cameraId = props.cameraId;
   const view = props.view;
   const live = props.live;
+  const stream=props.liveStream;
   const [imageUrls, setImageUrls] = useState(props.imageUrls || []);
   const [loading, setLoading] = useState(true);
-  const [videoSrc, setVideoSrc] = useState('http://203.135.63.37:8003/ipcam/');
+  const [videoSrc, setVideoSrc] = useState(stream);
   const iframeRef = useRef(null);
   const [isPlaying, setPlay] = useState(true);
   const [isPaused, setPaused] = useState(false);
@@ -51,6 +52,7 @@ export default function CameraFeed(props) {
         setCurrentFrame(gifFrame);
       }, timerInterval);
     });
+    HandleSubmit("on","live")
   };
 
   const pauseGif = () => {
@@ -82,6 +84,7 @@ export default function CameraFeed(props) {
     props.changeLive(false);
     setLive(false);
     setPicture({ pic: link + '?ver=' });
+    HandleSubmit("off","offline")
   };
 
   const toggleAnimationPlay = () => {
@@ -188,7 +191,36 @@ export default function CameraFeed(props) {
   
     }
   };
-
+  let HandleSubmit = async (power,mes) => {
+    //  e.preventDefault();
+      try {
+        // let nam = camera.cam.split(" ")[0]
+        let nam =  cameraId.cam.replace(" ", "-");
+        console.log("nam is", nam);
+        let message=`${nam} is ${mes} `
+        let res = await fetch(`${backend_url}/core/api/camera/ptzControlsOn/`, {
+          method: "POST",
+          body: JSON.stringify({
+            camera: nam,
+            power:power,
+            message: message,
+          }),
+          headers: {
+            'Content-type': 'application/json;',
+            'Authorization': `Token ${localStorage.getItem("token")}`,
+          },
+        });
+        let resJson = await res.json();
+        if (res.status === 200) {
+          console.log(nam+" is "+mes)
+         
+        } else {
+          console.log(resJson.error);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
  
   return (
     <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', marginTop: '3.0rem' }}>
