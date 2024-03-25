@@ -223,20 +223,23 @@ function MapContainer() {
   
     return null;
   };
+  const pakistanBoundsGeoJSON = {
+    type: 'Polygon',
+    coordinates: [
+      [
+        [60.866374, 23.6345],
+        [60.866374, 37.084107],
+        [77.8375, 37.084107],
+        [77.8375, 23.6345],
+        [60.866374, 23.6345], 
+      ],
+    ],
+  };
+  
   const isCoordinateInsidePakistan = (lat, lng) => {
-    // Define the bounding box coordinates of Pakistan
-    const pakistanBounds = [
-      [60.872, 23.6345],
-      [60.872, 37.084107],
-      [77.8375, 37.084107],
-      [77.8375, 23.6345],
-      [60.872, 23.6345], // Close the polygon
-    ];
-   
     const point = turf.point([lng, lat]);
-  
-    const polygon = turf.polygon([pakistanBounds]);
-  
+    const polygon = turf.polygon(pakistanBoundsGeoJSON.coordinates);
+ 
     return turf.booleanPointInPolygon(point, polygon);
   };
   const handleRadioChange = (selectedInterval) => {

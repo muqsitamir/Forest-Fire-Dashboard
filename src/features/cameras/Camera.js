@@ -49,7 +49,7 @@ let location='Lat:'+content.latitude+' ,Lng:'+content.longitude;
        <div className="card rounded my-3 shadow-lg back-card" style={{width:"230px",margin:'10px',height:"fit-content",maxHeight: '460px'}}>
       {liveC?(<Tooltip title="Live View" placement="top"><button style={{border:'none',borderRadius:'10px'}} onClick={()=>{   window.location.href=`/live/${id}`}}>
                                       <img src={require("../../images/live.gif")} alt='live' style={{width:'15px',height: '15px', marginBottom: '3px'}} /> </button>              
-                                   </Tooltip>):''}  
+                                   </Tooltip>):<Tooltip title="Offline" ><p style={{height:'10px'}}></p></Tooltip>}  
         <Typography variant="subtitle2" gutterBottom component="div" marginTop={1} marginLeft={2} style={{display: 'inline-flex',
     marginLeft: '10px',
     justifyContent: 'center',alignItems:'flex-start'}}>

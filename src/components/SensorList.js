@@ -99,17 +99,18 @@ function SensorList({sensorSelect}) {
                                    data-bs-target={xx} aria-expanded="true">
                                 {item.name}
                                 </button>
-                                <div className="collapse show" id={nn}>
+                                <div className="collapse " id={nn}>
                                 <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                                 {
                                     cam.map((i2,ind2)=>{
                                         return(
-                                    <li key={ind2} onClick={() => sensorSelect(i2)}>  
-                                    <a  className="link-dark d-inline-flex text-decoration-none rounded" href= "#">
-                                    <AiOutlineCamera />&nbsp;&nbsp;{i2.description}
-                                    </a> <Tooltip title="Live View" placement="top"><button style={{border:'none',borderRadius:'10px'}} onClick={()=>{HandleSubmit(i2)}}>
-                                      <img src={require("../images/live.gif")} style={{width:'15px',height: '15px', marginBottom: '3px'}} /> </button>              
-                                   </Tooltip> </li>
+                                          i2.live&&( <li key={ind2} onClick={() => sensorSelect(i2)}>  
+                                          <a  className="link-dark d-inline-flex text-decoration-none rounded" href= "#">
+                                          <AiOutlineCamera />&nbsp;&nbsp;{i2.description}
+                                          </a> <Tooltip title="Live View" placement="top"><button style={{border:'none',borderRadius:'10px'}} onClick={()=>{HandleSubmit(i2)}}>
+                                            <img src={require("../images/live.gif")} style={{width:'15px',height: '15px', marginBottom: '3px'}} /> </button>              
+                                         </Tooltip> </li>)
+                                   
                                    
                         )})
                                 }

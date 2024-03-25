@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSync, faStop, faPlay, faPause, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import GifPlayer from '@deepit/react-gif-player';
 
+
 export default function CameraFeed(props) {
   const [picture, setPicture] = useState({ pic: '', rnd: 0 });
   const cameraId = props.cameraId;
@@ -13,7 +14,7 @@ export default function CameraFeed(props) {
   const stream=props.liveStream;
   const [imageUrls, setImageUrls] = useState(props.imageUrls || []);
   const [loading, setLoading] = useState(true);
-  const [videoSrc, setVideoSrc] = useState(stream);
+  const [videoSrc, setVideoSrc] = useState(props.liveStream);
   const iframeRef = useRef(null);
   const [isPlaying, setPlay] = useState(true);
   const [isPaused, setPaused] = useState(false);
@@ -213,6 +214,7 @@ export default function CameraFeed(props) {
         let resJson = await res.json();
         if (res.status === 200) {
           console.log(nam+" is "+mes)
+          console.log("ptzcontrol response data:"+JSON.stringify(res.data))
          
         } else {
           console.log(resJson.error);

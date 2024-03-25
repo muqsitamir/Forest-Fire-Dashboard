@@ -31,7 +31,7 @@ function CameraDetailsPage() {
       setCameraId(6);
     }if(id==='7'){
       
-      setSelectedCamera('PTZ-Susal Gali');
+      setSelectedCamera('PTZ-Badrosha');
       setCameraId(7);
     }else{
       setCameraId(id)
@@ -48,7 +48,7 @@ function CameraDetailsPage() {
       <div className="main-wrapper">
       <header className="header" >
               <div className="container">
-              <h2 className="header__title">Statistics</h2>
+              <h2 className="header__title">Statistics of {selectedCamera}</h2>
               </div>
             </header>
         
