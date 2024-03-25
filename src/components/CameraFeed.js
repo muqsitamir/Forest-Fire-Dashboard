@@ -287,7 +287,7 @@ export default function CameraFeed(props) {
 
             <iframe
               ref={iframeRef}
-              src={videoSrc}
+              src={stream}
               title='live'
               style={{
                 height: '300px',

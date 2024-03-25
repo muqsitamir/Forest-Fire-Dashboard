@@ -75,7 +75,7 @@ function SensorList({sensorSelect}) {
           }
 
         };
-    let n=["home","dashboard","orders"]
+    let n=["1","2","3","4","5"]
     
     return (
         <>
@@ -90,6 +90,7 @@ function SensorList({sensorSelect}) {
                         let cam=item.cameras;
                         let sen=item.sensors;
                         let nn=n[index]+"-collapse";
+                        console.log("nn:"+index)
                         let xx="#"+nn
                         return (
                             <li key={index} className="mb-1">
@@ -99,7 +100,7 @@ function SensorList({sensorSelect}) {
                                    data-bs-target={xx} aria-expanded="true">
                                 {item.name}
                                 </button>
-                                <div className="collapse " id={nn}>
+                                <div className="collapse" id={nn}>
                                 <ul className="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                                 {
                                     cam.map((i2,ind2)=>{
@@ -107,7 +108,8 @@ function SensorList({sensorSelect}) {
                                           i2.live&&( <li key={ind2} onClick={() => sensorSelect(i2)}>  
                                           <a  className="link-dark d-inline-flex text-decoration-none rounded" href= "#">
                                           <AiOutlineCamera />&nbsp;&nbsp;{i2.description}
-                                          </a> <Tooltip title="Live View" placement="top"><button style={{border:'none',borderRadius:'10px'}} onClick={()=>{HandleSubmit(i2)}}>
+                                          </a> <Tooltip title="Live View" placement="top">
+                                            <button style={{border:'none',borderRadius:'10px'}} onClick={()=>{HandleSubmit(i2)}}>
                                             <img src={require("../images/live.gif")} style={{width:'15px',height: '15px', marginBottom: '3px'}} /> </button>              
                                          </Tooltip> </li>)
                                    
