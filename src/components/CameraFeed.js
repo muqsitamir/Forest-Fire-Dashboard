@@ -36,7 +36,7 @@ export default function CameraFeed(props) {
   };
 
   const refreshImage = () => {
-    iframeRef.current.src = videoSrc;
+    iframeRef.current.src = props.liveStream;
   };
 
   const liveFeed = () => {
@@ -133,11 +133,18 @@ export default function CameraFeed(props) {
         })
         .then((actualData) => {
           let link = actualData.live_image;
-          if (link.includes('http://127.0.0.1:8000')) {
+          
+          if(link===null){
+            
+            setPicture({ pic: '/video.png' + '?ver=' + randNum, rnd: randNum });
+           setLink('');
+          }else{
+            if (link.includes('http://127.0.0.1:8000')) {
             link = link.replace('http://127.0.0.1:8000', 'https://api.forestwatch.org.pk');
           }
-          setPicture({ pic: link + '?ver=' + randNum, rnd: randNum });
-          setLink(link);
+            setPicture({ pic: link + '?ver=' + randNum, rnd: randNum });
+          setLink(link);}
+          
         })
         .catch((err) => {
           console.log(err);
