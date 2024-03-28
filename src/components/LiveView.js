@@ -34,12 +34,21 @@ function LiveView() {
   const [tilt, setTilt] = useState(0);
   const [pan, setPan] = useState(0);
   const [zoom, setZoom] = useState(0);
+  const [mintilt, setMinTilt] = useState(0);
+  const [minpan, setMinPan] = useState(0);
+  const [minzoom, setMinZoom] = useState(0);
+  const [maxtilt, setMaxTilt] = useState(90);
+  const [maxpan, setMaxPan] = useState(360);
+  const [maxzoom, setMaxZoom] = useState(100);
   const [colour, setColor] = useState("white");
   const [eventItem, setEventItem] = useState({ exist: 0, item: "" });
   const [live, setLive] = useState(false);
   const [success, setSuccess] = useState(false);
   const [liveStream,setLiveStream]=useState("")
  const [imageUrls, setImageUrls] = useState([]);
+ const [towers, setTowers] = useState(null);
+ const [preset, setPreset] = useState(null);
+ const [selectedPreset, setSelectedPreset] = useState('');
   const organization = useSelector(selectOrganization);
   useEffect(() => {
     dispatch(getOrganization());
@@ -59,7 +68,7 @@ function LiveView() {
 
   var timer = "";
 
-  const [towers, setTowers] = useState(null);
+ 
 
   const { side_nav: side_nav_check } = useSelector(selectSiteData);
   let side_nav = side_nav_check ? <SideNav /> : null;
@@ -104,7 +113,41 @@ function LiveView() {
         setTowers(null);
       });
   }, []);
-
+  useEffect(() => {
+    var sid = id.split(" ");
+    fetch(`${backend_url}/core/api/preset/?id=${id}`, config)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(
+            `This is an HTTP error: The status is ${response.status}`
+          );
+        }
+        return response.json();
+      })
+      .then((actualData) => {
+        console.log("preset data:"+JSON.stringify(actualData.results))
+        setPreset(actualData.results);
+        actualData.results.map(obj => {
+          if (obj.name === "Default") {
+            
+            setPan(obj.pan_default);
+            setMinPan(obj.pan_min);
+            setMaxPan(obj.pan_max);
+            setTilt(obj.tilt_default);
+            setMinTilt(obj.tilt_min);
+            setMaxTilt(obj.tilt_max);
+            setZoom(obj.zoom_default);
+            setMinZoom(obj.zoom_min);
+            setMaxZoom(obj.zoom_max);
+          }
+        });
+          
+        
+      })
+      .catch((err) => {
+        setPreset(null);
+      });
+  }, []);
   const eventClick = (item) => {
     // let x=item.camera==1?'Hawa Gali':item.camera==2?'Panja Gali':'Palm Gali';
     console.log("inside events", item);
@@ -179,11 +222,24 @@ if(item.uuid!==""){
       console.log(err);
     }
   };
-const handleRefresh=()=>{ 
-  setPan(0);
-  setTilt(0); 
-  setZoom(0);
-}
+  const handleRefresh = () => {
+    if (preset && preset.length > 0) {
+      preset.map(obj => {
+        if (obj.name === "Default") {
+          setPan(obj.pan_default);
+          setMinPan(obj.pan_min);
+          setMaxPan(obj.pan_max);
+          setTilt(obj.tilt_default);
+          setMinTilt(obj.tilt_min);
+          setMaxTilt(obj.tilt_max);
+          setZoom(obj.zoom_default);
+          setMinZoom(obj.zoom_min);
+          setMaxZoom(obj.zoom_max);
+        }
+      });
+    }
+  };
+  
 const changeLive=(liv)=>{
   setLive(liv);
 }
@@ -252,18 +308,51 @@ const changeLive=(liv)=>{
               <div className=' row mx-2 px-2 d-flex justify-content-center' style={{ backgroundColor: "white" }}>
                
                   <div className="row d-flex justify-content-center">
-                    <p className='lead'>PTZ Controls</p>
+                    <p className='lead' style={{display: 'flex', alignItems: 'flex-end'}}>PTZ Controls 
+                    {/*<div className='col-md-8'>
+                    <Dropdown>
+      <Dropdown.Toggle variant="success" id="dropdown-basic">
+        {selectedPreset || 'Select Preset'}
+      </Dropdown.Toggle>
+      <Dropdown.Menu>
+        {preset &&
+          preset.map((item, index) =>
+            (
+              <Dropdown.Item
+                key={item.id}
+                onClick={() => {
+                  setSelectedPreset(item.name);
+                  setPan(item.pan_default);
+                  setMinPan(item.pan_min);
+                  setMaxPan(item.pan_max);
+                  setTilt(item.tilt_default);
+                  setMinTilt(item.tilt_min);
+                  setMaxTilt(item.tilt_max);
+                  setZoom(item.zoom_default);
+                  setMinZoom(item.zoom_min);
+                  setMaxZoom(item.zoom_max);
+                }}
+              >
+                {item.name}
+              </Dropdown.Item>
+            )
+          )}
+      </Dropdown.Menu>
+    </Dropdown>
+                </div>*/}</p>
+                    
+                <br/>
                     <label className="form-label" htmlFor="customRange1" style={{width:'30%'}}>Pan <span className='lead' style={{ float: 'right' }}>{pan}</span></label>
                     <div className="row range w-50">
-                      <input type="range" className="form-range" id="customRange1" value={pan} onChange={(e) => setPan(e.target.value)} min="0" max="360" step="1" disabled />
+                      <input type="range" className="form-range" id="customRange1" value={pan} onChange={(e) => setPan(e.target.value)} min={minpan} max={maxpan} step="1" disabled />
                     </div>
                     <label className="form-label" htmlFor="customRange1" style={{width:'30%'}}>Zoom <span className='lead' style={{ float: 'right' }}>{zoom}</span></label>
                     <div className="row range w-50">
-                      <input type="range" className="form-range" id="customRang32" value={zoom} onChange={(e) => setZoom(e.target.value)} min="0" max="100" step="1" disabled />
+                      <input type="range" className="form-range" id="customRang32" value={zoom} onChange={(e) => setZoom(e.target.value)} min={minzoom} max={maxzoom} step="1" disabled />
                     </div>
                     <label className="form-label" htmlFor="customRange1"style={{width:'30%'}}>Tilt <span className='lead' style={{ float: 'right' }}>{tilt}</span></label>
                     <div className="row range w-50">
-                      <input type="range" className="form-range" id="customRange3" value={tilt} onChange={(e) => setTilt(e.target.value)} min="0" max="90" step="1" disabled/>
+                      <input type="range" className="form-range" id="customRange3" value={tilt} onChange={(e) => setTilt(e.target.value)} min={mintilt} max={maxtilt} step="1" disabled/>
                     </div>
                      
                    {live?(<>
