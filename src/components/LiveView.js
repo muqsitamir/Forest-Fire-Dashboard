@@ -14,6 +14,7 @@ import { backend_url } from "../App";
 import MiniMap from './MiniMap';
 import { LiveFilter } from '../features/filters/LiveFilter';
 import { getOrganization, selectOrganization } from "../features/organization/organizationSlice";
+import TopAppBar from '../Headers/TopAppBar/TopAppBar';
 const up="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAADVklEQVR4nO2aTUuUURTHf0WvlqX0nhP0BdJsmy1atzH7DFEJrVulLVuXpokfINFdBJUlvZoxFkqakmgQYi5KlGghZhMXjiCDzzjPPfc+cyeeP/w3w3PPOf8z9/XcCylSpEiRIkUKBTJAA3ARaAZagTagDxgAhoVTwDQwBywAS0BOuCS/zck3U+vaDYitNrHdLL4axHdJcBroBObXiSgVTQwdQF0SwvcB3cBqAMLzaWLqAip9iT8BfApA6GYc9TE0KsVwrkw4Dux3mYDuAETFpRkOzia81QAExaWJudZFAjoDEGPLdhcJmA9AiC2/a8VnAhChZY0mAecCEKCl2TFa41IAArRs0iSgOQABWl7VJOBWAAK0bNEkoN1zcI+EPn2YU6Q1+jwG9gTYBewAHnr006NJwAtPQT0V8WvYDfR78mXqCdZ47yGgV8CeDXyZJDz34G9Qk4BRx8G8AfYW8Fch/5hLnx81CZh0GMjbIosVFY6HnjkaW+Orw24Yp1JjhshLR75NjdEacw4C+ABUW5bfhhz4n9Uk4KfSeRao2uSsYRiFKqkMa2L4oUnAb4XjEeBAAduXgWVgBbi+SRKyijh+aRLwx9KpWT0ORtjcBtzeoM19YHtEm2oZSjaxrCSdgAngaIQ90yOeFWj7Gjgc0faQZVV6JckhMAkci7B1CpgpwsY34EyEDZOcsSSHwEIMR1+A4xF2LuRdhRUTdFOBJIwnNQnOFelkKqL0tAW4YVlV/itzxdYN7B4BPiexDM4UGWh9xGam10J4Pnsjzg714tvrRmiyyCCzeTu9jIP1O39VOZm3XR5MYis8EiNIc4jZCZz1VEo3Y/m81A8eJ3UYGooZ5DvZ3OQ8cVl8xI0puIJILkGqCiK9AQjQ8kHIRdFcAryjSUBrAAK0vKlJwLUABGh5RZOApgAEaGlelFmjIQABWpp9iTUyAQgo6fV4uT+QMIc5NToCEFKSe8E11JXxIylThHGCrgAExaXpuc5QGfNkWGqOyb2CU2TK5LXoiIuZv1BP6Ap0TliVbl/o8tUZaoF78g4vhKWu3eWEFxc1smNslAdJ5k3OXXmZ0S/lsmG5L5iWIqWpNi+uE7Eov83KNxPSJis2esRmi/hoFJ/eunqKFClSpEjB/49/l3pIoX36BroAAAAASUVORK5CYII=";
 const down="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAADZklEQVR4nO2aTUtVURSGn6JPyz7oO2/QH0izaTpo3MTsN0QlNG6UNmyepok/QNFZBIUlRd+YoWQZiQUh6sBEiQZidmLDEi6Xe889e699rvvGeeGdXM5ea73r7rP32utsyJAhQ4YMGTIokAOagEtAG9ABdAJDwAjwXjgNzABzwBKwAkTCFfltTp6Zzhs3IrY6xXab+GoS35uCs0APsJAnYrNoYugGGiohfB/QB6wHILyQJqZeoDYt8aeAjwEILceJNF6NWjEcVQk/Aft9JqAvAFG2NK+DtwVvPQBBtjQx1/tIQE8AYlzZ5SMBCwEIceW8VnwuABFa1mkS0ByAAC1NxeiMywEI0LJVk4C2AARoeU2TgNsBCNCyXZOAewEI0PKuJgFDAQjQckCTgGcBCNDS9BOc8dbS2RtgNUUxq+LDNiZnTFg4egrsBM6nVD0uAheA7cAji3EfNAn4ktDJaEEjIiftLF/izR9xOs9+DfDa4mjsjG8JHPwFGouM3QMMehA/KLYK0Si+y403PUZnzCUMcrpEzb0FuOl4nDbi7gBbi9g9BnxOaGdWk4Ali4C/AidL2LlY0AUux18xJexRmdY2a4czflv+a2bNOFHC1pmEr9QP4FyM+EnLmEwynfHHYepOAcdL2DsEPIkZ+0JEFsMRx6bsWqUTEMmqfbiEzW3ybheOuS9bXDEcBMYcY1mr5CsQ5XFc/vFSuCKFjQnwRsxzB2SbdY1D9Qr8VDiOpBYwAuIaLs1lxGvricVKbINRDMdkCrt8hbItxb1vg989BLBRjxtBSWEKn+eefM9UohSOEvBVwu92NZ5PoapSeNxjIIYvgb1lxI949qk6DL3zHMzGXl+stt8tJ0rf/syhKbiGyLAIzhc/HGJDZDCloAwfA7uAHcCDFP30axLQlWJghg+FwTZFO1IOrhK8pUnA9QAEaHlVk4DWAARoaW6UOaMpAAFamiatM3IBCNjUz+PVfkHCHObU6A5AiCvN7VI1Gqr4kpTpQ3pBbwCCbGlmrjfUpnAyTJOTlv2HxDtCNdwWHfex8sfNhN5A14R1mfZx/QZvqJfbI/OBbHVdPhc8W9RJxdgiF5La5QQ2IGf8UensTkl/blY+uS3niViW32blmSkZMyo2BsRmu/hoEZ+pTfUMGTJkyJCB/x//AOLbSKZkyn6XAAAAAElFTkSuQmCC";
 const left="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAC9UlEQVR4nO2azWpTQRTHf4KKolEUF0ojrhVsBZfGZzDWJ3Cl9B1MfQZtbAl9AEu7VxFL/Ka0aoMfrdbSTUkrSGgRF6IxMnAWIaS35s6ZyaSdP5zNJfec8//nzsc5MxARERERERFhgSyQA64CQ8AwMAJMAdPAnNgSsAxUgRqwCTTENuVZVX6z1PTetPgaEd9DEisnsbuCC8AYsN5EoltmchgFBnwQPwKMA/UAiLeayakEZFyRPw28D4DodlZxMTQy4rjRI/YROKopwHgApDo1MxzUJrx6AIQ6NZNzv4YAYwGQSWtFDQHWAyCS1tZsyWe7kPRfZX99NgJc9kz+i4zbV4o+zY4xNa55JP+56d86BDxQ8jtoI8BNT+Q/AadaYu8HXiv4NhxS47YH8gttyBtcAn4p+C/YCHDPwz9/sk3cM8A3pRh3bQSYckj+HXCiTcyDUgZrxZmwEaDsiLwheLxNvD3ApHIs009IjRmP5JGGh3Y8s6SmRkU5mVng2Bax8o5qjrc2AiwqJvJCGirtcK6lRaZdGqfGilISzxM6NWY4fHVEviE9xtSoKiTwFDi8hf99Mkk1HNqqjQA1y+DlBPI+9hnGvtsI8NMi8ENZ07fCdQ/kjf2wEeBPyqCmkDmQ4Fdrm/s/9jsK0KUh8GgnDIGa40mwGPokWFVI4FmCCHuBJyEvgyu7fSO0qJjIy4St8NlQt8LzHivBKyEWQzMOEnqTIEIhtHK4vNsbIpOOBPDZErtvI0DRoQC+mqJ3bAQYdiyAj7b4rd1+MHLDRoBBTwK4PBozN8pSI+dRgIbsPC8qH46aoZQaWc8CBHc83usXJEwxZ43RAIikNXO71BoDPXxJ6jxKKAVAqFMzX64aMg4qQ5f2IaH0tloRKgGQ287mNWb+pC+hFOicUJfPPqkHqYZ+OdVZC2SpK2pOeJ2iT3aMeakdCnItxdzMeCxH4nNS9CxLk9J0mzeaSGzIs1X5zYK8Mys+JsRnQWLkJaazTz0iIiIiIoKdj3/ph0jRDrlVYgAAAABJRU5ErkJggg==";
@@ -243,20 +244,35 @@ if(item.uuid!==""){
 const changeLive=(liv)=>{
   setLive(liv);
 }
+const handle_camera_click = () => {
+  window.location = '/cameras';
+}
+
+const handle_admin_click = () => {
+  window.location = 'https://api.forestwatch.org.pk/admin';
+}
+
+const handle_dashboard_click = () => {
+  window.location = '/dashboard';
+}
+
+const handle_home_click = () => {
+  window.location = '/';
+}
   return (
-    <div className="page">
-      <div className="page__content">
-        <div className="main-wrapper">
-          {side_nav}
-          <div className='row navbar bg-dark'>
+    <div  >
+      <div>
+      
+        <div >
+          <div className='row navbar 'style={{  background: 'rgb(44, 62, 80)',color: 'rgb(243, 156, 18)'}}>
           
             <div className='col-md-4'>
               <div className='row mx-0 px-0'>
               
-                <div className='col-md-4 lead text-light'>Tower Panel</div>
+                <div className='col-md-4 lead ' style={{ color: 'rgb(243, 156, 18) ',fontWeight:'600',fontSize:'20px'}}>Tower Panel</div>
                 <div className='col-md-8'>
-                  <Dropdown>
-                    <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  <Dropdown  >
+                    <Dropdown.Toggle  style={{  background:'rgb(243, 156, 18)' ,color:'rgb(44, 62, 80)' , border:' 3px solid rgb(44, 62, 80)' ,fontWeight:'700'}}>
                       {camera.cam}
                     </Dropdown.Toggle>
                     <Dropdown.Menu>
@@ -279,7 +295,26 @@ const changeLive=(liv)=>{
                 </div>
               </div>
             </div>
-            <div className='col-md-8'>
+            <div className='col-md-8' style={{display:'contents'}}>
+            <section className="mdc-top-app-bar__section app-shop mdc-top-app-bar__section--align-end mr4"
+                         role="toolbar">
+                        <button className="mdc-button mdc-theme--primary mdc-top-app-bar__action-item" onClick={handle_home_click} >
+                            <span className="mdc-button__ripple"/>
+                            <span className="mdc-button__label" style={{ color: 'rgb(243, 156, 18)', }}>Home</span>
+                        </button>
+                        <button className="mdc-button mdc-theme--primary mdc-top-app-bar__action-item" onClick={handle_dashboard_click}   >
+                            <span className="mdc-button__ripple"/>
+                            <span className="mdc-button__label" style={{ color: 'rgb(243, 156, 18)'}}>Dashboard</span>
+                        </button>
+                        <button className="mdc-button mdc-theme--primary mdc-top-app-bar__action-item" onClick={handle_camera_click} >
+                            <span className="mdc-button__ripple"/>
+                            <span className="mdc-button__label" style={{ color: 'rgb(243, 156, 18)'}}>Cameras</span>
+                        </button>
+                        <button className="mdc-button mdc-theme--primary mdc-top-app-bar__action-item" onClick={handle_admin_click}  >
+                            <span className="mdc-button__ripple"/>
+                            <span className="mdc-button__label" style={{ color: 'rgb(243, 156, 18)'}}>Admin</span>
+                        </button>
+                </section>
               <ul className="nav nav-tabs" defaultActiveKey="/home">
                 <li className="nav-item">
                   <a href=""
@@ -301,6 +336,7 @@ const changeLive=(liv)=>{
                   </a>
                 </li>
               </ul>
+              
             </div>
           </div>
           <div className='row' style={{ height: "50%" }}>
@@ -308,38 +344,38 @@ const changeLive=(liv)=>{
               <div className=' row mx-2 px-2 d-flex justify-content-center' style={{ backgroundColor: "white" }}>
                
                   <div className="row d-flex justify-content-center">
-                    <p className='lead' style={{display: 'flex', alignItems: 'flex-end'}}>PTZ Controls 
-                    {/*<div className='col-md-8'>
+                  <center style={{height:'20px',marginTop:'10px'}}>  <p className='lead' style={{display: 'flex', alignItems: 'flex-end' ,justifyContent:'center',fontWeight:'700'}}>PTZ Controls </p>
+                  </center>
+                <center> <p style={{display: 'flex', alignItems: 'flex-end' ,justifyContent:'center'}}> <div className='col-md-8'>
                     <Dropdown>
-      <Dropdown.Toggle variant="success" id="dropdown-basic">
-        {selectedPreset || 'Select Preset'}
-      </Dropdown.Toggle>
-      <Dropdown.Menu>
-        {preset &&
-          preset.map((item, index) =>
-            (
-              <Dropdown.Item
-                key={item.id}
-                onClick={() => {
-                  setSelectedPreset(item.name);
-                  setPan(item.pan_default);
-                  setMinPan(item.pan_min);
-                  setMaxPan(item.pan_max);
-                  setTilt(item.tilt_default);
-                  setMinTilt(item.tilt_min);
-                  setMaxTilt(item.tilt_max);
-                  setZoom(item.zoom_default);
-                  setMinZoom(item.zoom_min);
-                  setMaxZoom(item.zoom_max);
-                }}
-              >
-                {item.name}
-              </Dropdown.Item>
-            )
-          )}
-      </Dropdown.Menu>
-    </Dropdown>
-                </div>*/}</p>
+                      <Dropdown.Toggle style={{  color:'rgb(243, 156, 18)' ,background:'rgb(44, 62, 80)' , border:' 3px solid rgb(44, 62, 80)' }}>
+                        {selectedPreset || 'Select Preset'}
+                      </Dropdown.Toggle>
+                      <Dropdown.Menu>
+                        {preset &&
+                           preset.map((item, index) =>
+                             (
+                              <Dropdown.Item
+                               key={item.id}
+                               onClick={() => {
+                               setSelectedPreset(item.name);
+                               setPan(item.pan_default);
+                               setMinPan(item.pan_min);
+                               setMaxPan(item.pan_max);
+                               setTilt(item.tilt_default);
+                               setMinTilt(item.tilt_min);
+                               setMaxTilt(item.tilt_max);
+                               setZoom(item.zoom_default);
+                               setMinZoom(item.zoom_min);
+                               setMaxZoom(item.zoom_max);
+                               }}>
+                               {item.name}
+                      </Dropdown.Item>
+                      )
+                    )}
+                 </Dropdown.Menu>
+                 </Dropdown>
+                </div></p></center> 
                     
                 <br/>
                     <label className="form-label" htmlFor="customRange1" style={{width:'30%'}}>Pan <span className='lead' style={{ float: 'right' }}>{pan}</span></label>
@@ -358,17 +394,17 @@ const changeLive=(liv)=>{
                    {live?(<>
                      <div style={{    display: 'flex', alignItems: 'center',flexDirection: 'column'}}>
                      <div><Tooltip title="Tilt" placement='top'>
-                       <button style={{border: 'none',background: 'white'}} onClick={()=>{if(tilt!==90){setTilt(tilt+5)}}}>
+                       <button style={{border: 'none',background: 'white'}} onClick={()=>{if(tilt!==maxtilt && tilt+5<=maxtilt){setTilt(tilt+5)}}}>
                         <img src={up} style={{width:'48px',height:'48px'}}/>
                        </button></Tooltip>
                      </div>
                      <div>
                      <Tooltip title="Zoom Out">
-                     <button  style={{border: 'none',background: 'white'}} onClick={()=>{if(zoom!==0){setZoom(zoom-10)}}}>
+                     <button  style={{border: 'none',background: 'white'}} onClick={()=>{if(zoom!==minzoom && zoom-10 >=minzoom){setZoom(zoom-10)}}}>
                          <img src={zoomout} style={{width:'48px',height:'48px'}}/>
                        </button></Tooltip>
                        <Tooltip title="Pan">
-                       <button  style={{border: 'none',background:'white'}} onClick={()=>{if(pan!==0){setPan(pan-10)}}}>
+                       <button  style={{border: 'none',background:'white'}} onClick={()=>{if(pan!==minpan && pan-10 >=minpan){setPan(pan-10)}}}>
                          <img src={left} style={{width:'48px',height:'48px'}}/>
                        </button></Tooltip>
                        <Tooltip title="reset">
@@ -376,16 +412,16 @@ const changeLive=(liv)=>{
                        <img src={refresh} style={{width:'30px',height:'30px'}}/>
                      </button></Tooltip>
                     <Tooltip title="Pan">
-                     <button  style={{border: 'none',background: 'white'}} onClick={()=>{if(pan!==360){setPan(pan+10)}}}>
+                     <button  style={{border: 'none',background: 'white'}} onClick={()=>{if(pan !== maxpan && pan + 10 <= maxpan){setPan(pan+10)}}}>
                        <img src={right} style={{width:'48px',height:'48px'}}/>
                      </button></Tooltip>
                      <Tooltip title="Zoom In">
-                     <button  style={{border: 'none',background: 'white'}} onClick={()=>{if(zoom!==100){setZoom(zoom+10)}}}>
+                     <button  style={{border: 'none',background: 'white'}} onClick={()=>{if(zoom!==maxzoom&& zoom+10 <=maxzoom){setZoom(zoom+10)}}}>
                          <img src={zoomIn} style={{width:'48px',height:'48px'}}/>
                        </button></Tooltip>
                      </div>
                      <div> <Tooltip title="Tilt">
-                       <button style={{border: 'none',background: 'white'}}  onClick={()=>{if(tilt!==0){setTilt(tilt-5)}}}>
+                       <button style={{border: 'none',background: 'white'}}  onClick={()=>{if(tilt!==mintilt && tilt-5 >=mintilt){setTilt(tilt-5)}}}>
                        <img src={down} style={{width:'48px',height:'48px'}}/>
                        </button></Tooltip>
                        </div> </div>
@@ -396,17 +432,17 @@ const changeLive=(liv)=>{
                    </>):(<>
                     <div style={{    display: 'flex', alignItems: 'center',flexDirection: 'column'}}>
                       <div><Tooltip title="Tilt" placement='top'>
-                        <button style={{border: 'none',background: 'white'}} onClick={()=>{if(tilt!==90){setTilt(tilt+5);}}}>
+                        <button style={{border: 'none',background: 'white'}} onClick={()=>{if(tilt!==maxtilt && tilt+5<=maxtilt){setTilt(tilt+5);}}}>
                          <img src={up} style={{width:'48px',height:'48px'}}/>
                         </button></Tooltip>
                       </div>
                       <div>
                       <Tooltip title="Zoom Out">
-                      <button  style={{border: 'none',background: 'white'}} onClick={()=>{if(zoom!==0){setZoom(zoom-10)}}}>
+                      <button  style={{border: 'none',background: 'white'}} onClick={()=>{if(zoom!==minzoom && zoom-10 >=minzoom){setZoom(zoom-10)}}}>
                           <img src={zoomout} style={{width:'48px',height:'48px'}}/>
                         </button></Tooltip>
                         <Tooltip title="Pan">
-                        <button  style={{border: 'none',background:'white'}} onClick={()=>{if(pan!==0){setPan(pan-10)}}}>
+                        <button  style={{border: 'none',background:'white'}} onClick={()=>{if(pan!==minpan&& pan-5>=minpan){setPan(pan-10)}}}>
                           <img src={left} style={{width:'48px',height:'48px'}}/>
                         </button></Tooltip>
                         <Tooltip title="reset">
@@ -414,16 +450,16 @@ const changeLive=(liv)=>{
                         <img src={refresh} style={{width:'30px',height:'30px'}}/>
                       </button></Tooltip>
                      <Tooltip title="Pan">
-                      <button  style={{border: 'none',background: 'white'}} onClick={()=>{if(pan!==360){setPan(pan+10);}}}>
+                      <button  style={{border: 'none',background: 'white'}} onClick={()=>{if(pan!==maxpan&& pan+10<=maxpan){setPan(pan+10);}}}>
                         <img src={right} style={{width:'48px',height:'48px'}}/>
                       </button></Tooltip>
                       <Tooltip title="Zoom In">
-                      <button  style={{border: 'none',background: 'white'}} onClick={()=>{if(zoom!==100){setZoom(zoom+10);}}}>
+                      <button  style={{border: 'none',background: 'white'}} onClick={()=>{if(zoom!==maxzoom && zoom+10 <=maxzoom){setZoom(zoom+10);}}}>
                           <img src={zoomIn} style={{width:'48px',height:'48px'}}/>
                         </button></Tooltip>
                       </div>
                       <div> <Tooltip title="Tilt">
-                        <button style={{border: 'none',background: 'white'}}  onClick={()=>{if(tilt!==0){setTilt(tilt-5);}}}>
+                        <button style={{border: 'none',background: 'white'}}  onClick={()=>{if(tilt!==mintilt && tilt-5 >=mintilt){setTilt(tilt-5);}}}>
                         <img src={down} style={{width:'48px',height:'48px'}}/>
                         </button></Tooltip>
                         </div> </div>
@@ -436,7 +472,7 @@ const changeLive=(liv)=>{
             </div>
             <div className='col-md-8' style={{ backgroundColor: '#eeee',    paddingBottom: "20px"}}>
               <div className='mb-3 d-flex justify-content-center' style={{height:'50%',width:"100%"}}>
-                {view === "camera" ? <CameraFeed cameraId={camera} view={view} live={live} changeLive={changeLive} liveStream={liveStream} imageUrls={imageUrls} /> :
+                {view === "camera" ? <CameraFeed cameraId={camera} view={view} live={live} changeLive={changeLive} liveStream={liveStream} imageUrls={imageUrls} pan={pan} zoom={zoom} tilt={tilt}/> :
                   <MiniMap camId={id} />
                 }
               </div>
@@ -444,7 +480,7 @@ const changeLive=(liv)=>{
           </div>
           <div className='row'>
             <div className='col-md-4 px-4 py-2 d-flex justify-content-center' style={{ backgroundColor: '#fffff' }}>
-              {view === "map" ? <CameraFeed cameraId={camera} view={view} live={live} changeLive={changeLive} liveStream={liveStream} imageUrls={imageUrls} /> :
+              {view === "map" ? <CameraFeed cameraId={camera} view={view} live={live} changeLive={changeLive} liveStream={liveStream} imageUrls={imageUrls} pan={pan} zoom={zoom} tilt={tilt} /> :
                 <MiniMap camId={id}/>
               }
             </div>

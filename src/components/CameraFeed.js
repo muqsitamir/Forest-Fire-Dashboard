@@ -209,6 +209,9 @@ export default function CameraFeed(props) {
         let res = await fetch(`${backend_url}/core/api/camera/ptzControlsOn/`, {
           method: "POST",
           body: JSON.stringify({
+            pan: props.pan,
+            tilt: props.tilt,
+            zoom: props.zoom,
             camera: nam,
             power:power,
             message: message,
