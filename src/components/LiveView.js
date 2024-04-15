@@ -14,7 +14,7 @@ import { backend_url } from "../App";
 import MiniMap from './MiniMap';
 import { LiveFilter } from '../features/filters/LiveFilter';
 import { getOrganization, selectOrganization } from "../features/organization/organizationSlice";
-import TopAppBar from '../Headers/TopAppBar/TopAppBar';
+
 const up="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAADVklEQVR4nO2aTUuUURTHf0WvlqX0nhP0BdJsmy1atzH7DFEJrVulLVuXpokfINFdBJUlvZoxFkqakmgQYi5KlGghZhMXjiCDzzjPPfc+cyeeP/w3w3PPOf8z9/XcCylSpEiRIkUKBTJAA3ARaAZagTagDxgAhoVTwDQwBywAS0BOuCS/zck3U+vaDYitNrHdLL4axHdJcBroBObXiSgVTQwdQF0SwvcB3cBqAMLzaWLqAip9iT8BfApA6GYc9TE0KsVwrkw4Dux3mYDuAETFpRkOzia81QAExaWJudZFAjoDEGPLdhcJmA9AiC2/a8VnAhChZY0mAecCEKCl2TFa41IAArRs0iSgOQABWl7VJOBWAAK0bNEkoN1zcI+EPn2YU6Q1+jwG9gTYBewAHnr006NJwAtPQT0V8WvYDfR78mXqCdZ47yGgV8CeDXyZJDz34G9Qk4BRx8G8AfYW8Fch/5hLnx81CZh0GMjbIosVFY6HnjkaW+Orw24Yp1JjhshLR75NjdEacw4C+ABUW5bfhhz4n9Uk4KfSeRao2uSsYRiFKqkMa2L4oUnAb4XjEeBAAduXgWVgBbi+SRKyijh+aRLwx9KpWT0ORtjcBtzeoM19YHtEm2oZSjaxrCSdgAngaIQ90yOeFWj7Gjgc0faQZVV6JckhMAkci7B1CpgpwsY34EyEDZOcsSSHwEIMR1+A4xF2LuRdhRUTdFOBJIwnNQnOFelkKqL0tAW4YVlV/itzxdYN7B4BPiexDM4UGWh9xGam10J4Pnsjzg714tvrRmiyyCCzeTu9jIP1O39VOZm3XR5MYis8EiNIc4jZCZz1VEo3Y/m81A8eJ3UYGooZ5DvZ3OQ8cVl8xI0puIJILkGqCiK9AQjQ8kHIRdFcAryjSUBrAAK0vKlJwLUABGh5RZOApgAEaGlelFmjIQABWpp9iTUyAQgo6fV4uT+QMIc5NToCEFKSe8E11JXxIylThHGCrgAExaXpuc5QGfNkWGqOyb2CU2TK5LXoiIuZv1BP6Ap0TliVbl/o8tUZaoF78g4vhKWu3eWEFxc1smNslAdJ5k3OXXmZ0S/lsmG5L5iWIqWpNi+uE7Eov83KNxPSJis2esRmi/hoFJ/eunqKFClSpEjB/49/l3pIoX36BroAAAAASUVORK5CYII=";
 const down="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAADZklEQVR4nO2aTUtVURSGn6JPyz7oO2/QH0izaTpo3MTsN0QlNG6UNmyepok/QNFZBIUlRd+YoWQZiQUh6sBEiQZidmLDEi6Xe889e699rvvGeeGdXM5ea73r7rP32utsyJAhQ4YMGTIokAOagEtAG9ABdAJDwAjwXjgNzABzwBKwAkTCFfltTp6Zzhs3IrY6xXab+GoS35uCs0APsJAnYrNoYugGGiohfB/QB6wHILyQJqZeoDYt8aeAjwEILceJNF6NWjEcVQk/Aft9JqAvAFG2NK+DtwVvPQBBtjQx1/tIQE8AYlzZ5SMBCwEIceW8VnwuABFa1mkS0ByAAC1NxeiMywEI0LJVk4C2AARoeU2TgNsBCNCyXZOAewEI0PKuJgFDAQjQckCTgGcBCNDS9BOc8dbS2RtgNUUxq+LDNiZnTFg4egrsBM6nVD0uAheA7cAji3EfNAn4ktDJaEEjIiftLF/izR9xOs9+DfDa4mjsjG8JHPwFGouM3QMMehA/KLYK0Si+y403PUZnzCUMcrpEzb0FuOl4nDbi7gBbi9g9BnxOaGdWk4Ali4C/AidL2LlY0AUux18xJexRmdY2a4czflv+a2bNOFHC1pmEr9QP4FyM+EnLmEwynfHHYepOAcdL2DsEPIkZ+0JEFsMRx6bsWqUTEMmqfbiEzW3ybheOuS9bXDEcBMYcY1mr5CsQ5XFc/vFSuCKFjQnwRsxzB2SbdY1D9Qr8VDiOpBYwAuIaLs1lxGvricVKbINRDMdkCrt8hbItxb1vg989BLBRjxtBSWEKn+eefM9UohSOEvBVwu92NZ5PoapSeNxjIIYvgb1lxI949qk6DL3zHMzGXl+stt8tJ0rf/syhKbiGyLAIzhc/HGJDZDCloAwfA7uAHcCDFP30axLQlWJghg+FwTZFO1IOrhK8pUnA9QAEaHlVk4DWAARoaW6UOaMpAAFamiatM3IBCNjUz+PVfkHCHObU6A5AiCvN7VI1Gqr4kpTpQ3pBbwCCbGlmrjfUpnAyTJOTlv2HxDtCNdwWHfex8sfNhN5A14R1mfZx/QZvqJfbI/OBbHVdPhc8W9RJxdgiF5La5QQ2IGf8UensTkl/blY+uS3niViW32blmSkZMyo2BsRmu/hoEZ+pTfUMGTJkyJCB/x//AOLbSKZkyn6XAAAAAElFTkSuQmCC";
 const left="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAC9UlEQVR4nO2azWpTQRTHf4KKolEUF0ojrhVsBZfGZzDWJ3Cl9B1MfQZtbAl9AEu7VxFL/Ka0aoMfrdbSTUkrSGgRF6IxMnAWIaS35s6ZyaSdP5zNJfec8//nzsc5MxARERERERFhgSyQA64CQ8AwMAJMAdPAnNgSsAxUgRqwCTTENuVZVX6z1PTetPgaEd9DEisnsbuCC8AYsN5EoltmchgFBnwQPwKMA/UAiLeayakEZFyRPw28D4DodlZxMTQy4rjRI/YROKopwHgApDo1MxzUJrx6AIQ6NZNzv4YAYwGQSWtFDQHWAyCS1tZsyWe7kPRfZX99NgJc9kz+i4zbV4o+zY4xNa55JP+56d86BDxQ8jtoI8BNT+Q/AadaYu8HXiv4NhxS47YH8gttyBtcAn4p+C/YCHDPwz9/sk3cM8A3pRh3bQSYckj+HXCiTcyDUgZrxZmwEaDsiLwheLxNvD3ApHIs009IjRmP5JGGh3Y8s6SmRkU5mVng2Bax8o5qjrc2AiwqJvJCGirtcK6lRaZdGqfGilISzxM6NWY4fHVEviE9xtSoKiTwFDi8hf99Mkk1HNqqjQA1y+DlBPI+9hnGvtsI8NMi8ENZ07fCdQ/kjf2wEeBPyqCmkDmQ4Fdrm/s/9jsK0KUh8GgnDIGa40mwGPokWFVI4FmCCHuBJyEvgyu7fSO0qJjIy4St8NlQt8LzHivBKyEWQzMOEnqTIEIhtHK4vNsbIpOOBPDZErtvI0DRoQC+mqJ3bAQYdiyAj7b4rd1+MHLDRoBBTwK4PBozN8pSI+dRgIbsPC8qH46aoZQaWc8CBHc83usXJEwxZ43RAIikNXO71BoDPXxJ6jxKKAVAqFMzX64aMg4qQ5f2IaH0tloRKgGQ287mNWb+pC+hFOicUJfPPqkHqYZ+OdVZC2SpK2pOeJ2iT3aMeakdCnItxdzMeCxH4nNS9CxLk9J0mzeaSGzIs1X5zYK8Mys+JsRnQWLkJaazTz0iIiIiIoKdj3/ph0jRDrlVYgAAAABJRU5ErkJggg==";
@@ -51,6 +51,9 @@ function LiveView() {
  const [preset, setPreset] = useState(null);
  const [selectedPreset, setSelectedPreset] = useState('');
   const organization = useSelector(selectOrganization);
+  const [des,setDes]=useState('');
+  const [des1,setDes1]=useState('');
+  const [des2,setDes2]=useState('');
   useEffect(() => {
     dispatch(getOrganization());
   }, []);
@@ -140,6 +143,13 @@ function LiveView() {
             setZoom(obj.zoom_default);
             setMinZoom(obj.zoom_min);
             setMaxZoom(obj.zoom_max);
+          }
+          if(obj.name==="Preset 1"){
+            setDes(obj.description)
+          }else if(obj.name==="Preset 2"){
+            setDes1(obj.description)
+          }if(obj.name==="Preset 3"){
+            setDes2(obj.description)
           }
         });
           
@@ -240,7 +250,24 @@ if(item.uuid!==""){
       });
     }
   };
-  
+  const changePreset = (e) => {
+    if (preset && preset.length > 0) {
+      preset.map(obj => {
+        if (obj.name === e) {
+          setSelectedPreset(e)
+          setPan(obj.pan_default);
+          setMinPan(obj.pan_min);
+          setMaxPan(obj.pan_max);
+          setTilt(obj.tilt_default);
+          setMinTilt(obj.tilt_min);
+          setMaxTilt(obj.tilt_max);
+          setZoom(obj.zoom_default);
+          setMinZoom(obj.zoom_min);
+          setMaxZoom(obj.zoom_max);
+        }
+      });
+    }
+  };
 const changeLive=(liv)=>{
   setLive(liv);
 }
@@ -346,37 +373,7 @@ const handle_home_click = () => {
                   <div className="row d-flex justify-content-center">
                   <center style={{height:'20px',marginTop:'10px'}}>  <p className='lead' style={{display: 'flex', alignItems: 'flex-end' ,justifyContent:'center',fontWeight:'700'}}>PTZ Controls </p>
                   </center>
-                <center> <p style={{display: 'flex', alignItems: 'flex-end' ,justifyContent:'center'}}> <div className='col-md-8'>
-                    <Dropdown>
-                      <Dropdown.Toggle style={{  color:'rgb(243, 156, 18)' ,background:'rgb(44, 62, 80)' , border:' 3px solid rgb(44, 62, 80)' }}>
-                        {selectedPreset || 'Select Preset'}
-                      </Dropdown.Toggle>
-                      <Dropdown.Menu>
-                        {preset &&
-                           preset.map((item, index) =>
-                             (
-                              <Dropdown.Item
-                               key={item.id}
-                               onClick={() => {
-                               setSelectedPreset(item.name);
-                               setPan(item.pan_default);
-                               setMinPan(item.pan_min);
-                               setMaxPan(item.pan_max);
-                               setTilt(item.tilt_default);
-                               setMinTilt(item.tilt_min);
-                               setMaxTilt(item.tilt_max);
-                               setZoom(item.zoom_default);
-                               setMinZoom(item.zoom_min);
-                               setMaxZoom(item.zoom_max);
-                               }}>
-                               {item.name}
-                      </Dropdown.Item>
-                      )
-                    )}
-                 </Dropdown.Menu>
-                 </Dropdown>
-                </div></p></center> 
-                    
+                   
                 <br/>
                     <label className="form-label" htmlFor="customRange1" style={{width:'30%'}}>Pan <span className='lead' style={{ float: 'right' }}>{pan}</span></label>
                     <div className="row range w-50">
@@ -390,7 +387,45 @@ const handle_home_click = () => {
                     <div className="row range w-50">
                       <input type="range" className="form-range" id="customRange3" value={tilt} onChange={(e) => setTilt(e.target.value)} min={mintilt} max={maxtilt} step="1" disabled/>
                     </div>
-                     
+                    <center style={{height:'5vh'}}>
+                      <p>
+                        <div style={{display: 'flex',justifyContent: 'space-evenly',alignItems: 'center'}}>
+                          <Tooltip title={des}>
+                          <button 
+                          style={{width: 'fit-content',
+                          background: 'rgb(44, 62, 80)',
+                          color: 'rgb(243, 156, 18)',
+                          marginBottom: '20px',
+                          borderRadius: '5px',
+                               }}
+                           onClick={() => changePreset("Preset 1")}
+
+                          >Preset 1</button></Tooltip>
+              <Tooltip title={des1}><button
+              style={{
+                width: 'fit-content',
+                background: 'rgb(44, 62, 80)',
+                color: 'rgb(243, 156, 18)',
+                marginBottom: '20px',
+                borderRadius: '5px',
+              }}
+              onClick={() => changePreset("Preset 2")}
+ 
+            >Preset 2</button></Tooltip>
+           <Tooltip title={des2}>
+             <button
+            style={{
+              width: 'fit-content',
+              background: 'rgb(44, 62, 80)',
+              color: 'rgb(243, 156, 18)',
+              marginBottom: '20px',
+              borderRadius: '5px',
+            }}
+            onClick={() => changePreset("Preset 3")}
+
+          >preset 3</button></Tooltip>
+          </div></p>
+          </center>
                    {live?(<>
                      <div style={{    display: 'flex', alignItems: 'center',flexDirection: 'column'}}>
                      <div><Tooltip title="Tilt" placement='top'>
@@ -427,7 +462,8 @@ const handle_home_click = () => {
                        </div> </div>
                    <br/>
                     <div style={{display:'flex',justifyContent:'center'}}>
-                    <button onClick={HandleSubmit} className="btn btn-primary" type="submit" style={{color:'white',background:'black',border:'1px solid black'}}>Confirm</button>
+                    <button onClick={HandleSubmit} className="btn btn-primary" type="submit" style={{background: 'rgb(44, 62, 80)',
+                          color: 'rgb(243, 156, 18)',border:'1px solid rgb(44, 62, 80)'}}>Confirm</button>
                    </div>
                    </>):(<>
                     <div style={{    display: 'flex', alignItems: 'center',flexDirection: 'column'}}>
@@ -463,7 +499,7 @@ const handle_home_click = () => {
                         <img src={down} style={{width:'48px',height:'48px'}}/>
                         </button></Tooltip>
                         </div> </div>
-                    <br/>
+                    
                     </>)}
                     
                   </div>
