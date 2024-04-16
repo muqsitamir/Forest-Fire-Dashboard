@@ -4,7 +4,7 @@ import { backend_url } from '../App';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSync, faStop, faPlay, faPause, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import GifPlayer from '@deepit/react-gif-player';
-
+import "./button.css"
 
 export default function CameraFeed(props) {
   const [picture, setPicture] = useState({ pic: '', rnd: 0 });
@@ -270,26 +270,14 @@ export default function CameraFeed(props) {
             >
               <button
                 onClick={refreshImage}
-                style={{
-                  width: 'fit-content',
-                  background: 'rgb(44, 62, 80)',
-                  color: 'rgb(243, 156, 18)',
-                  marginBottom: '20px',
-                  borderRadius: '5px',
-                }}
+                className="presetButton"
               >
                 <FontAwesomeIcon icon={faSync} />Refresh
               </button>
 
               <button
                 onClick={stopCameraFeed}
-                style={{
-                  width: 'fit-content',
-                  background: 'rgb(44, 62, 80)',
-                  color: 'rgb(243, 156, 18)',
-                  marginBottom: '20px',
-                  borderRadius: '5px',
-                }}
+                className="presetButton"
               >
                 <FontAwesomeIcon icon={faStop} /> Exit Live View
               </button>
@@ -323,38 +311,20 @@ export default function CameraFeed(props) {
                   <div style={{display:'flex',flexDirection:'row'}}> 
                   <button
                     onClick={liveFeed}
-                    style={{
-                      width: 'fit-content',
-                      background: 'rgb(44, 62, 80)',
-                      color: 'rgb(243, 156, 18)',
-                      marginBottom: '20px',
-                      borderRadius: '5px',
-                    }}
+                    className="presetButton"
                   >
                  <FontAwesomeIcon icon={faPlay} />   Live View
                   </button>
                   <button
                     onClick={()=>{animationIsPlaying?setAnimationPlay(false):setAnimationPlay(true)}}
-                    style={{
-                      width: 'fit-content',
-                      background: 'rgb(44, 62, 80)',
-                      color: 'rgb(243, 156, 18)',
-                      marginBottom: '20px',
-                      borderRadius: '5px',
-                    }}
+                    className="presetButton"
                   >
                  <FontAwesomeIcon icon={faPlay} />   {animationIsPlaying?'Gif View':'Images View'}
                   </button>
                   {animationIsPlaying&&(
                     <button
                     onClick={()=>{{isTimerPaused?setTimerPaused(false):setTimerPaused(true)}}}
-                    style={{
-                      width: 'fit-content',
-                      background: 'rgb(44, 62, 80)',
-                      color: 'rgb(243, 156, 18)',
-                      marginBottom: '20px',
-                      borderRadius: '5px',
-                    }}
+                    className="presetButton"
                   >
                  <FontAwesomeIcon icon={isTimerPaused?faPlay:faPause} /> {isTimerPaused?'Play':'Pause'}
                   </button>

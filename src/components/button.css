@@ -1,0 +1,29 @@
+.presetButton{
+    width: fit-content;
+    background :rgb(44, 62, 80);
+    color: rgb(243, 156, 18);
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+.presetButton:hover{
+    width: fit-content;
+    background : rgb(243, 156, 18);
+    color:rgb(44, 62, 80);
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+.presetButton:active{
+    width: fit-content;
+    background : rgb(243, 156, 18);
+    color:rgb(44, 62, 80);
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+
+.presetButton:disabled{
+    width: fit-content;
+    background : #ada7a7;
+    color:rgb(44, 62, 80);
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
