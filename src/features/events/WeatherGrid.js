@@ -21,7 +21,7 @@ function WeatherGrid(props){
   ];
   
     let weather_data=props.data.weather_data;
-    // Calculate the index in the array based on wind degree
+    let weather_station=props.data.weather_station;
     let species=props.data.species;
     //let img=props.data.thumbnail;
    // img= img.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
@@ -37,7 +37,14 @@ function WeatherGrid(props){
    // let file=props.data.file;
     //file=file.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
     // Calculate the index in the array based on wind degree
-   
+    let air_temp;
+    let air_humidity;
+    if(weather_station!==null){
+     air_humidity=weather_station.Air_Humidity
+     
+     air_temp=weather_station.Air_Temp
+  console.log(air_temp+" "+air_humidity)
+    } 
   let index ;
   let windDirection;
   let celsius;
@@ -60,7 +67,9 @@ function WeatherGrid(props){
         // Handle the case when weather_data is empty or undefined
         return (
           <div className="card-body" style={{display: 'flex',flexDirection: 'column',alignItems: 'center',justifyContent: 'center'}}>
-          <span style={{fontSize:'12px'}}>{date}</span>Weather data not available... </div>);
+          <span style={{fontSize:'12px'}}>{date}</span>Weather data not available... </div>
+          
+        );
       }else{
         return (
           
@@ -93,7 +102,14 @@ function WeatherGrid(props){
                       <Avatar src={wind} style={{ borderRadius: "0px", width: "20px", height: "20px" }} /></IconButton>
                     {weather_data.data[0].wind_speed} KPH </Tooltip>
                     </p> 
-                     
+                    {air_temp!==null&&air_humidity!==null&&(<div>
+                      <p style={{fontSize:'12px'}}><Tooltip title="Air Temperature" style={{marginRight:'20px'}}>
+                           Air Temp: {air_temp}<sup>°</sup>C 
+                          </Tooltip>
+                          <Tooltip title="Air Humidity">
+                          Air Humidity: {air_humidity}%
+                            </Tooltip></p>
+                      </div>  )}
                     <div style={{    display: 'flex',flexDirection: 'row'}}>
                       {species.map((item) => (
                      <Chip label={item.name} key={item.name}

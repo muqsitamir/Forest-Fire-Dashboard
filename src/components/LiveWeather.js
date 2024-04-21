@@ -22,6 +22,8 @@ function LiveWeather(props){
   ];
     
     let weather_data=props.data.weather_data;
+    let weather_station=props.data.weather_station;
+    console.log(weather_station)
     let species=props.data.species;
     let img=props.data.thumbnail;
     img= img.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
@@ -31,6 +33,14 @@ function LiveWeather(props){
      let nameC=camera.split('-');
       name=nameC[1];
       //console.log('name: '+name);
+    }
+    let air_temp;
+    let air_humidity;
+    if(weather_station!==null){
+     air_humidity=weather_station.Air_Humidity
+     
+     air_temp=weather_station.Air_Temp
+  console.log(air_temp+" "+air_humidity)
     }
     const date=props.data.date;
     const sms_sent=props.data.sms_sent;
@@ -71,6 +81,16 @@ function LiveWeather(props){
                         <img src={img}  alt='' style={{width:'100px',height:'100px',borderRadius:'13px'}}/>
                       </a>
                       <div>Weather data not available... </div>
+                      
+                        {air_temp!==null&&air_humidity!==null&&(<div>
+                          <Tooltip title="Air Temperature" style={{marginRight:'20px'}}>
+                          <p>  Air Temperature: {air_temp}<sup>°</sup>C </p>
+                          </Tooltip>
+                          <Tooltip title="Air Humidity">
+                         <p>  Air Humidity: {air_humidity}%</p>
+                            </Tooltip>
+                      </div>  )}
+                        
                       <div style={{display:'flex',flexDirection:'column'}}>
               {sms_sent ?<Chip label="SMS Sent" avatar={<Avatar src={smsIconUrl} style={{borderRadius:"0px",width:"20px",height:"20px",}}/>} style={{marginBottom:'10px'}}/>:
             <Chip label="SMS Not-Sent" avatar={<Avatar src={notsmsIconUrl}  style={{borderRadius:"0px" ,width:"20px",height:"20px", }}/>}  style={{marginBottom:'10px'}}/>}
@@ -145,6 +165,14 @@ function LiveWeather(props){
                       <Avatar src={wind} style={{ borderRadius: "0px", width: "20px", height: "20px" }} /></IconButton>
                     <strong >{weather_data.data[0].wind_speed} KPH </strong></p> 
                     </Tooltip>
+                    {air_temp!==null&&air_humidity!==null&&(<div>
+                          <Tooltip title="Air Temperature" style={{marginRight:'20px'}}>
+                          <p>  Air Temperature: {air_temp}<sup>°</sup>C </p>
+                          </Tooltip>
+                          <Tooltip title="Air Humidity">
+                         <p>  Air Humidity: {air_humidity}%</p>
+                            </Tooltip>
+                      </div>  )}
                 </div></div>
                       <div style={{    display: 'flex',flexDirection: 'column'}}>
                       {species.map((item) => (
