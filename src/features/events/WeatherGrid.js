@@ -72,7 +72,8 @@ function WeatherGrid(props){
         return (
           <div className="card-body" style={{display: 'flex',flexDirection: 'column',alignItems: 'center',justifyContent: 'center'}}>
           <span style={{fontSize:'12px'}}>{date}</span>Weather data not available... 
-          {weather_station!==null&&air_temp!==null&&air_humidity!==null&&(<div>
+          {weather_station!==null&&air_temp!==null&&air_humidity!==null&&(
+          <div style={{height: '30px'}}>
                       <p style={{fontSize:'12px'}}>
                         <Tooltip title="Air Temperature" style={{marginRight:'20px'}}>
                         <IconButton style={{ color: '#868B94' ,paddingRight:'0px'}}>
@@ -120,7 +121,8 @@ function WeatherGrid(props){
                       <Avatar src={wind} style={{ borderRadius: "0px", width: "20px", height: "20px" }} /></IconButton>
                     {weather_data.data[0].wind_speed} KPH </Tooltip>
                     </p> 
-                    {weather_station!==null&&air_temp!==null&&air_humidity!==null&&(<div>
+                    {weather_station!==null&&air_temp!==null&&air_humidity!==null&&(
+                    <div style={{height: '30px'}}>
                       <p style={{fontSize:'12px'}}>
                         <Tooltip title="Air Temperature" style={{marginRight:'20px'}}>
                         <IconButton style={{ color: '#868B94' ,paddingRight:'0px'}}>
