@@ -10,6 +10,10 @@ const compass="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr
 const smsIconUrl="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABU0lEQVR4nO2Wu0oEQRBFTyiigcL6+ALxEbmZgqaKmaipifgbvvA3/BBNBDEQUcFMQ9fABdFVd42UkoZSirV3nJ7pmUD2wk2aun3o6scMxNUosA9cA+9AC7gAdoERCtIa8AJIBz9rTVStAJ8JUFG7mtVY0EHgMQVU1K4rwzHA23+AHoBpYNaM7cUAnyVA68Ck1lXN+FUMcMtMOKOAunpKayZ05d91b3aCJeA+YK/6NfdqxlxLUWAnqLSDawFQ5zHNXbbtpwORABXN/EgCvaG5Hc9hqqp9UNFMZvCh5oaARkCuAVTygJ3nAh+QD60lL/gGGDDwpCfzCVj2XQvJ6GMDr+gHwR2epl61c2Ar6bWSHL4F5skoieAjYBMYB/qAnrLA4nEX/EvdVsu/P1y1AqB3acCLkeEOupAG7JOdqGn+nwqXGK+XBcVADyhZJ8Ap0Fs2uDB9AWkG0AT7/d55AAAAAElFTkSuQmCC";
 const notsmsIconUrl="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACdElEQVR4nO2YsWsUQRTGf4rFqQjGMkogjYKcvYmCisa/ILE2GiwsbGxUIoildlFrQTQGovEPEAQ7E9BCUWOwO1NcE0WDhTkcefAWluFud3ZvdncO94Ovmbl5+31zb97OW6jx/2IImAGWgDVgU7mmYxf1N8FhJzAL/ABMCr8DN4AGgWAYWHYQbiy+A0aqFr8f+JZDvFG2dAMqS5uVPsQb5XLWdDoOLADrQCfHA09pnJvW+CQwDrQT1srcGDBljcuZSMUO4EGfu/VeY+3rcmBFmKDZw0Rb51Cj9sFOrU79ihfe1lgzKQKblomkuYjTaWljPPC0xnuRkCJNS6iLeOGzJANPPRmIyt7XlDxvxgS7iBd+STKw7slAVC02U37Xjgl3ES/8lWQgT7Xpxl0FGviZZMB44oGqUsh44lmNt1TAIV4sw8Ctqsqo8cSPGm+ozxfZmDW3Aewtw4DwhMactcanHK8S48A5a/x6knjfBt4A27WkrniK1yjTgPBy7DrdKuM6bTzzT+xaMay7mDXG2ywNjSmAGzETDb0Sy63SZd21WNqcrMqAcAu4AmzT50gluQA8B1ZjTf2qXtamY9VG1lzVGJUZiPhBq5Arzlh9dOUGIspO3wEmgEN6d9oDHNS3+F3gU5d1wRjIy9qAqf8Bik2hTgB5bnpQtKXCV0tZBFsuBnw19UXwsYuBo8DfAMSaLjyGI+4FINZYnCMD5NPi/QBEG82GOdWUGdIRzevhKbM6dfSZT2LtpzdkFfMbuERAMBn4GThCYDCOfATsJkCYQUsZGwOXMja2eoh/GGrK2HhtCZc+9jwDhFHgpX6jfwUcrlpQjRrkxz9N+6QOXaY1tgAAAABJRU5ErkJggg==";
 const fireIconUrl= "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAABdklEQVR4nO2WPShGURjHf68o8Q5KSspX2ZSV4R3ekoxWRqNiNBnEZLaYDWJ4IxYDg5TBx/zGoDCwiMhnyauT59bp5H4817nvIP/6L+ee8//dzj3nuQ/8K14HwCGQp4pqBCritWqCByyw8US1wEsO+AFoyxraAjw7YOOVrMHLP0AD92cFHQI+I8AbWUCbgMsIqPEH0OobvBoDDTwl83PADrAH1KSFjiSEGpdkTcEaM59IrTxwowCfy7rt3574WQXU+AmYc8bugToNtEGKQ8WDixrwmCeo8YwGXPII3tKALyKCroFxBfhMA34NCbkFuoFhBfhRA76LKRJ9ytOeWCchIe1WdTpS3u9Emg8JMR1IoF65p3HgzWTIb3UCbwl+fwXZyijwpAaM3D83xHQgrgYjDqNpHJq14FrZJjvoXQ6Wq9EQ8AIpVQ+sO2Gn0ga5cueVpfSmVg6YBl6sUNNXuypaz6+ADjypC1iUyrUf8oK7wDHQ4wvKn9EXpY8rBEsOB3YAAAAASUVORK5CYII=";
+const station="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAElElEQVR4nO2aW4hWVRTHfxNeijTTmszEF5HIS3b5RAnswRSKIrPyWbEepFKQfErwrdTE0UnHS0Zk40PReAHpIXQsLxRoQTJq+WJQloFZ3qZ0nIuxYH2wOZx9zt7n7K85zXf+sODwnb3XWvt/9lp777U/KFGiRIkSJUqUKBGLh4H3gFNAJ/APcAbYDDyCP14FrgG/AruBl4CGGvjZqc/NwJQsCocCW4Be4JZF5N024A4PnX/G6DkKjMnipKOfPUALMMRH6ZcJCqPylSMJcxJ0/AQ0Zhi8j58HXUnY6qG0KtInDctTdHzuSYDp59/AamCyEnMP8DJwPGJjk0ss9XoM/CbwM3AEuDdF94cO+p50HLzp50XgMUu7QcAHkXAQkqxotjjWpwN4A5gLVID7PRPYfgcCtjvqMv18PqWtkPCt0X59UuPTFsfWAU8Aa4Am4H1gB/AZsA84AHwNfAf8CJwFLgB/GavFNw4EyAojGG95/2DEzw5HwuYbOk4mNbxqMfyAJqpbGaQ65Toc2soSKbjT8n5YxM/UmFY0GjquZiFgrH7VLARMqiEBkvhccLsrAacthjfkCIGpNQyBXY4ETHUNgeYE51qBpcALwDTdvIROgkKsC5qNGZO2+gjWuibBKbpU9NcyONORANPPT1I+hKxY17VtjxGSVmzOEOfSJ+9GSELJBy1G308tO8kXI9tvOS+kYohuG10H365JJs9W+KzjVI762W7o6NQD1lol51TEhuSpwT7KW1LCoVe/vMvgkw5Dh4DRnoM3/dyU4mePfnnnwZuYrEnjpCYcOQ7/oEZlO5r1OHwOaAPmBToOR/28ps9NLjHf37gbeJM6QwPwtE7NP4CuQDPhf4PRMbF6H3WESgwBj1NHmBtDQNqxdkDh9RgCXqOO8E4MAW9TR9gRQ8BH1BHaYwiQreqAwG3ABOAZYInWEtq0hH0C+AXojiGgW9+d0LZt2neJ6pqguguHYcBzegiRO4IrGU6TrnJFyXkXeFYrR/2CEcArOpW7ajjgNOnS0FmkPtUcM3VqVgsMRZLrWqJzLap4Y6yHMz1aBN2lobFY6wEVreuNA0ZqzX6QPo/TdxVtu1j77taTnU+lSnwNjnkJBrv1XL8SmA0Mr4H94apbbBy2JNKqiK/BscpiTCrFo/jvMUptx/kkvgbHQYsxqRCHwKMqPphm8UmSc1A0AJcsd4Z3BbKxQcV3Ce6L8ety6D3DRAvTUtoy4Zu5b2rCGqwXKRf0WWoDNxL6mThnafNQSAIWWozsz0nAzpgEW01gOx0JOGBpsyAkAS0WIxsj7Xr1Oux3LXV36HWZxOQXuk636g1Qk3FxutfQKc/oLKjoJch4rSKNjJnaGy2+ic/BcNxiRM71edGooWCGRWPO2oLIMQJhaEI8zgqgf1mMXvnNFU8lbJPF99yYkRCLWf/dZeL7GL3ymyvGJPg3PYB/LM2Q3IoicpTOjdYCDCSrfByCgDMFGEhWkT9r5MIIz7/NFU369OotM+YUYBB5RU6QmbGiAAPIK2/lIWBvAQaQV/bkIeC3Agwgr5zPQ0CJEiVKlCjBwMW/GVjDIfFDSEMAAAAASUVORK5CYII=";
+const right="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAkElEQVR4nO3XsQrDIBSF4f/1QpcMSof26WPfwkK6OIVmjif8H9xRuEeRqyBJkqQrLUAbtRKoAfuoDjwJDrAnhlhH09Ehyp8QX+BNkGKISRRPIvUkHsDnsGDG6mcT+zhQZq7tlgGWkBA95dFXTy7xiwDV5i9S3fmL1OSdX9M/NC25+Vt86pcRYkuZsJIkSUziB0TBElKM+4d4AAAAAElFTkSuQmCC";
+const airhumidity="data:image/png;base64,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";
+const airtemp="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAACvUlEQVR4nO2ZTWsUQRCGX/QgBo2aRXOIIoJ486qCJ3+B5EM3BxFU8OQPEDEIqygI3sVfoISYkEAuOQQ9BcWgYqLxA/xIyMEEs4kSFGSloISdsae6Z6cqm8a8UGTJdFX1M91d09MDbCg+PQFQ89jEGvXlJIByo861QLPWNgCfACwAKMUMcqcu191YQQ4D+FWX6zeAo1YgllDjjhyPYwM5JuQ5bgFipQdCzvsxgSwKOamCBavZ66Mq5FqKCWRAyNVvAWKlQzyF0vloyh2MCYTUwYu+ytafFwJCh7Wh9sJYawFCd/drI3fZAqSIRjnGGCIG6U3FKWOdTK082g5gNuU/D2CHMoOzw5ogNzNi3FBmcHbY9/9Q0V3/lgFSBbBTkcEU5Iqn8l1WZDAtvy89MZ7HArLqibHaLJC8+uABea/IYApS8YBUFBlMQVr4PMwFMcHXVUSBrucAoTu4tYEcFZ5GP/lvRYAo533y0+btlWchu669AHAANirxewlZeyjEfEBFyrr+BcB+A5B7eQ4daEinA0ur7xmwRRHiCB/K1ec4ITnc8nQwFITsmhLEJgBPHfHpgbrZ5bAbwA9FkGWl/dIZIcdZl8MlT8feAuhOHfFPeXwuKozGlBB/mtskNCI4vOMRS6sNwIzgN1gQpDNg5KlNQp+FxqeFZKcEv48FQYYDQIbybOJco/FXeww3fosBIP8cmy4LjVs9L0jSgi+ilcCikpA017uEZD2C35uCII8CQOjbSUJDQuOZjO92bVwIsvweFgTpCgCh6pnQBY/DLC/6VrYeDwTZOeh+O6yl7LbLoeQ5ws9rSzxiGurkKfSdbdw1EvXqUwShw4WmqQXApALEswbeTdS1D8BcAYg5jrEu1JGx46wFbN8t3kUKT7OrgQWgymui6dNJElWe87wBfM1P2xX+PcgldpcYYUP/of4AZh8bbk3MfAoAAAAASUVORK5CYII=";
 
 
 function WeatherGrid(props){
@@ -67,7 +71,21 @@ function WeatherGrid(props){
         // Handle the case when weather_data is empty or undefined
         return (
           <div className="card-body" style={{display: 'flex',flexDirection: 'column',alignItems: 'center',justifyContent: 'center'}}>
-          <span style={{fontSize:'12px'}}>{date}</span>Weather data not available... </div>
+          <span style={{fontSize:'12px'}}>{date}</span>Weather data not available... 
+          {weather_station!==null&&air_temp!==null&&air_humidity!==null&&(<div>
+                      <p style={{fontSize:'12px'}}>
+                        <Tooltip title="Air Temperature" style={{marginRight:'20px'}}>
+                        <IconButton style={{ color: '#868B94' ,paddingRight:'0px'}}>
+                      <Avatar src={airtemp} style={{ borderRadius: "0px", width: "20px", height: "20px" }} /></IconButton>
+                       {air_temp}<sup>°</sup>C 
+                          </Tooltip>
+                          <Tooltip title="Air Humidity">
+                          <IconButton style={{ color: '#868B94' ,paddingRight:'0px'}}>
+                      <Avatar src={airhumidity} style={{ borderRadius: "0px", width: "20px", height: "20px" }} /></IconButton>
+                      {air_humidity}%
+                            </Tooltip></p>
+                      </div>  )}
+          </div>
           
         );
       }else{
@@ -102,12 +120,17 @@ function WeatherGrid(props){
                       <Avatar src={wind} style={{ borderRadius: "0px", width: "20px", height: "20px" }} /></IconButton>
                     {weather_data.data[0].wind_speed} KPH </Tooltip>
                     </p> 
-                    {air_temp!==null&&air_humidity!==null&&(<div>
-                      <p style={{fontSize:'12px'}}><Tooltip title="Air Temperature" style={{marginRight:'20px'}}>
-                           Air Temp: {air_temp}<sup>°</sup>C 
+                    {weather_station!==null&&air_temp!==null&&air_humidity!==null&&(<div>
+                      <p style={{fontSize:'12px'}}>
+                        <Tooltip title="Air Temperature" style={{marginRight:'20px'}}>
+                        <IconButton style={{ color: '#868B94' ,paddingRight:'0px'}}>
+                      <Avatar src={airtemp} style={{ borderRadius: "0px", width: "20px", height: "20px" }} /></IconButton>
+                       {air_temp}<sup>°</sup>C 
                           </Tooltip>
                           <Tooltip title="Air Humidity">
-                          Air Humidity: {air_humidity}%
+                          <IconButton style={{ color: '#868B94' ,paddingRight:'0px'}}>
+                      <Avatar src={airhumidity} style={{ borderRadius: "0px", width: "20px", height: "20px" }} /></IconButton>
+                      {air_humidity}%
                             </Tooltip></p>
                       </div>  )}
                     <div style={{    display: 'flex',flexDirection: 'row'}}>
