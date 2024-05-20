@@ -5,6 +5,9 @@ import { showSideNav } from '../../reusable_components/site_data/siteDataSlice'
 import { useDispatch } from "react-redux";
 
 export default function TopAppBar(){
+    var user=JSON.parse(localStorage['user'])
+    console.log("organization: "+user.organization )
+    var organization=user.organization;
     const dispatch = useDispatch()
     const handle_side_nav = () => {
         dispatch(showSideNav());
@@ -49,10 +52,13 @@ export default function TopAppBar(){
                             <span className="mdc-button__ripple"/>
                             <span className="mdc-button__label">Cameras</span>
                         </button>
-                        <button className="mdc-button mdc-theme--primary mdc-top-app-bar__action-item" onClick={handle_admin_click} >
+                        {organization==="CVGL"&&(
+                            <button className="mdc-button mdc-theme--primary mdc-top-app-bar__action-item" onClick={handle_admin_click} >
                             <span className="mdc-button__ripple"/>
                             <span className="mdc-button__label">Admin</span>
                         </button>
+                        )}
+                        
                         <Link className="db text-decoration-none" to="/logout" >
                             <i className="material-icons-outlined v-mid mr2">lock</i>
                             <span>Logout</span>

@@ -43,7 +43,7 @@ export const getEvents =
     let config = {
       headers: Header,
     };
-    debugger
+   
     const filters = selectFilters(getState());
     let result = convert_to_request_parameters(filters.range, filters.startTime, filters.endTime);
     let cameras_selected = filters.cameras.join(",");

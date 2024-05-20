@@ -27,7 +27,7 @@ function LiveWeather(props){
     
     let weather_data=props.data.weather_data;
     let weather_station=props.data.weather_station;
-    console.log(weather_station)
+    //console.log(weather_station)
     let species=props.data.species;
     let img=props.data.thumbnail;
     img= img.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
@@ -44,7 +44,7 @@ function LiveWeather(props){
      air_humidity=weather_station.Air_Humidity
      
      air_temp=weather_station.Air_Temp
-  console.log(air_temp+" "+air_humidity)
+  //console.log(air_temp+" "+air_humidity)
     }
     const date=props.data.date;
     const sms_sent=props.data.sms_sent;
