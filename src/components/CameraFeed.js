@@ -5,10 +5,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSync, faStop, faPlay, faPause, faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons';
 import GifPlayer from '@deepit/react-gif-player';
 import "./button.css"
+import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import Switch from '@mui/material/Switch';
+import { Tooltip ,Modal,Box} from '@mui/material';
 
+const max="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABb0lEQVR4nO2Zy27CMBBFb/+OdAEBFXnRfnuRgNDnH1BpkCUvUOXHGM9EFsyRvIiIH4dJ7HEMGIbx0FBF2QEYGvp6Dm3U9Kki4suxQWR/Q39sHlLkHcCiQWQIbcwq8gfgDfpsAZy1I6Itsy1INImcI9dOQcIl+hITeYk0KB2ZWCR8H6+SIlCWyUlAWkRLpiShIiItw5FoErlOGfwcDwUZrgRnPNlF6hDKonKG4cxmtXUHxniaSA1olamzmnE6b5bx+VOKQ48SKZkT0px6lbh+ZHYhGkvk79uHlzb3CBqGYRgs1gA+APyEXCyXY/0CmACM6Az3b0H0MjGewm9dLogukqJ8Zu7/6jFFcYkEcJOps5kzaRwBfId/b9lBGj8yxhNlKnxFbJG4pY2pMJ4kua1lzc6uBHenSdJ7dkmJGhmSFNGQ4MqQlIimBEeGpETu5pMpKUaCExmSFtGW4MqwoYpiZ4i9Hb2RnSHOcIZoGMadcQF8l1ClZ2yIwQAAAABJRU5ErkJggg==";
 export default function CameraFeed(props) {
   const [picture, setPicture] = useState({ pic: '', rnd: 0 });
   const cameraId = props.cameraId;
+  console.log(cameraId)
   const view = props.view;
   const live = props.live;
   const stream=props.liveStream;
@@ -27,7 +32,12 @@ export default function CameraFeed(props) {
   const [isTimerPaused, setTimerPaused] = useState(false);
   const [timerId, setTimerId] = useState(null);
   const [animationIsPlaying, setAnimationPlay] = useState(false);
-
+  const [isOverflow, setIsOverflow] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showButton, setShowButton] = useState(false);
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
+  const scrollContainerRef = useRef(null);
   var url = ``;
   const Header = {};
   Header['Authorization'] = `Token ${localStorage.getItem('token')}`;
@@ -38,7 +48,14 @@ export default function CameraFeed(props) {
   const refreshImage = () => {
     iframeRef.current.src = props.liveStream;
   };
-
+  const checkOverflow = () => {
+    const scrollContainer = scrollContainerRef.current;
+    //console.log("scrollWidth:"+scrollContainer.scrollWidth)
+   // console.log("clientWidth:"+scrollContainer.clientWidth)
+    if (scrollContainer) {
+      setIsOverflow(scrollContainer.scrollWidth > scrollContainer.clientWidth);
+    }
+  };
   const liveFeed = () => {
     setLive(true);
     props.changeLive(true);
@@ -137,7 +154,10 @@ export default function CameraFeed(props) {
           if(link===null){
             
             setPicture({ pic: '/video.png' + '?ver=' + randNum, rnd: randNum });
-           setLink('');
+           setLink('/video.png');
+          }else if(link===''){
+            setPicture({ pic: '/video.png' + '?ver=' + randNum, rnd: randNum });
+            setLink('/video.png');
           }else{
             if (link.includes('http://127.0.0.1:8000')) {
             link = link.replace('http://127.0.0.1:8000', 'https://api.forestwatch.org.pk');
@@ -199,6 +219,24 @@ export default function CameraFeed(props) {
   
     }
   };
+  useEffect(() => {
+    checkOverflow();
+  }, [props.imageUrls]);
+  const scrollLeft = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollLeft -= 100;
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollLeft += 100;
+    }
+  };
+
+  
+    
+    
   let HandleSubmit = async (power,mes) => {
     //  e.preventDefault();
       try {
@@ -233,10 +271,25 @@ export default function CameraFeed(props) {
         console.log(err);
       }
     };
- 
+    const handleToggleLiveFeed = () => {
+      if (livefeed) {
+        stopCameraFeed();
+      } else {
+        liveFeed();
+      }
+    };
+    const handleMouseEnter = () => {
+      setShowButton(true);
+    };
+  
+    const handleMouseLeave = () => {
+      setShowButton(false);
+    };
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start', marginTop: '3.0rem' }}>
-      <div className='my-5 py-5' style={{ display: loading ? 'block' : 'none' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start',width:'fit-content', alignItems:'center',margin:'10px',backgroundColor: 'rgba(238, 238, 238, 0.933)',padding:'10px',borderRadius:'25px' }}>
+      <div className='my-5 py-5' style={{ display: loading ? 'flex' : 'none',
+          
+          alignItems:'stretch' }}>
         <Bars radius='9' color='#0D6EFD' height='50' width='50' />
       </div>
 
@@ -245,138 +298,215 @@ export default function CameraFeed(props) {
         style={{
           display: loading ? 'none' : 'flex',
           flexDirection: 'column',
-          maxWidth: view === 'map' ? '400px' : '1000px',
-          maxHeight: view === 'map' ? '300px' : '400px',
-          paddingTop: view === 'map' ? '20px' : '10px',
+          alignItems:'stretch'
         }}
       >
-        {!loading && livefeed ? (
-          <div
-            className='d-flex'
-            style={{
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              alignContent: 'center',
-              marginTop: '3.5rem !important',
-            }}
-          >
-            <div
+{!loading &&(<div
               style={{
                 flexDirection: 'row',
                 alignItems: 'flex-start',
                 display: 'flex',
                 alignContent: 'center',
+                justifyContent:'space-between',
+                marginTop:'10px'
               }}
             >
-              <button
-                onClick={refreshImage}
-                className="presetButton"
-              >
-                <FontAwesomeIcon icon={faSync} />Refresh
-              </button>
-
-              <button
-                onClick={stopCameraFeed}
-                className="presetButton"
-              >
-                <FontAwesomeIcon icon={faStop} /> Exit Live View
-              </button>
-            </div>
+             <h5 style={{marginLeft:'10px'}}>{livefeed ?'Live View':cameraId.cam} </h5>
+             
+             <Tooltip title={livefeed ? "Exit" : "Live View"}>
+      <Switch 
+        onClick={handleToggleLiveFeed} 
+        style={{ marginRight: '5px' }} 
+        checked={livefeed} // This controls the on/off state of the switch
+      >
+        {livefeed ? "Exit" : "Live View"}
+      </Switch> <span style={{fontSize:'12px'}}>{livefeed ? "Exit" : "Live View"}</span>
+    </Tooltip>
+          
+         
+                 
+                  
+                  
+            </div>)}
+           
+        {!loading && livefeed ? (
+          <div
+            className='d-flex'
+            style={{
+              flexDirection: 'column',
+              alignItems: 'center',
+              alignContent: 'center',
+              marginTop: '3.5rem !important',
+              border:'1px solid transperent',
+              borderRadius:'25px'
+            }}
+          >
+           
 
             <iframe
               ref={iframeRef}
               src={stream}
               title='live'
               style={{
-                height: '300px',
-                width: '800px',
-                maxWidth: view === 'map' ? '400px' : '800px',
+                height: '200px', width: '500px',
+                borderRadius:'25px'
               }}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             />
+             
+            <button
+                onClick={refreshImage}  style={{marginTop:'10px' }} 
+                className="presetButton" 
+              >
+                <FontAwesomeIcon icon={faSync} />Refresh
+              </button>
           </div>
         ) : (
-          <div style={{ marginTop: '3.5rem!important' }}>
+          <div >
             {!loading && (
               <>
                 <div
                   style={{
-                    width: '100%',
-                    height: '350px',
                     display: 'flex',
                     flexDirection: 'column',
-                    alignItems: 'center',
+                    alignItems: 'flex-start',
                     justifyContent: 'flex-start',marginBottom:'10px'
                   }}
-                >
-                  <div style={{display:'flex',flexDirection:'row'}}> 
-                  <button
-                    onClick={liveFeed}
-                    className="presetButton"
-                  >
-                 <FontAwesomeIcon icon={faPlay} />   Live View
-                  </button>
-                  <button
-                    onClick={()=>{animationIsPlaying?setAnimationPlay(false):setAnimationPlay(true)}}
-                    className="presetButton"
-                  >
-                 <FontAwesomeIcon icon={faPlay} />   {animationIsPlaying?'Gif View':'Images View'}
-                  </button>
-                  {animationIsPlaying&&(
-                    <button
-                    onClick={()=>{{isTimerPaused?setTimerPaused(false):setTimerPaused(true)}}}
-                    className="presetButton"
-                  >
-                 <FontAwesomeIcon icon={isTimerPaused?faPlay:faPause} /> {isTimerPaused?'Play':'Pause'}
-                  </button>
-                  )}
+                > 
+                  <div style={{display:'flex',flexDirection:'row' ,
+                }}> 
+                   
+                   {isModalOpen && (
+                <Modal open={isModalOpen} onClose={closeModal}>
+                  <Box>
+                    <div className="modal-container">
+                      <div className="image-container" style={{display:'flex',justifyContent:'center',alignItems:'center',marginTop:'70px'}}>
+                      <GifPlayer
+                    gif={props.imageUrls.length > 0 ? props.imageUrls[currentImageIndex] : picture.pic}
+                    paused={isPaused}
+                    onTogglePlay={togglePause}
+                    autoPlay
+                    frame={!isNaN(currentFrame) ? currentFrame : 0}// Use currentFrame to control the frame position
+                    style={{ display: loading ? 'none' : 'flex', 
+                      justifyContent:'center',alignItems:'center',
+                    height: '100%', width: '100%' }}
+                    onClick={() => setTimerPaused(!isTimerPaused)}
+                    /> </div>
                   
+                       <div
+        ref={scrollContainerRef}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: '20px',
+          overflow: 'hidden',
+          scrollBehavior: 'smooth',
+        }}
+      >
+                  
+        {props.imageUrls.map((imageUrl, index) => (
+          <img
+            key={index}
+            src={imageUrl}
+            alt={`Thumbnail ${index}`}
+            style={{
+              width: '60px',
+              height: '60px',
+              margin: '0 5px',
+              cursor: 'pointer',  border:'1px solid black',
+              borderRadius:'15px',
+              border: index === currentImageIndex ? '2px solid #3498db' : 'none',
+            }}
+            onClick={() => setCurrentImageIndex(index)}
+            onKeyDown={(e) => handleKeyDown(e, index)}
+            tabIndex={0}
+          />
+        ))}
+      </div>
+     
+                      <button className="close-button" onClick={closeModal} style={{ position: 'absolute', top: '10px', right: '10px', cursor: 'pointer' }}>
+                        &times;
+                      </button>
+                    </div>
+                  </Box>
+                </Modal>
+              )}
                   
                   </div>
-                  {animationIsPlaying?( 
                   <GifPlayer
                     gif={props.imageUrls.length > 0 ? props.imageUrls[currentImageIndex] : picture.pic}
                     paused={isPaused}
                     onTogglePlay={togglePause}
                     autoPlay
                     frame={!isNaN(currentFrame) ? currentFrame : 0}// Use currentFrame to control the frame position
-                    style={{ display: loading ? 'none' : 'block', height: '300px', width: '700px' }}
-                  />):( <GifPlayer
-                    gif={picture.pic}
-                    paused={isPaused}
-                    onTogglePlay={togglePause}
-                    autoPlay
-                    style={{ display: loading ? 'none' : 'block', height: '300px', width: '700px' }}
-                  />)}
-                 
-                </div>
-                {animationIsPlaying&&( <div
-                  style={{
-                    width: '100%',
-                    height: '100px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    marginTop: '20px', overflow: 'scroll'
-                  }}
-                >
-                  {props.imageUrls.map((imageUrl, index) => (
-                    <img
-                      key={index}
-                      src={imageUrl}
-                      alt={`Thumbnail ${index}`}
-                      style={{
-                        width: '60px',
-                        height: '60px',
-                        margin: '0 5px',
-                        cursor: 'pointer',
-                        border: index === currentImageIndex ? '2px solid #3498db' : 'none',
-                      }}
-                      onClick={() =>setCurrentImageIndex(index)}
-                      onKeyDown={(e) => handleKeyDown(e, index)}
-                      tabIndex={0}
+                    style={{ display: loading ? 'none' : 'block', 
+                    height: '200px', width: '500px',
+                    borderRadius:'25px' }}
+                    onClick={() => setTimerPaused(!isTimerPaused)}
                     />
-                  ))}
-                </div>)}
+                    <button
+                    className='presetButton'
+                    style={{ marginLeft: '450px',marginTop:'-50px'}} 
+                   onClick={openModal}
+                  > 
+                    <img src={max} style={{width:'20px' ,height:'20px'}} />
+                  </button>
+                </div>
+                {!livefeed&&(<div style={{
+          width: '500px',
+          height: '100px',display:'flex',alignItems:'center'}}>
+            
+      {isOverflow && (
+        <FontAwesomeIcon
+          icon={faChevronLeft}
+          size="2x"
+          onClick={scrollLeft}
+          style={{ cursor: 'pointer', marginRight: '10px' }}
+        />
+      )}
+      
+      <div
+        ref={scrollContainerRef}
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: '20px',
+          overflow: 'hidden',
+          scrollBehavior: 'smooth',
+        }}
+      >
+                  
+        {props.imageUrls.map((imageUrl, index) => (
+          <img
+            key={index}
+            src={imageUrl}
+            alt={`Thumbnail ${index}`}
+            style={{
+              width: '60px',
+              height: '60px',
+              margin: '0 5px',
+              cursor: 'pointer',  border:'1px solid black',
+              borderRadius:'15px',
+              border: index === currentImageIndex ? '2px solid #3498db' : 'none',
+            }}
+            onClick={() => setCurrentImageIndex(index)}
+            onKeyDown={(e) => handleKeyDown(e, index)}
+            tabIndex={0}
+          />
+        ))}
+      </div>
+      {isOverflow && (
+        <FontAwesomeIcon
+          icon={faChevronRight}
+          size="2x"
+          onClick={scrollRight}
+          style={{ cursor: 'pointer', marginLeft: '10px' }}
+        />
+      )}
+    </div>)}
                
 
                 

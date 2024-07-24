@@ -1,12 +1,13 @@
 import './Login.css'
 import {useState, useEffect, Redirect} from 'react';
-import { useNavigate } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
-export default function Login() {
+export default function PasswordReset() {
 
-  let history = useNavigate();
+  let history = useHistory();
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [oldPassword, setOldPassword] = useState("");
   const [message, setMessage] = useState("");
   let authh=""
 
@@ -17,10 +18,11 @@ export default function Login() {
   let HandleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let res = await fetch("https://forest-fire-dashboard.vercel.app/api/login", {
+      let res = await fetch("https://api.forestwatch.org.pk/api/password/change/", {
         method: "POST",
         body: JSON.stringify({
           username: name,
+          old_password:oldPassword,
           password: password,
         }),
         headers: {
@@ -32,7 +34,7 @@ export default function Login() {
       if (res.status === 200) {
             setName("");
             setPassword("");
-            setMessage("Logged in successfully");
+            setMessage("Password changed successfully");
             history('/');
       } else {
         setMessage(resJson.error);
@@ -66,16 +68,22 @@ export default function Login() {
                     
                 </div>
                 <div className="form-outline mb-3" >
-                    <label className="form-label" htmlFor="form3Example4">Password</label>
+                    <label className="form-label" htmlFor="form3Example4">Old Password</label>
+                    <input type="password" id="form3Example4" name="password" className="form-control" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)}
+                        placeholder="Enter old password" />
+                    
+                </div>
+                <div className="form-outline mb-3" >
+                    <label className="form-label" htmlFor="form3Example4">New Password</label>
                     <input type="password" id="form3Example4" name="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Enter password" />
+                        placeholder="Enter new password" />
                     
                 </div>
                 {message ? <div className="message alert alert-info">{message ? <p>{message}</p> : null}</div>: <div></div>}
                 
                 <div className="text-center text-lg-start mt-4 pt-0">
                     <div className="d-grid gap-2 col-6 mx-auto">
-                        <button className="btn btn-primary" type="submit">Login</button>
+                        <button className="btn btn-primary" type="submit">Reset</button>
                         </div>
                     <p className="mt-2 pt-1 mb-0 text-center"> <a href="https://forest-fire-dashboard.vercel.app/admin/" target="adminname"
                             >Admin Dashbord</a></p>

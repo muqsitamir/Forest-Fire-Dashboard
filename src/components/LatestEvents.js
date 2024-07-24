@@ -14,7 +14,7 @@ function LatestEvents(props){
     
     let species=props.data.species;
     let img=props.data.thumbnail;
-    img= img.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
+    //img= img.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
     const camera=props.data.camera_name;
     let name=camera;
     if(camera.includes('PTZ')){
@@ -26,7 +26,7 @@ function LatestEvents(props){
     const sms_sent=props.data.sms_sent;
     const nasa=props.data.nasa_tag;
     let file=props.data.file;
-    file=file.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
+   // file=file.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
     // Calculate the index in the array based on wind degree
 
 

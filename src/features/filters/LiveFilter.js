@@ -54,7 +54,7 @@ export function LiveFilter() {
         <div >
             <button onClick={handleOpen} className="mdc-button mdc-top-app-bar__action-item mdc-button__ripple">
               <FilterListIcon className='v-mid mr2' style={{color:'black'}}/>
-                <span style={{color:'black'}}>Filter</span>
+              
             </button>
             <Dialog 
                 open={state.open}

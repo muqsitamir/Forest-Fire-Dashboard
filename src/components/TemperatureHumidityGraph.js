@@ -3,11 +3,12 @@ import axios from 'axios';
 import HighchartsReact from 'highcharts-react-official';
 import Highcharts from 'highcharts';
 import "./button.css";
-const TemperatureHumidityGraph = ({ id }) => {
+const TemperatureHumidityGraph = ({ id ,live,isSidebar}) => {
   const [data, setData] = useState({});
   const [filter, setFilter] = useState('24h');
   const [loading, setLoading] = useState(false);
-  const fetchData = async () => {
+  const token='Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtdWhhbW1hZF93YXFhckBsdW1zLmVkdS5wayIsInVzZXJJZCI6ImNmMTgzMTYwLWYzNzAtMTFlZS05Mzc4LTIxNTVjZjA1NzBmOCIsInNjb3BlcyI6WyJDVVNUT01FUl9VU0VSIl0sInNlc3Npb25JZCI6IjU2ZDc5NjA3LTA4Y2EtNDJlZS04OTJmLWQyYWFhOTE0ZDE0ZCIsImlzcyI6InRoaW5nc2JvYXJkLmlvIiwiaWF0IjoxNzIxNjQwNDIxLCJleHAiOjE3MjIyNDUxMjEsImZpcnN0TmFtZSI6Ik11aGFtbWFkIiwibGFzdE5hbWUiOiJXYXFhciIsImVuYWJsZWQiOnRydWUsImlzUHVibGljIjpmYWxzZSwidGVuYW50SWQiOiI2YWFmMzZlMC0yZDUyLTExZWUtODM0OC0yMzc4NjQ5MWJkY2IiLCJjdXN0b21lcklkIjoiMjE1YTU1ZjAtODIzNS0xMWVlLWI2ZWEtOWQ2MDkwMzkwZjFiIn0.pE9eJmh3a2MAKZYiYLjOSkhcRVKlwCC9-CvW57UmF9s5vv3VVB5eo45r-Ks2IW9xtN4zqnbA0R7qLvZkKvDGHg';
+     const fetchData = async () => {
     setLoading(true);
     try {
       let deviceid;
@@ -23,7 +24,7 @@ const TemperatureHumidityGraph = ({ id }) => {
       const response17h = await axios.get(`http://icarus.lums.edu.pk/api/plugins/telemetry/DEVICE/${deviceid}/values/timeseries`, {
         headers: {
             'Content-Type': 'application/json',
-            'X-Authorization':'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtdWhhbW1hZF93YXFhckBsdW1zLmVkdS5wayIsInVzZXJJZCI6ImNmMTgzMTYwLWYzNzAtMTFlZS05Mzc4LTIxNTVjZjA1NzBmOCIsInNjb3BlcyI6WyJDVVNUT01FUl9VU0VSIl0sInNlc3Npb25JZCI6IjY2NTU5NzYxLTQzZTgtNGYxZC1iNzEzLWRkMjYxYjRlNTMwYyIsImlzcyI6InRoaW5nc2JvYXJkLmlvIiwiaWF0IjoxNzE2MDQ5NjEyLCJleHAiOjE3MTY2NTQzMTIsImZpcnN0TmFtZSI6Ik11aGFtbWFkIiwibGFzdE5hbWUiOiJXYXFhciIsImVuYWJsZWQiOnRydWUsImlzUHVibGljIjpmYWxzZSwidGVuYW50SWQiOiI2YWFmMzZlMC0yZDUyLTExZWUtODM0OC0yMzc4NjQ5MWJkY2IiLCJjdXN0b21lcklkIjoiMjE1YTU1ZjAtODIzNS0xMWVlLWI2ZWEtOWQ2MDkwMzkwZjFiIn0.Y_RJ3_lrPUGDFRqgEbZW0MjdJw3Y0HnouNYvrPesoBp62ORjKGI42fzQmCCk1Ljor2vKW66EKgnG3cy7F7KYmA'},
+            'X-Authorization':token},
            params: {
             keys: 'Air_Temperature,Air_Humidity',
             startTs: calculateStartTimestamp(), // Start timestamp for 24 hours
@@ -33,7 +34,7 @@ const TemperatureHumidityGraph = ({ id }) => {
     const response17hr = await axios.get(`http://icarus.lums.edu.pk/api/plugins/telemetry/DEVICE/${deviceid}/values/timeseries`, {
         headers: {
             'Content-Type': 'application/json',
-            'X-Authorization':'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtdWhhbW1hZF93YXFhckBsdW1zLmVkdS5wayIsInVzZXJJZCI6ImNmMTgzMTYwLWYzNzAtMTFlZS05Mzc4LTIxNTVjZjA1NzBmOCIsInNjb3BlcyI6WyJDVVNUT01FUl9VU0VSIl0sInNlc3Npb25JZCI6IjY2NTU5NzYxLTQzZTgtNGYxZC1iNzEzLWRkMjYxYjRlNTMwYyIsImlzcyI6InRoaW5nc2JvYXJkLmlvIiwiaWF0IjoxNzE2MDQ5NjEyLCJleHAiOjE3MTY2NTQzMTIsImZpcnN0TmFtZSI6Ik11aGFtbWFkIiwibGFzdE5hbWUiOiJXYXFhciIsImVuYWJsZWQiOnRydWUsImlzUHVibGljIjpmYWxzZSwidGVuYW50SWQiOiI2YWFmMzZlMC0yZDUyLTExZWUtODM0OC0yMzc4NjQ5MWJkY2IiLCJjdXN0b21lcklkIjoiMjE1YTU1ZjAtODIzNS0xMWVlLWI2ZWEtOWQ2MDkwMzkwZjFiIn0.Y_RJ3_lrPUGDFRqgEbZW0MjdJw3Y0HnouNYvrPesoBp62ORjKGI42fzQmCCk1Ljor2vKW66EKgnG3cy7F7KYmA'},
+            'X-Authorization':token},
            params: {
             keys: 'Air_Temperature,Air_Humidity',
             startTs: calculateStartTimestampFor34h(), // Start timestamp for 34 hours
@@ -43,7 +44,7 @@ const TemperatureHumidityGraph = ({ id }) => {
     const response2h = await axios.get(`http://icarus.lums.edu.pk/api/plugins/telemetry/DEVICE/${deviceid}/values/timeseries`, {
         headers: {
             'Content-Type': 'application/json',
-            'X-Authorization':'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtdWhhbW1hZF93YXFhckBsdW1zLmVkdS5wayIsInVzZXJJZCI6ImNmMTgzMTYwLWYzNzAtMTFlZS05Mzc4LTIxNTVjZjA1NzBmOCIsInNjb3BlcyI6WyJDVVNUT01FUl9VU0VSIl0sInNlc3Npb25JZCI6IjY2NTU5NzYxLTQzZTgtNGYxZC1iNzEzLWRkMjYxYjRlNTMwYyIsImlzcyI6InRoaW5nc2JvYXJkLmlvIiwiaWF0IjoxNzE2MDQ5NjEyLCJleHAiOjE3MTY2NTQzMTIsImZpcnN0TmFtZSI6Ik11aGFtbWFkIiwibGFzdE5hbWUiOiJXYXFhciIsImVuYWJsZWQiOnRydWUsImlzUHVibGljIjpmYWxzZSwidGVuYW50SWQiOiI2YWFmMzZlMC0yZDUyLTExZWUtODM0OC0yMzc4NjQ5MWJkY2IiLCJjdXN0b21lcklkIjoiMjE1YTU1ZjAtODIzNS0xMWVlLWI2ZWEtOWQ2MDkwMzkwZjFiIn0.Y_RJ3_lrPUGDFRqgEbZW0MjdJw3Y0HnouNYvrPesoBp62ORjKGI42fzQmCCk1Ljor2vKW66EKgnG3cy7F7KYmA'},
+            'X-Authorization':token},
            params: {
             keys: 'Air_Temperature,Air_Humidity',
             startTs: calculateStartTimestampFor36h(), // Start timestamp for 36 hours
@@ -54,7 +55,7 @@ const TemperatureHumidityGraph = ({ id }) => {
     const response7h = await axios.get(`http://icarus.lums.edu.pk/api/plugins/telemetry/DEVICE/${deviceid}/values/timeseries`, {
         headers: {
             'Content-Type': 'application/json',
-            'X-Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtdWhhbW1hZF93YXFhckBsdW1zLmVkdS5wayIsInVzZXJJZCI6ImNmMTgzMTYwLWYzNzAtMTFlZS05Mzc4LTIxNTVjZjA1NzBmOCIsInNjb3BlcyI6WyJDVVNUT01FUl9VU0VSIl0sInNlc3Npb25JZCI6IjY2NTU5NzYxLTQzZTgtNGYxZC1iNzEzLWRkMjYxYjRlNTMwYyIsImlzcyI6InRoaW5nc2JvYXJkLmlvIiwiaWF0IjoxNzE2MDQ5NjEyLCJleHAiOjE3MTY2NTQzMTIsImZpcnN0TmFtZSI6Ik11aGFtbWFkIiwibGFzdE5hbWUiOiJXYXFhciIsImVuYWJsZWQiOnRydWUsImlzUHVibGljIjpmYWxzZSwidGVuYW50SWQiOiI2YWFmMzZlMC0yZDUyLTExZWUtODM0OC0yMzc4NjQ5MWJkY2IiLCJjdXN0b21lcklkIjoiMjE1YTU1ZjAtODIzNS0xMWVlLWI2ZWEtOWQ2MDkwMzkwZjFiIn0.Y_RJ3_lrPUGDFRqgEbZW0MjdJw3Y0HnouNYvrPesoBp62ORjKGI42fzQmCCk1Ljor2vKW66EKgnG3cy7F7KYmA'},
+            'X-Authorization': token},
         params: {
             keys: 'Air_Temperature,Air_Humidity',
             startTs: calculateStartTimestampFor24h(), // Start timestamp for additional 7 hours
@@ -64,7 +65,7 @@ const TemperatureHumidityGraph = ({ id }) => {
     const response51h = await axios.get(`http://icarus.lums.edu.pk/api/plugins/telemetry/DEVICE/${deviceid}/values/timeseries`, {
         headers: {
             'Content-Type': 'application/json',
-            'X-Authorization':'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtdWhhbW1hZF93YXFhckBsdW1zLmVkdS5wayIsInVzZXJJZCI6ImNmMTgzMTYwLWYzNzAtMTFlZS05Mzc4LTIxNTVjZjA1NzBmOCIsInNjb3BlcyI6WyJDVVNUT01FUl9VU0VSIl0sInNlc3Npb25JZCI6IjY2NTU5NzYxLTQzZTgtNGYxZC1iNzEzLWRkMjYxYjRlNTMwYyIsImlzcyI6InRoaW5nc2JvYXJkLmlvIiwiaWF0IjoxNzE2MDQ5NjEyLCJleHAiOjE3MTY2NTQzMTIsImZpcnN0TmFtZSI6Ik11aGFtbWFkIiwibGFzdE5hbWUiOiJXYXFhciIsImVuYWJsZWQiOnRydWUsImlzUHVibGljIjpmYWxzZSwidGVuYW50SWQiOiI2YWFmMzZlMC0yZDUyLTExZWUtODM0OC0yMzc4NjQ5MWJkY2IiLCJjdXN0b21lcklkIjoiMjE1YTU1ZjAtODIzNS0xMWVlLWI2ZWEtOWQ2MDkwMzkwZjFiIn0.Y_RJ3_lrPUGDFRqgEbZW0MjdJw3Y0HnouNYvrPesoBp62ORjKGI42fzQmCCk1Ljor2vKW66EKgnG3cy7F7KYmA'},
+            'X-Authorization':token},
             params: {
             keys: 'Air_Temperature,Air_Humidity',
             startTs: calculateStartTimestampFor51h(), // Start timestamp for 34 hours
@@ -74,7 +75,7 @@ const TemperatureHumidityGraph = ({ id }) => {
     const response68h = await axios.get(`http://icarus.lums.edu.pk/api/plugins/telemetry/DEVICE/${deviceid}/values/timeseries`, {
         headers: {
             'Content-Type': 'application/json',
-            'X-Authorization':'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtdWhhbW1hZF93YXFhckBsdW1zLmVkdS5wayIsInVzZXJJZCI6ImNmMTgzMTYwLWYzNzAtMTFlZS05Mzc4LTIxNTVjZjA1NzBmOCIsInNjb3BlcyI6WyJDVVNUT01FUl9VU0VSIl0sInNlc3Npb25JZCI6IjY2NTU5NzYxLTQzZTgtNGYxZC1iNzEzLWRkMjYxYjRlNTMwYyIsImlzcyI6InRoaW5nc2JvYXJkLmlvIiwiaWF0IjoxNzE2MDQ5NjEyLCJleHAiOjE3MTY2NTQzMTIsImZpcnN0TmFtZSI6Ik11aGFtbWFkIiwibGFzdE5hbWUiOiJXYXFhciIsImVuYWJsZWQiOnRydWUsImlzUHVibGljIjpmYWxzZSwidGVuYW50SWQiOiI2YWFmMzZlMC0yZDUyLTExZWUtODM0OC0yMzc4NjQ5MWJkY2IiLCJjdXN0b21lcklkIjoiMjE1YTU1ZjAtODIzNS0xMWVlLWI2ZWEtOWQ2MDkwMzkwZjFiIn0.Y_RJ3_lrPUGDFRqgEbZW0MjdJw3Y0HnouNYvrPesoBp62ORjKGI42fzQmCCk1Ljor2vKW66EKgnG3cy7F7KYmA'},
+            'X-Authorization':token},
             params: {
             keys: 'Air_Temperature,Air_Humidity',
             startTs: calculateStartTimestampFor68h(), // Start timestamp for 34 hours
@@ -84,7 +85,7 @@ const TemperatureHumidityGraph = ({ id }) => {
     const response72h = await axios.get(`http://icarus.lums.edu.pk/api/plugins/telemetry/DEVICE/${deviceid}/values/timeseries`, {
         headers: {
             'Content-Type': 'application/json',
-            'X-Authorization':'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtdWhhbW1hZF93YXFhckBsdW1zLmVkdS5wayIsInVzZXJJZCI6ImNmMTgzMTYwLWYzNzAtMTFlZS05Mzc4LTIxNTVjZjA1NzBmOCIsInNjb3BlcyI6WyJDVVNUT01FUl9VU0VSIl0sInNlc3Npb25JZCI6IjY2NTU5NzYxLTQzZTgtNGYxZC1iNzEzLWRkMjYxYjRlNTMwYyIsImlzcyI6InRoaW5nc2JvYXJkLmlvIiwiaWF0IjoxNzE2MDQ5NjEyLCJleHAiOjE3MTY2NTQzMTIsImZpcnN0TmFtZSI6Ik11aGFtbWFkIiwibGFzdE5hbWUiOiJXYXFhciIsImVuYWJsZWQiOnRydWUsImlzUHVibGljIjpmYWxzZSwidGVuYW50SWQiOiI2YWFmMzZlMC0yZDUyLTExZWUtODM0OC0yMzc4NjQ5MWJkY2IiLCJjdXN0b21lcklkIjoiMjE1YTU1ZjAtODIzNS0xMWVlLWI2ZWEtOWQ2MDkwMzkwZjFiIn0.Y_RJ3_lrPUGDFRqgEbZW0MjdJw3Y0HnouNYvrPesoBp62ORjKGI42fzQmCCk1Ljor2vKW66EKgnG3cy7F7KYmA'},
+            'X-Authorization':token},
             params: {
             keys: 'Air_Temperature,Air_Humidity',
             startTs: calculateStartTimestampFor4h(), // Start timestamp for 34 hours
@@ -198,79 +199,138 @@ const TemperatureHumidityGraph = ({ id }) => {
       fetchData();
     }, [filter]); // Fetch data when filter changes
   
-   
-    
-    Highcharts.setOptions({
-        time: {
-          useUTC: false,
-          timezone: 'Asia/Karachi',
-        },
-      });
-    
-    
-      const optionsHumidity = {
-        chart: {
-          type: 'line',
-        },
-        title: {
-          text: 'Weather Station Data',
-        },
-        xAxis: {
-            type: 'datetime',
-            labels: {
-              format: '{value:%d-%m %H:%M}', // Display date and time
-              
-            },
-            title: {
-              text: 'Date and Time',
-            },
-            tickInterval: 3600 * 1000,
-          },
-        yAxis: {
-          title: {
-            text: 'Air-Humidity (%) & Air-Temp(c)'
-          },
-        },
-        series: [
-          {
-            name: 'Humidity',
-            data: data.Air_Humidity ? data.Air_Humidity.map(item => [new Date(item.time).getTime(), parseFloat(item.value)]) : [],
-          },
-          {
-            name: 'Temperature',
-            data: data.Air_Temperature ? data.Air_Temperature.map(item => [new Date(item.time).getTime(), parseFloat(item.value)]) : [],
-          },
-        ],
-      };
-      
-    
-      return (
-        <div style={{width:'100%'}}>
-        <div style={{display:'flex',
-        flexDirection:'row',
-        justifyContent:'center',
-        flexWrap:'nowrap',
-        marginTop:'10px',
-        marginBottom:'10px'}}>
-        <button className="presetButton" 
-        onClick={() => setFilter('24h')} >24 Hours</button>
-        <button className="presetButton" 
-        onClick={() => setFilter('36h')}style={{marginLeft:'20px',marginRight:'20px'}}>36 Hours</button>
-        <button className="presetButton" 
-        onClick={() => setFilter('72h')} >72 Hours</button>
-        </div>
-        <div style={{display:'flex',
-        flexDirection:'row',
-        width:'100%',
-        justifyContent:'center',
-        flexWrap:'nowrap'}}>
-           {loading ? (
-          <div>Loading...</div>
-        ) : (
-          <HighchartsReact highcharts={Highcharts} options={optionsHumidity} />
-        )}</div>
-        </div>
-      );
+
+    const handleFilterChange = (filter) => {
+      console.log(filter)
+      setFilter(filter);
     };
     
-    export default TemperatureHumidityGraph;
+    Highcharts.setOptions({
+      time: {
+        useUTC: false,
+        timezone: 'Asia/Karachi',
+      },
+      chart: {
+        style: {
+          width: '100%',
+          height: '320px',
+          overflowX: 'scroll',
+          background: 'white',
+          border: 'none',
+        },
+      },
+    });
+  
+    // Highcharts options
+    const optionsHumidity = {
+      chart: {
+        type: 'line',
+        borderWidth: 0,
+        style: { fill: 'none' },
+      },
+      title: {
+        text: 'Weather Station Data',
+      },
+      colors: ['rgb(243, 156, 18)', 'rgb(44, 62, 80)'],
+      xAxis: {
+        type: 'datetime',
+        labels: {
+          format: '{value:%d-%m %H:%M}',
+        },
+        title: {
+          text: 'Date and Time',
+        },
+        tickInterval: 3600 * 1000,
+      },
+      yAxis: {
+        title: {
+          text: 'Air-Humidity (%) & Air-Temp(c)',
+        },
+      },
+      series: [
+        {
+          name: 'Humidity',
+          data: data.Air_Humidity
+            ? data.Air_Humidity.map((item) => [
+                new Date(item.time).getTime(),
+                parseFloat(item.value),
+              ])
+            : [],
+        },
+        {
+          name: 'Temperature',
+          data: data.Air_Temperature
+            ? data.Air_Temperature.map((item) => [
+                new Date(item.time).getTime(),
+                parseFloat(item.value),
+              ])
+            : [],
+        },
+      ],
+    };
+  
+    return (
+      <div style={{ overflowY: 'hidden', overflowX: 'hidden', height: '45vh' }}>
+        <div>
+          {loading ? (
+            <div>
+              <img src={'/spinner.gif'} alt="Loading" style={{ width: '50px', height: '50px' }} />
+              Loading...
+            </div>
+          ) : (
+            <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', overflow: 'hidden' }}>
+              <HighchartsReact highcharts={Highcharts} options={optionsHumidity} />
+              <div
+                style={{
+                  zIndex: '1',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-evenly',
+                  alignContent: 'center',
+                  marginTop: isSidebar ? '-55px' : '-50px',
+                }}
+              >
+                <label>
+                  <input
+                    type="radio"
+                    checked={filter === '24h'}
+                    onChange={() => handleFilterChange('24h')}
+                    style={{
+                      accentColor: filter === '24h' ? 'green' : 'initial',
+                    }}
+                  />
+                  24
+                </label>
+  
+                <label>
+                  <input
+                    type="radio"
+                    checked={filter === '36h'}
+                    onChange={() => handleFilterChange('36h')}
+                    style={{
+                      accentColor: filter === '36h' ? 'green' : 'initial',
+                    }}
+                  />
+                  36
+                </label>
+  
+                <label>
+                  <input
+                    type="radio"
+                    checked={filter === '72h'}
+                    onChange={() => handleFilterChange('72h')}
+                    style={{
+                      accentColor: filter === '72h' ? 'green' : 'initial',
+                    }}
+                  />
+                  72
+                </label>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+  
+  export default TemperatureHumidityGraph;

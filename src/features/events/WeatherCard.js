@@ -31,7 +31,7 @@ function WeatherCard(props){
     let weather_station=props.data.weather_station;
     let species=props.data.species;
     let img=props.data.thumbnail;
-    img= img.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
+    //img= img.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
     const camera=props.data.camera_name;
     let name=camera;
     if(camera.includes('PTZ')){
@@ -42,7 +42,7 @@ function WeatherCard(props){
     const date=props.data.date;
     const sms_sent=props.data.sms_sent;
     let file=props.data.file;
-    file=file.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
+   // file=file.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
     // Calculate the index in the array based on wind degree
     let air_temp;
     let air_humidity;

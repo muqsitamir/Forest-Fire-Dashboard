@@ -5,8 +5,11 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import "./live.css";
 import "./button.css";
 import axios from "axios";
-import { Tooltip,IconButton,Avatar ,Tab,Box} from '@mui/material';
-import CameraFeed from './CameraFeed';
+import { Tooltip,IconButton,Avatar,Box,Tabs,Tab } from '@mui/material';
+
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';import CameraFeed from './CameraFeed';
 import LiveEvents from './LiveEvents';
 import { useSelector ,useDispatch} from "react-redux";
 import { selectSiteData } from "../reusable_components/site_data/siteDataSlice";
@@ -14,14 +17,7 @@ import SideNav from "../Headers/SideNav/SideNav";
 import { useLocation, withRouter ,useParams} from "react-router-dom";
 import { backend_url } from "../App";
 import MiniMap from './MiniMap';
-import LiveChart from '../features/charts/LiveChart';
 import { LiveFilter } from '../features/filters/LiveFilter';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-
-import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
 import { getOrganization, selectOrganization } from "../features/organization/organizationSlice";
 import TemperatureHumidityGraph from './TemperatureHumidityGraph';
 const up="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEZklEQVR4nO1bS28cRRAeEG8wD/GGIDhEOGz3eAMroWBP1YhAJEuOp2qM9syJp8SZE5gjZ3BIsPgBROGGkHhaeUAAGZAtYoKIDBJChkNARIgDCk5QzTpR4syud7p7tnfJlPRJ1s5OVX+fq3uqa3qDoLLKKqusssoqM7UwTjfVYo40JqlCel4jT2ukGY38jgaeU8hfCTTwMYW0rJFWFPIfGvmERj69hhOtz+QaLbe+e/a+ucxXy+d0K0aSSkyJHfiwWkxbFfIeBfzbOSS8QMagkHarsbReOvHND49fr5Hf0kirvolfCFrVQLPDo8lQKeQV0D0K6Fv/RDfICORF51NjeDQZEse+yRXAUuPx5g3OBNBZ2nsnVQxAs84WPN2Xc34j0KqOJkesBVDIe/yTMc0C3mUvAPh/1JkLQL9akQ/jdJN3Epaob5+421wAJPBNwBZSMRoLoICe8E3AFgp5ylwAzGr70wMN4GdtMuAV7wTs8bKxABp4V6npCfyeoFwBaMZcAJRtaGkD++De+MmrarXmFRrp3fJEpr3GAiik/SUN6kMhfybOtm3NqxXwR6WIADxnkQH0pXvyfHBkx45r18cSETTSJyWIfdgiA9jxDpA+rcXN69rFazR2XrPWAXKZAd/YCPC9w8F81k2zQkRwPPWWzAUA/slVGhbp1MgUUcgHnMRGWjYWQCOtOBjA12E0cZNh++0Le/H5FxsBfrcMPl+P6cZOew1Bu+tyb9YZtloD6LixAAr5b/PgtLDlMb65ne9azE9ppH8U8Ekd0QsdRQCetxDgL3MBgP41S3tevD/eeUuezziOL1PAr+Zky5uNxtOX590jU0imkmEWnuypAAroaC1u3pHnTzJCIX/c4b91aOSR9La8e7dGzVtNutJ2AmCxKSCPzS2Q3pnnK0QKFfKPXfj5OYT0oTwfIo5GPtK7KYDZK6xuA/0wPJrcledHQzqx7lXYhoNut49fE2GpJ4ug7vYxCHysTevpkhDpRcOu8ilZK4Jg+tILxrV98nYN9F3pj0HVXcqeegCTB/OKGY28z4D4euzL2ztITIldaiGkuiyF5TF1bqUnzVTr5/d5JHixHtN955XLQIdLL4U10kL3c43nNo+PX6miqbFSWulAxxUmj7b6B/x+TzZDumApqoA+l+LGOfmzkMJJYhQbU981RHQvYdcQYReLmG+83bdNUd0DKODXbDJg2jcBawC9ZCyAivm5/4EAz5gLgDzlnYA1ktRYgFp2/M03ATtIXWIsQHixvx4f+AMSSCuBrSmk3QMswIy9AGNpfVAPSUkTJnBhGmjWP6FikMwNXNnwaDJUaGfoH0fkvULg0sLWHn8ATovSgvXK3zETsunQj2sCrUrad3r56sx0NDmigd6Qc3h9QHxFNm3OFryiJumWVYwRsRxIkjM5Cul1OZkhhx6kXZb9+AHoqPTnpEkp3WYF9OcZEvJ36zO5Jt+R78o9PN/yQXvFp/jOYkTEErO0VK+sssoqq6yy4KKw/wCula7IIDbTpgAAAABJRU5ErkJggg==";
@@ -35,7 +31,7 @@ const station="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXH
 const rightT="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAkElEQVR4nO3XsQrDIBSF4f/1QpcMSof26WPfwkK6OIVmjif8H9xRuEeRqyBJkqQrLUAbtRKoAfuoDjwJDrAnhlhH09Ehyp8QX+BNkGKISRRPIvUkHsDnsGDG6mcT+zhQZq7tlgGWkBA95dFXTy7xiwDV5i9S3fmL1OSdX9M/NC25+Vt86pcRYkuZsJIkSUziB0TBElKM+4d4AAAAAElFTkSuQmCC";
 const airhumidity="data:image/png;base64,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";
 const airtemp="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFLklEQVR4nO1aS28cRRBuMCSBH0DCgQuYSw6guGoxr2AJJAtxC+DAAXEhBgWOgBUDUt7ilYc4ZpcQkwuwOSXuHpxcLBGcQISEvN4gHgpSwI5NfABnVtnuiZJGNbtrz86+Z3cm7XE+qaTVbG911Tfd1bXVxdhNhBQwITmeZisVSqAmYSsVKm4EKI77lcADYRGgOBxsRX/kUAJmySE5mtjUaQJIZ2E8zDJT4XB8s2jkn3q8b02j8ZLDNZJG43R6/SrF8Q/STXMwU6HTA12S46S7CgQONxqvRGJQcXit0Tgp8D2XWA7n9XjfHcxk5EXP0wUC4Ip98qF72tVHOkgX6cxbiWfYcoASmJYcb6gT0NOuLof3gKtLYJotF+j0+lV5jvd3Sl/eggdIJ1vO0OmBLocnnqKjUnI8qzj+Izk6JMXP9GyfM9qzkcayuECnH71LctgmOV4uHXsNhQgRMES/ZaZACTxAhjkWbG32DSme2KwETDfteAUR8Je04MWmV5gFWxXHS6EkS0rgZyXDJMcMRfuaxmh2mxKwoxi8gjm/NBfp+EhvZ7fXmo9sIZs8xB1kYUByfF4JuOAxMO0PTmSoFPBNu45XEgFf+0nQP8Gd9HxpHFwgG0NxvgTK8CjJkRxtejv+aK8Efthp5z2yxzvX1TG8Twq87toicLiZ7LNjsI/3rlUWbqjc86E5724HKfCFsjlHH3m4EwlX26CITUErTAKKy3xan4C7mWmQAofDd764EgQMMQP/BF2OigAlYM6oZMmxsC865wviWPAkMypJEtESoAR8ykyBFPhD1ARQRZmZAtni/v937Dl96pylRzLzroyd+1bPn9zUchwI3zEBExXMc7hGlZzycahacf5oZlansrkyoWf0XdMrgKP02uBwfL1gW8W44PcOkuPp6gTAlqAE0Jv3O1+SUz/ywATQS6lKgMDvAhMQxhagJV+LgJHMZbO2QLNwixlNGl7L+ZK0sAK+Z6ZAcdwXNQGK48fMFDijPRujJsDh+DgzBTo90EXVougIgLl6BZKbAilgKCoCpIC3mWnQ431rlMCLoRPA4W8jiqX28d61dGnhfUYFzEZ1wHYIcAsivotXRySQbInMcd2oJMZhb2grgOMu71xytPfBQpUIrlDpXVvdq0N1XjZbFC0rVNYm4LdX3te/vvpBUwRIAV9VFEWt7tWK47FIiqKq0JzQdlnc6+z8Yy+7Uo+AQGVxAZ+E1f0x08rFCBUw/XXCFgm42GyzxeLFiMAZ2obMFGiKGRzfpbO7eQJgTnJ8J9Iyd9igJUxlrEYEOAKeMC7JCXQ9Prahu9p3jQio9hs6aZbV9bjieIyCF53R7RJQapCg6za2HJD3tshUSVBaJaCsRabOyWNekxSHbZ3aAouXLqY3SeUFvlVKSGpF8CAEuG1yAn43vk1OFZoTdL1sLAgBS1momw5fYqZCFSpDdbszghJQ1L/fqEpQELRDQCyQukVAbuWugGTG3txoBXx+3h5gcURqyn4pOWXfaERAasq+HjsSDv2Suzc5lVvwV3+qElCQ/45kc+tYXJDK2nu9Dh6eXNBndo4sEjCx80t9OLPgI8HezeKCVDaX8TrndX6RhF1H/VvhZxYXJKfsvNe56f7BCgKmn32jjIBk1s6xFUVA/6BvBeRsFhcks7lJr3Nnt39RQcCZHSMx3gJZe48/CBIJM/1bXKHP9Cy2QfBQjWOwjsTrGKyVCFWVOCZCXhLo7dZ785QuszjjSDa3jmJCITDaV0mKn3enMnZ0l5y3wFz8D+mcnkDEblIUAAAAAElFTkSuQmCC";
-function LiveView() {
+function Live() {
   const dispatch = useDispatch();
   const location = useLocation();
   const { id } = useParams();
@@ -74,18 +70,17 @@ function LiveView() {
   const [air_temp,setAirTemp]=useState('')
   const[air_humidity,setAirHumidity]=useState('');
   
-  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('camera');
   var user=JSON.parse(localStorage['user'])
   console.log("organization: "+user.organization )
   var organi=user.organization;
-  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
-
-  const toggleSidebar = () => {
-    setIsSidebarVisible(!isSidebarVisible);
+  const handleTabClick = (tab) => {
+    setActiveTab(tab);
   };
-  
-  
+
+  const handleChange = (event, newValue) => {
+    setView(newValue);
+  };
   
   useEffect(() => {
     dispatch(getOrganization());
@@ -204,11 +199,10 @@ function LiveView() {
           }else if(id=="7"){
             deviceid="9e6f1ab0-3a20-11ee-9dc2-07b8268a3068"
           }
-          const token='Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtdWhhbW1hZF93YXFhckBsdW1zLmVkdS5wayIsInVzZXJJZCI6ImNmMTgzMTYwLWYzNzAtMTFlZS05Mzc4LTIxNTVjZjA1NzBmOCIsInNjb3BlcyI6WyJDVVNUT01FUl9VU0VSIl0sInNlc3Npb25JZCI6IjU2ZDc5NjA3LTA4Y2EtNDJlZS04OTJmLWQyYWFhOTE0ZDE0ZCIsImlzcyI6InRoaW5nc2JvYXJkLmlvIiwiaWF0IjoxNzIxNjQwNDIxLCJleHAiOjE3MjIyNDUxMjEsImZpcnN0TmFtZSI6Ik11aGFtbWFkIiwibGFzdE5hbWUiOiJXYXFhciIsImVuYWJsZWQiOnRydWUsImlzUHVibGljIjpmYWxzZSwidGVuYW50SWQiOiI2YWFmMzZlMC0yZDUyLTExZWUtODM0OC0yMzc4NjQ5MWJkY2IiLCJjdXN0b21lcklkIjoiMjE1YTU1ZjAtODIzNS0xMWVlLWI2ZWEtOWQ2MDkwMzkwZjFiIn0.pE9eJmh3a2MAKZYiYLjOSkhcRVKlwCC9-CvW57UmF9s5vv3VVB5eo45r-Ks2IW9xtN4zqnbA0R7qLvZkKvDGHg';
           const response = await axios.get(`http://icarus.lums.edu.pk/api/plugins/telemetry/DEVICE/${deviceid}/values/timeseries`, {
             headers: {
               'Content-Type': 'application/json',
-              'X-Authorization': token},
+              'X-Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtdWhhbW1hZF93YXFhckBsdW1zLmVkdS5wayIsInVzZXJJZCI6ImNmMTgzMTYwLWYzNzAtMTFlZS05Mzc4LTIxNTVjZjA1NzBmOCIsInNjb3BlcyI6WyJDVVNUT01FUl9VU0VSIl0sInNlc3Npb25JZCI6IjY2NTU5NzYxLTQzZTgtNGYxZC1iNzEzLWRkMjYxYjRlNTMwYyIsImlzcyI6InRoaW5nc2JvYXJkLmlvIiwiaWF0IjoxNzE2MDQ5NjEyLCJleHAiOjE3MTY2NTQzMTIsImZpcnN0TmFtZSI6Ik11aGFtbWFkIiwibGFzdE5hbWUiOiJXYXFhciIsImVuYWJsZWQiOnRydWUsImlzUHVibGljIjpmYWxzZSwidGVuYW50SWQiOiI2YWFmMzZlMC0yZDUyLTExZWUtODM0OC0yMzc4NjQ5MWJkY2IiLCJjdXN0b21lcklkIjoiMjE1YTU1ZjAtODIzNS0xMWVlLWI2ZWEtOWQ2MDkwMzkwZjFiIn0.Y_RJ3_lrPUGDFRqgEbZW0MjdJw3Y0HnouNYvrPesoBp62ORjKGI42fzQmCCk1Ljor2vKW66EKgnG3cy7F7KYmA'},
             params: {
               keys: 'Air_Temperature,Air_Humidity',
               startTs: new Date().getTime() - 10 * 60 * 1000, // 10 minutes ago
@@ -379,273 +373,116 @@ const handle_home_click = () => {
   window.location = '/';
 }
 
-const handleLogout = () => {
-  window.location = '/logout';
-};
-
-const handleChangePassword = () => {
-  window.location = '/change-password';
-};
-
-
-
-const toggleDropdown = () => {
-  setDropdownOpen(!dropdownOpen);
-};
-const sidebarStyle = {
-  height: '100vh',
-  width: isSidebarVisible ? '250px' : '60px',
-  backgroundColor: 'rgb(44, 62, 80)',
-  color: 'rgb(243, 156, 18)',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-start',
-  transition: 'width 0.3s ease',
-};
-
-const headerStyle = {
-  color: 'rgb(243, 156, 18)',
-  fontWeight: '600',
-  fontSize: '16px',
-  display:isSidebarVisible?'block':'none',
-  writingMode: isSidebarVisible ? 'horizontal-tb' : 'vertical-rl',
-  textOrientation: 'upright',
-  whiteSpace: isSidebarVisible ? 'normal' : 'nowrap',
-  margin: isSidebarVisible ? '0' : 'auto',
-  padding: isSidebarVisible ? '10px 0' : '0',
-};
-
-const dropdownToggleStyle = {
-  background: 'rgb(243, 156, 18)',
-  color: 'rgb(44, 62, 80)',
-  border: '3px solid rgb(44, 62, 80)',
-  fontWeight: '700',
-  display: isSidebarVisible ? 'block' : 'none',
-};
-
-const iconButtonStyle = {
-  color: '#868B94',
-  padding: '0px',
-};
-
-const avatarStyle = {
-  borderRadius: "0px",
-  width: "30px",
-  height: "30px",
-};
-
   return (
-    <div  >
       <div>
-      
-        <div className='d-flex'>
-          
-        <div className='sidebar' style={sidebarStyle}>
-        <IconButton onClick={toggleSidebar} style={{color:'rgb(243, 156, 18)', position: 'fixed', top: !isSidebarVisible?'5px':'33px', left: !isSidebarVisible?'10px':'170px', zIndex: 1000, }}>
-        {isSidebarVisible ? <CloseIcon /> : <MenuIcon />}
-      </IconButton>
-        <div style={{ padding: '10px' }}>
-          <div className='sidebar-header'>
-            <div className='lead' style={headerStyle}>Tower Panel</div>
-            <Dropdown>
-              <Dropdown.Toggle style={dropdownToggleStyle}>
-                {camera.cam}
-              </Dropdown.Toggle>
-              <Dropdown.Menu>
-                {towers && towers.map((item) => (
-                  item.live ? (
-                    <Dropdown.Item
-                      key={item.id}
-                      href={`/live/${item.id}`}
-                      onClick={() => setCamera({ cam: item.name, link: "", id: item.id })}
-                    >
-                      {item.description}
-                    </Dropdown.Item>
-                  ) : null
-                ))}
-              </Dropdown.Menu>
-            </Dropdown>
-          </div>
-          {isSidebarVisible && (
-            <>
-              <div className='sidebar-actions'>
-                <button className='action-button' onClick={handle_home_click}>
-                  Home
-                </button>
-                <button className='action-button' onClick={handle_dashboard_click}>
-                  Dashboard
-                </button>
-                <button className='action-button' onClick={handle_camera_click}>
-                  Cameras
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-        {isSidebarVisible && (
-          <div style={{ padding: '10px', position: 'absolute', bottom: '10px' }}>
-            {organi === 'CVGL' && (
-              <button className='action-button' onClick={handle_admin_click}>
-                Admin
-              </button>
-            )}
-            <button className='action-button' onClick={handleChangePassword}>
-              Change Password
-            </button>
-            <button className='action-button' onClick={handleLogout}>
-              Log out
-            </button>
-          </div>
-        )}</div>
-      <div >
-          <div className='row' style={{alignItems:'flex-start',margin:'0',height:'62vh'}}>
-            <div className='col-md-4 d-flex justify-content-center' style={{width:'25%', }}>
-              <div className=' row d-flex justify-content-center' 
-              style={{marginRight:'0px !important', backgroundColor: "white" ,justifyContent:'space-around' ,paddingRight:'0px'}}>
-               <div className='sidebar-section' style={{paddingRight:'0px', textAlign: 'center',border: '1px solid white',borderRadius: '25px',background: 'rgba(238, 238, 238, 0.933)',margin: '10px' }}>
-        <p style={{ fontSize: '14px', margin: '5px 0' }}>{date} {currentTime}</p>
-        {air_humidity && air_temp && (
-          <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}>
-            <Tooltip title="Air Temperature" style={{ marginTop: '4px' }}>
-              <p style={{ marginBottom: '0px' }}>
-                <IconButton style={iconButtonStyle}>
-                  <Avatar src={airtemp} style={avatarStyle} />
-                </IconButton>
-                {air_temp}<sup>°</sup>C
-              </p>
-            </Tooltip>
-            <Tooltip title="Air Humidity" style={{ marginLeft: '15px', marginTop: '4px' }}>
-              <p style={{ marginBottom: '0px', marginLeft: '15px' }}>
-                <IconButton style={iconButtonStyle}>
-                  <Avatar src={airhumidity} style={avatarStyle} />
-                </IconButton>
-                {air_humidity}%
-              </p>
-            </Tooltip>
-          </div>
-        )}
-      </div>
-                  {live?(
-                     <div className="row d-flex justify-content-center" 
-                     style={{padding:'0px',borderRadius:'15px',boxShadow:'0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);',background: 'rgba(238, 238, 238, 0.933)',marginRight:'0px',marginLeft:'0px'}}>
-                    
-                     
-                     <center >  
-                     <p className='lead' style={{display: 'flex', alignItems: 'flex-end' ,justifyContent:'center',fontWeight:'500'}}>PTZ Controls </p>
-                     </center>
-                      
-                       <center style={{height:'5vh' ,paddingLeft:'0px',paddingRight:'0px'}}>
-                         <p>
-                           <div style={{display: 'flex',justifyContent: 'space-evenly',alignItems: 'center',paddingLeft:'0px',paddingRight:'0px'}}>
-                             <Tooltip title={des}>
-                             <button className="presetButton"
-                             onClick={() => changePreset("Preset 1")}
-                             disabled={des == ''}>
-                               Preset 1
-                             </button></Tooltip>
-                             <Tooltip title={des1}>
-                               <button className="presetButton"
-                                     onClick={() => changePreset("Preset 2")}
-                                     disabled={des1 == ''}>
-                                       Preset 2
-                               </button>
-                             </Tooltip>
-                             <Tooltip title={des2}>
-                             <button
-                              className="presetButton"
-                              onClick={() => changePreset("Preset 3")}
-                              disabled={des2 == ''}>
-                               Preset 3</button>
-                             </Tooltip>
-                             
-                            </div>
-                         </p>
-                     </center>
-                      
-                       <div style={{display:'flex',justifyContent:'space-around',paddingLeft:'0px',paddingRight:'0px'}}>
-                         <span style={{marginLeft:'10px'}}>Pan</span><span style={{marginLeft:'10px'}}>Tilt</span><span>Zoom</span> 
-                         </div>
-                        <div style={{    display: 'flex', alignItems: 'center',flexDirection: 'row',justifyContent:'space-between',paddingLeft:'0px',paddingRight:'0px'}}>
-                         <div style={{display:'flex',alignItems:'center'}} >
-                        
-                        <Tooltip title="Pan">
-                        <button  style={{border: 'none',padding:'0px'}} 
-                         onClick={()=>{if(pan!==minpan&& pan-5>=minpan){setPan(pan-10)}}}>
-                        <img src={left} style={{width:'48px',height:'48px'}}/>
-                        </button></Tooltip>
-                        {pan}
-                        <Tooltip title="Pan">
-                        <button  style={{border: 'none'}} 
-                        onClick={()=>{if(pan!==maxpan&& pan+10<=maxpan){setPan(pan+10);}}}>
-                        <img src={right} style={{width:'48px',height:'48px'}}/>
-                        </button></Tooltip>
-                      
-                      </div>
-   
-   
-                         <div style={{display:'flex',flexDirection:'column' ,alignItems:'center',paddingLeft:'0px',paddingRight:'0px'}}>
-                           <Tooltip title="Tilt" placement='top'>
-                           <button style={{border: 'none',}} onClick={()=>{if(tilt!==maxtilt && tilt+5<=maxtilt){setTilt(tilt+5);}}}>
-                            <img src={up} style={{width:'48px',height:'48px'}}/>
-                           </button></Tooltip>
-                           {tilt}
-                           <Tooltip title="Tilt">
-                           <button style={{border: 'none'}}  onClick={()=>{if(tilt!==mintilt && tilt-5 >=mintilt){setTilt(tilt-5);}}}>
-                           <img src={down} style={{width:'48px',height:'48px'}}/>
-                           </button></Tooltip>
-                         </div>
-                         
-                         <div style={{display:'flex',alignItems:'center'}}> 
-                           <Tooltip title="Zoom In">
-                         <button  style={{border: 'none'}} onClick={()=>{if(zoom!==maxzoom && zoom+10 <=maxzoom){setZoom(zoom+10);}}}>
-                             <img src={zoomIn} style={{width:'48px',height:'48px'}}/>
-                           </button></Tooltip> {zoom}<Tooltip title="Zoom Out">
-                         <button  style={{border: 'none'}} onClick={()=>{if(zoom!==minzoom && zoom-10 >=minzoom){setZoom(zoom-10)}}}>
-                             <img src={zoomout} style={{width:'48px',height:'48px'}}/>
-                           </button></Tooltip> </div>
-                       </div>
-                      <br/>
-                       <div style={{display:'flex',justifyContent:'space-around',paddingLeft:'0px',paddingRight:'0px'}}>
-                       <Tooltip title="reset">
-                             <button  className="presetButton" onClick={()=>{ handleRefresh() }}>
-                             Refresh
-                            </button></Tooltip>
-                       <button onClick={HandleSubmit} className="presetButton"  >Confirm</button>
-                      </div>
-                      
-                       
-              
-                     </div>
-                   
+        <div style={{padding:'70px'}}>
+        
                  
-                  ):(<MiniMap camId={id}/>)}
-                 </div>
-            </div>
-            <div className='col-md-8' 
-            style={{  paddingLeft:'0px',  paddingBottom: "20px",width:'75%'}}>
-              <div style={{display:'flex' ,justifyContent:'space-around'}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start'}} >
+                <div style={{width:'30%'}}>
+                    <Dropdown  style={{marginBottom:'10px'}}>
+                    <Dropdown.Toggle  style={{  background:'rgb(243, 156, 18)' ,color:'rgb(44, 62, 80)' , border:' 3px solid rgb(44, 62, 80)' ,fontWeight:'700'}}>
+                      {camera.cam}
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      {towers && towers.map((item, index) => (
+                        item.live ? (
+                          <Dropdown.Item
+                            key={item.id}
+                            href={`/camlive/${item.id}`}
+                            onClick={() => {
+                              setCamera({ cam: item.name, link: "", id: item.id });
+                            }}
+                          >
+                            {item.description}
+                          </Dropdown.Item>
+                        ) : null
+                       
+                      ))}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                <center style={{height:'5vh'}}>
+                      <p>
+                        <div style={{display: 'flex',justifyContent: 'space-evenly'}}>
+                          <Tooltip title={des}>
+                          <button className="presetButton"
+                          onClick={() => changePreset("Preset 1")}
+                          disabled={des == ''}>
+                            Preset 1
+                          </button></Tooltip>
+                          <Tooltip title={des1}>
+                            <button className="presetButton"
+                                  onClick={() => changePreset("Preset 2")}
+                                  disabled={des1 == ''}>
+                                    Preset 2
+                            </button>
+                          </Tooltip>
+                          <Tooltip title={des2}>
+                          <button
+                           className="presetButton"
+                           onClick={() => changePreset("Preset 3")}
+                           disabled={des2 == ''}>
+                            Preset 3</button>
+                          </Tooltip>
+                         </div>
+                      </p>
+                  </center>
+                     <div style={{    display: 'flex', alignItems: 'center',flexDirection: 'column'}}>
+                     <div><Tooltip title="Tilt" placement='top'>
+                       <button style={{border: 'none',background: 'white'}} onClick={()=>{if(tilt!==maxtilt && tilt+5<=maxtilt){setTilt(tilt+5)}}}>
+                        <img src={up} style={{width:'48px',height:'48px'}}/>
+                       </button></Tooltip>
+                     </div>
+                     
+                     <div>
+                     <Tooltip title="Zoom Out">
+                     <button  style={{border: 'none',background: 'white'}} onClick={()=>{if(zoom!==minzoom && zoom-10 >=minzoom){setZoom(zoom-10)}}}>
+                         <img src={zoomout} style={{width:'48px',height:'48px'}}/>
+                       </button></Tooltip>
+                       <Tooltip title="Pan">
+                       <button  style={{border: 'none',background:'white'}} onClick={()=>{if(pan!==minpan && pan-10 >=minpan){setPan(pan-10)}}}>
+                         <img src={left} style={{width:'48px',height:'48px'}}/>
+                       </button></Tooltip>
+                       <Tooltip title="reset">
+                     <button  style={{border: 'none',background:'white',backgroundColor:'white'}} onClick={()=>{ handleRefresh() }}>
+                       <img src={refresh} style={{width:'48px',height:'48px'}}/>
+                     </button></Tooltip>
+                    <Tooltip title="Pan">
+                     <button  style={{border: 'none',background: 'white'}} onClick={()=>{if(pan !== maxpan && pan + 10 <= maxpan){setPan(pan+10)}}}>
+                       <img src={right} style={{width:'48px',height:'48px'}}/>
+                     </button></Tooltip>
+                     <Tooltip title="Zoom In">
+                     <button  style={{border: 'none',background: 'white'}} onClick={()=>{if(zoom!==maxzoom&& zoom+10 <=maxzoom){setZoom(zoom+10)}}}>
+                         <img src={zoomIn} style={{width:'48px',height:'48px'}}/>
+                       </button></Tooltip>
+                     </div>
+                     <div> <Tooltip title="Tilt">
+                       <button style={{border: 'none',background: 'white'}}  onClick={()=>{if(tilt!==mintilt && tilt-5 >=mintilt){setTilt(tilt-5)}}}>
+                       <img src={down} style={{width:'48px',height:'48px'}}/>
+                       </button></Tooltip>
+                       </div> </div>
+                   <br/>
+                    <div style={{display:'flex',justifyContent:'center'}}>
+                    <button onClick={HandleSubmit} className="presetButton"  >Confirm</button>
+                   </div>
+
+                </div>
+                <div style={{width:'60%'}}>
+
                 <CameraFeed cameraId={camera} view={view} live={live} 
                 changeLive={changeLive} liveStream={liveStream} 
                 imageUrls={imageUrls} pan={pan} zoom={zoom} tilt={tilt}/>
-                 {organization.name === "CVGL" ?<LiveEvents eventClick={eventClick} cam_id={id} setRow={setRow} setView={setView} />:<LiveEvents eventClick={eventClick} cam_id={id} setRow={setRow} setView={setView} />}
+                </div>
+                <div style={{width:'20%'}}>
+
+             {organization.name === "CVGL" ?<LiveEvents eventClick={eventClick} cam_id={id} setRow={setRow} setView={setView} />:<LiveEvents eventClick={eventClick} cam_id={id} setRow={setRow} setView={setView} />}
            
-              </div>
-              
+                </div>
             </div>
-            
-           </div>
-          <div className='row' style={{paddingLeft:'0px'}}>
-            <div style={{width:'25%',marginTop:'-52px',}}>
-              <TemperatureHumidityGraph id={id} live={live} isSidebar={isSidebarVisible}/>
-            </div>
-           <div style={{width:'75%'}}>
-            <LiveChart cameraId={id}/>
-           </div>
-                   </div>
-           </div>
-        </div>
+       </div> 
+
       </div>
-    </div>
+    
   );
 }
 
@@ -657,4 +494,4 @@ const VideoComponent = ({ row }) => {
   );
 };
 
-export default withRouter(LiveView);
+export default withRouter(Live);

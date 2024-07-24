@@ -138,11 +138,11 @@ export function EventsTable() {
   const reloadEvents = (pageSize = 10) => {
     justRan.current = false;
     setState({ page: 0, rowsPerPage: pageSize });
-    debugger;
+   
     setSelected([]);
     dispatch(resetEvents());
     showChanges(true);
-    debugger
+  
   };
 
   const handleChangePage = (event, newPage) => {
@@ -201,7 +201,7 @@ export function EventsTable() {
     showChanges();
   }
   const changeUrl=(img)=>{
-    img= img.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
+    //img= img.replaceAll("http://127.0.0.1:8000","https://api.forestwatch.org.pk");
     return img;
  
   }

@@ -184,7 +184,7 @@ export default function MiniMap(props) {
       onLoad={handleMapLoad}
       center={circleCenter}
       zoom={8}
-      mapContainerStyle={{ height: '400px', width: '100%' }}
+      mapContainerStyle={{ height: '280px', width: '300px' ,borderRadius:'25px' ,margin:'10px'}}
     >
       <Marker
         position={circleCenter}
