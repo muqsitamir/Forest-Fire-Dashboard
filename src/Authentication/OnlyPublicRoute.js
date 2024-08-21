@@ -8,7 +8,7 @@ export default function OnlyPublicRoute({Component, ...rest}) {
         <Route
             {...rest}
             render={(props) => {
-                return !loginStatus ? <Component {...props} /> : window.location = '/';
+                return !loginStatus ? <Component {...props} /> : window.location = '/home';
             }}
         />
     );

@@ -7,8 +7,8 @@ const TemperatureHumidityGraph = ({ id ,live,isSidebar}) => {
   const [data, setData] = useState({});
   const [filter, setFilter] = useState('24h');
   const [loading, setLoading] = useState(false);
-  const token='Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtdWhhbW1hZF93YXFhckBsdW1zLmVkdS5wayIsInVzZXJJZCI6ImNmMTgzMTYwLWYzNzAtMTFlZS05Mzc4LTIxNTVjZjA1NzBmOCIsInNjb3BlcyI6WyJDVVNUT01FUl9VU0VSIl0sInNlc3Npb25JZCI6IjU2ZDc5NjA3LTA4Y2EtNDJlZS04OTJmLWQyYWFhOTE0ZDE0ZCIsImlzcyI6InRoaW5nc2JvYXJkLmlvIiwiaWF0IjoxNzIxNjQwNDIxLCJleHAiOjE3MjIyNDUxMjEsImZpcnN0TmFtZSI6Ik11aGFtbWFkIiwibGFzdE5hbWUiOiJXYXFhciIsImVuYWJsZWQiOnRydWUsImlzUHVibGljIjpmYWxzZSwidGVuYW50SWQiOiI2YWFmMzZlMC0yZDUyLTExZWUtODM0OC0yMzc4NjQ5MWJkY2IiLCJjdXN0b21lcklkIjoiMjE1YTU1ZjAtODIzNS0xMWVlLWI2ZWEtOWQ2MDkwMzkwZjFiIn0.pE9eJmh3a2MAKZYiYLjOSkhcRVKlwCC9-CvW57UmF9s5vv3VVB5eo45r-Ks2IW9xtN4zqnbA0R7qLvZkKvDGHg';
-     const fetchData = async () => {
+  const token='Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtdWhhbW1hZF93YXFhckBsdW1zLmVkdS5wayIsInVzZXJJZCI6ImNmMTgzMTYwLWYzNzAtMTFlZS05Mzc4LTIxNTVjZjA1NzBmOCIsInNjb3BlcyI6WyJDVVNUT01FUl9VU0VSIl0sInNlc3Npb25JZCI6ImYxNzA0NTJkLThlMTYtNDgwZC1hOWU4LTI4NzgyZGY5YmJiMiIsImlzcyI6InRoaW5nc2JvYXJkLmlvIiwiaWF0IjoxNzIyNDUzNDYwLCJleHAiOjE3MzAyMjk0NjAsImZpcnN0TmFtZSI6Ik11aGFtbWFkIiwibGFzdE5hbWUiOiJXYXFhciIsImVuYWJsZWQiOnRydWUsImlzUHVibGljIjpmYWxzZSwidGVuYW50SWQiOiI2YWFmMzZlMC0yZDUyLTExZWUtODM0OC0yMzc4NjQ5MWJkY2IiLCJjdXN0b21lcklkIjoiMjE1YTU1ZjAtODIzNS0xMWVlLWI2ZWEtOWQ2MDkwMzkwZjFiIn0.8cN5r-CywA3gVPjsod0cwtF-Yqv8rB4g4-ANUO-P0TzHfKbuPDdopTvMqlUavWewuYgepODlXLsD-mE_Y3Dfaw';
+   const fetchData = async () => {
     setLoading(true);
     try {
       let deviceid;
@@ -125,26 +125,76 @@ const TemperatureHumidityGraph = ({ id ,live,isSidebar}) => {
         setLoading(false);
       }
     };
+  /*  const fetchData = async () => {
+      setLoading(true);
+      try {
+          let deviceid;
+          if (id === '3') {
+              deviceid = '8a86c4b0-3cb1-11ee-9dc2-07b8268a3068';
+          } else if (id === '5') {
+              deviceid = 'c721d8c0-3a21-11ee-9dc2-07b8268a3068';
+          } else if (id === '6') {
+              deviceid = '9c4c6f10-30db-11ee-9dc2-07b8268a3068';
+          } else if (id === '7') {
+              deviceid = '9e6f1ab0-3a20-11ee-9dc2-07b8268a3068';
+          }
+  
+          const startTs = calculateStartTimestamp();
+          const endTs = new Date().getTime();
+          console.log("End Timestamp:", endTs, "(", new Date(endTs).toISOString(), ")");
+  
+          const response = await axios.get(`http://icarus.lums.edu.pk/api/plugins/telemetry/DEVICE/${deviceid}/values/timeseries`, {
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-Authorization': token
+              },
+              params: {
+                  keys: 'Air_Temperature,Air_Humidity',
+                  startTs: startTs,
+                  endTs: endTs,
+              },
+          });
+  
+          console.log("API Response Data:", response.data);
+          const { data: data } = response;
+          var combinedData=data;
+          const sortedTemperature = combinedData.Air_Temperature ? sortAndFormatData(combinedData.Air_Temperature) : [];
+          const sortedHumidity = combinedData.Air_Humidity ? sortAndFormatData(combinedData.Air_Humidity) : [];
+      
+          const sortedData = {
+              Air_Temperature: sortedTemperature,
+              Air_Humidity: sortedHumidity,
+          };
+      
+          setData(sortedData);
+                setLoading(false);
+          // Process and use the data as needed
+      } catch (error) {
+          console.error('Error fetching data:', error);
+      } finally {
+          setLoading(false);
+      }
+  };*/
     const calculateEndTimestampFor17h = () => {
-        return new Date().getTime() - 17 * 60 * 60 * 1000; // 7 hours in milliseconds
+        return new Date().getTime() - 17 * 60 * 60 * 1000; // 17 hours in milliseconds
     };
     const calculateStartTimestampFor24h = () => {
-        return new Date().getTime() - 24 * 60 * 60 * 1000; // 7 hours in milliseconds
+        return new Date().getTime() - 24 * 60 * 60 * 1000; // 24 hours in milliseconds
     };
     const calculateStartTimestampFor34h = () => {
-        return new Date().getTime() - 34 * 60 * 60 * 1000; // 7 hours in milliseconds
+        return new Date().getTime() - 34 * 60 * 60 * 1000; //34 hours in milliseconds
     };
     const calculateStartTimestampFor36h = () => {
-        return new Date().getTime() - 36 * 60 * 60 * 1000; // 7 hours in milliseconds
+        return new Date().getTime() - 36 * 60 * 60 * 1000; // 36 hours in milliseconds
     };
     const calculateStartTimestampFor51h = () => {
-        return new Date().getTime() - 51 * 60 * 60 * 1000; // 7 hours in milliseconds
+        return new Date().getTime() - 51 * 60 * 60 * 1000; // 51 hours in milliseconds
     };
     const calculateStartTimestampFor68h = () => {
-        return new Date().getTime() - 68 * 60 * 60 * 1000; // 7 hours in milliseconds
+        return new Date().getTime() - 68 * 60 * 60 * 1000; // 68 hours in milliseconds
     };
     const calculateStartTimestampFor4h = () => {
-        return new Date().getTime() - 72 * 60 * 60 * 1000; // 7 hours in milliseconds
+        return new Date().getTime() - 72 * 60 * 60 * 1000; // 72 hours in milliseconds
     };
     const calculateStartTimestamp = () => {
         let hours = 24; // Default to 24 hours

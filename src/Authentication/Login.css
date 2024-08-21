@@ -1,0 +1,92 @@
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f4f8;
+}
+
+.login-container {
+    display: flex;
+    width: 800px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.login-form, .login-info {
+    flex: 1;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.login-form {
+    background-color: #ffffff;
+}
+
+.login-info {
+    background-color: #3C72B2;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-info h2 {
+    margin-bottom: 20px;
+}
+
+.login-info p {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.login-info .btn {
+    background-color: #83c5be;
+    color: #ffffff;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+}
+
+.btn-primary {
+    background-color: #006d77;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #005a5f;
+}
+
+.btn-secondary {
+    background-color: #83c5be;
+    color: #ffffff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btn-secondary:hover {
+    background-color: #71a9a0;
+}

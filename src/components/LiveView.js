@@ -204,8 +204,8 @@ function LiveView() {
           }else if(id=="7"){
             deviceid="9e6f1ab0-3a20-11ee-9dc2-07b8268a3068"
           }
-          const token='Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtdWhhbW1hZF93YXFhckBsdW1zLmVkdS5wayIsInVzZXJJZCI6ImNmMTgzMTYwLWYzNzAtMTFlZS05Mzc4LTIxNTVjZjA1NzBmOCIsInNjb3BlcyI6WyJDVVNUT01FUl9VU0VSIl0sInNlc3Npb25JZCI6IjU2ZDc5NjA3LTA4Y2EtNDJlZS04OTJmLWQyYWFhOTE0ZDE0ZCIsImlzcyI6InRoaW5nc2JvYXJkLmlvIiwiaWF0IjoxNzIxNjQwNDIxLCJleHAiOjE3MjIyNDUxMjEsImZpcnN0TmFtZSI6Ik11aGFtbWFkIiwibGFzdE5hbWUiOiJXYXFhciIsImVuYWJsZWQiOnRydWUsImlzUHVibGljIjpmYWxzZSwidGVuYW50SWQiOiI2YWFmMzZlMC0yZDUyLTExZWUtODM0OC0yMzc4NjQ5MWJkY2IiLCJjdXN0b21lcklkIjoiMjE1YTU1ZjAtODIzNS0xMWVlLWI2ZWEtOWQ2MDkwMzkwZjFiIn0.pE9eJmh3a2MAKZYiYLjOSkhcRVKlwCC9-CvW57UmF9s5vv3VVB5eo45r-Ks2IW9xtN4zqnbA0R7qLvZkKvDGHg';
-          const response = await axios.get(`http://icarus.lums.edu.pk/api/plugins/telemetry/DEVICE/${deviceid}/values/timeseries`, {
+          const token='Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtdWhhbW1hZF93YXFhckBsdW1zLmVkdS5wayIsInVzZXJJZCI6ImNmMTgzMTYwLWYzNzAtMTFlZS05Mzc4LTIxNTVjZjA1NzBmOCIsInNjb3BlcyI6WyJDVVNUT01FUl9VU0VSIl0sInNlc3Npb25JZCI6ImYxNzA0NTJkLThlMTYtNDgwZC1hOWU4LTI4NzgyZGY5YmJiMiIsImlzcyI6InRoaW5nc2JvYXJkLmlvIiwiaWF0IjoxNzIyNDUzNDYwLCJleHAiOjE3MzAyMjk0NjAsImZpcnN0TmFtZSI6Ik11aGFtbWFkIiwibGFzdE5hbWUiOiJXYXFhciIsImVuYWJsZWQiOnRydWUsImlzUHVibGljIjpmYWxzZSwidGVuYW50SWQiOiI2YWFmMzZlMC0yZDUyLTExZWUtODM0OC0yMzc4NjQ5MWJkY2IiLCJjdXN0b21lcklkIjoiMjE1YTU1ZjAtODIzNS0xMWVlLWI2ZWEtOWQ2MDkwMzkwZjFiIn0.8cN5r-CywA3gVPjsod0cwtF-Yqv8rB4g4-ANUO-P0TzHfKbuPDdopTvMqlUavWewuYgepODlXLsD-mE_Y3Dfaw';
+           const response = await axios.get(`http://icarus.lums.edu.pk/api/plugins/telemetry/DEVICE/${deviceid}/values/timeseries`, {
             headers: {
               'Content-Type': 'application/json',
               'X-Authorization': token},
@@ -376,7 +376,7 @@ const handle_dashboard_click = () => {
 }
 
 const handle_home_click = () => {
-  window.location = '/';
+  window.location = '/home';
 }
 
 const handleLogout = () => {
@@ -499,128 +499,117 @@ const avatarStyle = {
         )}</div>
       <div >
           <div className='row' style={{alignItems:'flex-start',margin:'0',height:'62vh'}}>
-            <div className='col-md-4 d-flex justify-content-center' style={{width:'25%', }}>
-              <div className=' row d-flex justify-content-center' 
-              style={{marginRight:'0px !important', backgroundColor: "white" ,justifyContent:'space-around' ,paddingRight:'0px'}}>
-               <div className='sidebar-section' style={{paddingRight:'0px', textAlign: 'center',border: '1px solid white',borderRadius: '25px',background: 'rgba(238, 238, 238, 0.933)',margin: '10px' }}>
-        <p style={{ fontSize: '14px', margin: '5px 0' }}>{date} {currentTime}</p>
-        {air_humidity && air_temp && (
-          <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}>
-            <Tooltip title="Air Temperature" style={{ marginTop: '4px' }}>
-              <p style={{ marginBottom: '0px' }}>
-                <IconButton style={iconButtonStyle}>
-                  <Avatar src={airtemp} style={avatarStyle} />
-                </IconButton>
-                {air_temp}<sup>°</sup>C
-              </p>
+          <div className='col-md-4 d-flex justify-content-center' style={{ width: '25%' }}>
+  <div className='row d-flex justify-content-center' style={{ margin: 0, backgroundColor: "white", justifyContent: 'space-around', paddingRight: 0 }}>
+    <div className='sidebar-section' style={{ paddingRight: 0, textAlign: 'center', border: '1px solid white', borderRadius: '25px', background: 'rgba(238, 238, 238, 0.933)', margin: '10px' }}>
+      <p style={{ fontSize: '14px', margin: '5px 0' }}>{date} {currentTime}</p>
+      {air_humidity && air_temp && (
+        <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' }}>
+          <Tooltip title="Air Temperature" style={{ marginTop: '4px' }}>
+            <p style={{ marginBottom: '0px' }}>
+              <IconButton style={iconButtonStyle}>
+                <Avatar src={airtemp} style={avatarStyle} />
+              </IconButton>
+              {air_temp}<sup>°</sup>C
+            </p>
+          </Tooltip>
+          <Tooltip title="Air Humidity" style={{ marginLeft: '15px', marginTop: '4px' }}>
+            <p style={{ marginBottom: '0px', marginLeft: '15px' }}>
+              <IconButton style={iconButtonStyle}>
+                <Avatar src={airhumidity} style={avatarStyle} />
+              </IconButton>
+              {air_humidity}%
+            </p>
+          </Tooltip>
+        </div>
+      )}
+    </div>
+    {live ? (
+      <div className="row d-flex justify-content-center" style={{ padding: 0, borderRadius: '15px', boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)', background: 'rgba(238, 238, 238, 0.933)', margin: '0px' }}>
+        <center>
+          <p className='lead' style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'center', fontWeight: '500' }}>PTZ Controls </p>
+        </center>
+        <center style={{ height: '5vh', padding: 0 }}>
+          <p>
+            <div style={{ display: 'flex', justifyContent: 'space-evenly', alignItems: 'center', padding: 0 }}>
+              <Tooltip title={des}>
+                <button className="presetButton" onClick={() => changePreset("Preset 1")} disabled={des === ''}>
+                  Preset 1
+                </button>
+              </Tooltip>
+              <Tooltip title={des1}>
+                <button className="presetButton" onClick={() => changePreset("Preset 2")} disabled={des1 === ''}>
+                  Preset 2
+                </button>
+              </Tooltip>
+              <Tooltip title={des2}>
+                <button className="presetButton" onClick={() => changePreset("Preset 3")} disabled={des2 === ''}>
+                  Preset 3
+                </button>
+              </Tooltip>
+            </div>
+          </p>
+        </center>
+        <div style={{ display: 'flex', justifyContent: 'space-around', padding: 0 }}>
+          <span style={{ marginLeft: '10px' }}>Pan</span><span style={{ marginLeft: '10px' }}>Tilt</span><span>Zoom</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', justifyContent: 'space-between', padding: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Tooltip title="Pan">
+              <button style={{ border: 'none', padding: 0 }} onClick={() => { if (pan !== minpan && pan - 5 >= minpan) { setPan(pan - 10); } }}>
+                <img src={left} style={{ width: '48px', height: '48px' }} />
+              </button>
             </Tooltip>
-            <Tooltip title="Air Humidity" style={{ marginLeft: '15px', marginTop: '4px' }}>
-              <p style={{ marginBottom: '0px', marginLeft: '15px' }}>
-                <IconButton style={iconButtonStyle}>
-                  <Avatar src={airhumidity} style={avatarStyle} />
-                </IconButton>
-                {air_humidity}%
-              </p>
+            {pan}
+            <Tooltip title="Pan">
+              <button style={{ border: 'none' }} onClick={() => { if (pan !== maxpan && pan + 10 <= maxpan) { setPan(pan + 10); } }}>
+                <img src={right} style={{ width: '48px', height: '48px' }} />
+              </button>
             </Tooltip>
           </div>
-        )}
+
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: 0 }}>
+            <Tooltip title="Tilt" placement='top'>
+              <button style={{ border: 'none' }} onClick={() => { if (tilt !== maxtilt && tilt + 5 <= maxtilt) { setTilt(tilt + 5); } }}>
+                <img src={up} style={{ width: '48px', height: '48px' }} />
+              </button>
+            </Tooltip>
+            {tilt}
+            <Tooltip title="Tilt">
+              <button style={{ border: 'none' }} onClick={() => { if (tilt !== mintilt && tilt - 5 >= mintilt) { setTilt(tilt - 5); } }}>
+                <img src={down} style={{ width: '48px', height: '48px' }} />
+              </button>
+            </Tooltip>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <Tooltip title="Zoom In">
+              <button style={{ border: 'none' }} onClick={() => { if (zoom !== maxzoom && zoom + 10 <= maxzoom) { setZoom(zoom + 10); } }}>
+                <img src={zoomIn} style={{ width: '48px', height: '48px' }} />
+              </button>
+            </Tooltip>
+            {zoom}
+            <Tooltip title="Zoom Out">
+              <button style={{ border: 'none' }} onClick={() => { if (zoom !== minzoom && zoom - 10 >= minzoom) { setZoom(zoom - 10); } }}>
+                <img src={zoomout} style={{ width: '48px', height: '48px' }} />
+              </button>
+            </Tooltip>
+          </div>
+        </div>
+        <br />
+        <div style={{ display: 'flex', justifyContent: 'space-around', padding: 0 }}>
+          <Tooltip title="reset">
+            <button className="presetButton" onClick={() => { handleRefresh() }}>
+              Refresh
+            </button>
+          </Tooltip>
+          <button onClick={HandleSubmit} className="presetButton">Confirm</button>
+        </div>
       </div>
-                  {live?(
-                     <div className="row d-flex justify-content-center" 
-                     style={{padding:'0px',borderRadius:'15px',boxShadow:'0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);',background: 'rgba(238, 238, 238, 0.933)',marginRight:'0px',marginLeft:'0px'}}>
-                    
-                     
-                     <center >  
-                     <p className='lead' style={{display: 'flex', alignItems: 'flex-end' ,justifyContent:'center',fontWeight:'500'}}>PTZ Controls </p>
-                     </center>
-                      
-                       <center style={{height:'5vh' ,paddingLeft:'0px',paddingRight:'0px'}}>
-                         <p>
-                           <div style={{display: 'flex',justifyContent: 'space-evenly',alignItems: 'center',paddingLeft:'0px',paddingRight:'0px'}}>
-                             <Tooltip title={des}>
-                             <button className="presetButton"
-                             onClick={() => changePreset("Preset 1")}
-                             disabled={des == ''}>
-                               Preset 1
-                             </button></Tooltip>
-                             <Tooltip title={des1}>
-                               <button className="presetButton"
-                                     onClick={() => changePreset("Preset 2")}
-                                     disabled={des1 == ''}>
-                                       Preset 2
-                               </button>
-                             </Tooltip>
-                             <Tooltip title={des2}>
-                             <button
-                              className="presetButton"
-                              onClick={() => changePreset("Preset 3")}
-                              disabled={des2 == ''}>
-                               Preset 3</button>
-                             </Tooltip>
-                             
-                            </div>
-                         </p>
-                     </center>
-                      
-                       <div style={{display:'flex',justifyContent:'space-around',paddingLeft:'0px',paddingRight:'0px'}}>
-                         <span style={{marginLeft:'10px'}}>Pan</span><span style={{marginLeft:'10px'}}>Tilt</span><span>Zoom</span> 
-                         </div>
-                        <div style={{    display: 'flex', alignItems: 'center',flexDirection: 'row',justifyContent:'space-between',paddingLeft:'0px',paddingRight:'0px'}}>
-                         <div style={{display:'flex',alignItems:'center'}} >
-                        
-                        <Tooltip title="Pan">
-                        <button  style={{border: 'none',padding:'0px'}} 
-                         onClick={()=>{if(pan!==minpan&& pan-5>=minpan){setPan(pan-10)}}}>
-                        <img src={left} style={{width:'48px',height:'48px'}}/>
-                        </button></Tooltip>
-                        {pan}
-                        <Tooltip title="Pan">
-                        <button  style={{border: 'none'}} 
-                        onClick={()=>{if(pan!==maxpan&& pan+10<=maxpan){setPan(pan+10);}}}>
-                        <img src={right} style={{width:'48px',height:'48px'}}/>
-                        </button></Tooltip>
-                      
-                      </div>
-   
-   
-                         <div style={{display:'flex',flexDirection:'column' ,alignItems:'center',paddingLeft:'0px',paddingRight:'0px'}}>
-                           <Tooltip title="Tilt" placement='top'>
-                           <button style={{border: 'none',}} onClick={()=>{if(tilt!==maxtilt && tilt+5<=maxtilt){setTilt(tilt+5);}}}>
-                            <img src={up} style={{width:'48px',height:'48px'}}/>
-                           </button></Tooltip>
-                           {tilt}
-                           <Tooltip title="Tilt">
-                           <button style={{border: 'none'}}  onClick={()=>{if(tilt!==mintilt && tilt-5 >=mintilt){setTilt(tilt-5);}}}>
-                           <img src={down} style={{width:'48px',height:'48px'}}/>
-                           </button></Tooltip>
-                         </div>
-                         
-                         <div style={{display:'flex',alignItems:'center'}}> 
-                           <Tooltip title="Zoom In">
-                         <button  style={{border: 'none'}} onClick={()=>{if(zoom!==maxzoom && zoom+10 <=maxzoom){setZoom(zoom+10);}}}>
-                             <img src={zoomIn} style={{width:'48px',height:'48px'}}/>
-                           </button></Tooltip> {zoom}<Tooltip title="Zoom Out">
-                         <button  style={{border: 'none'}} onClick={()=>{if(zoom!==minzoom && zoom-10 >=minzoom){setZoom(zoom-10)}}}>
-                             <img src={zoomout} style={{width:'48px',height:'48px'}}/>
-                           </button></Tooltip> </div>
-                       </div>
-                      <br/>
-                       <div style={{display:'flex',justifyContent:'space-around',paddingLeft:'0px',paddingRight:'0px'}}>
-                       <Tooltip title="reset">
-                             <button  className="presetButton" onClick={()=>{ handleRefresh() }}>
-                             Refresh
-                            </button></Tooltip>
-                       <button onClick={HandleSubmit} className="presetButton"  >Confirm</button>
-                      </div>
-                      
-                       
-              
-                     </div>
-                   
-                 
-                  ):(<MiniMap camId={id}/>)}
-                 </div>
-            </div>
+    ) : (<MiniMap camId={id} />)}
+  </div>
+</div>
+
             <div className='col-md-8' 
             style={{  paddingLeft:'0px',  paddingBottom: "20px",width:'75%'}}>
               <div style={{display:'flex' ,justifyContent:'space-around'}}>

@@ -47,7 +47,7 @@ class Login extends Form {
             localStorage.setItem("token", res.data.auth_token);
             localStorage.setItem('user', JSON.stringify(res.data.user));
             const {state} = props.location;
-            window.location = state ? state.from.pathname : "/"
+            window.location = state ? state.from.pathname : "/home"
         }).catch(err => {
             this.props.setSnackBar(err.response.data.non_field_errors[0])
         }).finally(() => {
@@ -73,7 +73,7 @@ class Login extends Form {
 
                             {/* */}
                             <div className="mb4 mt3">
-                            <img className="w-20 h-20" src={require("../images/firelogo.jpeg")} alt="" style={{width:'80%', marginBottom: '10px'}}/><h4>Sign in to your account</h4>
+                            <img className="w-20 h-20" onClick={()=>{window.location.href='/'}} src={require("../images/firelogo.jpeg")} alt="" style={{width:'80%', marginBottom: '10px'}}/><h4>Sign in to your account</h4>
                             </div>
                             {/* */}
                             <div className="mb4">
@@ -118,7 +118,7 @@ class Login extends Form {
                                         </button>
                                     </div>
                                 </form>
-
+                              <a href="/">back</a>
                             </div>
                         </div>
                         {/* */}

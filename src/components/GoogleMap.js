@@ -55,7 +55,7 @@ function MapContainer() {
          const day = currentDate.getDate().toString().padStart(2, '0');
 
          const formattedDate = `${year}${month}${day}`;
-         const url = `${backend_url}/media/kmz/${formattedDate}.kmz`;
+         const url = `https://firms.modaps.eosdis.nasa.gov/api/kml_fire_footprints/south_asia/24h/c6.1/FirespotArea_south_asia_c6.1_24h.kmz`;
          //const url="/20240201.kmz"
          console.log("kmz file url:"+url)
         const response = await fetch(url);

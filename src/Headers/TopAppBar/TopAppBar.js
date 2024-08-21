@@ -29,7 +29,7 @@ export default function TopAppBar() {
     };
 
     const handle_home_click = () => {
-        window.location = '/';
+        window.location = '/home';
     };
 
     const handleLogout = () => {

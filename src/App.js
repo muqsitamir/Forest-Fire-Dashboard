@@ -22,6 +22,7 @@ import Nasa from './features/events/Nasa';
 import CameraDetailsPage from './pages/CameraDetailsPage';
 import PasswordReset from './components/PasswordReset';
 import ChangePassword from './Authentication/ChangePassword';
+import Landing from './Landing';
 //export const backend_url = 'http://127.0.0.1:8000';
 export const backend_url = 'https://api.forestwatch.org.pk';
 export const googleMapsApiKey='AIzaSyBup6K7zk3Hp7u53HmAVCMwqeEfFCEf70Q';
@@ -32,14 +33,17 @@ export default function App () {
                 <TopAppBarProtection Component={TopAppBar} />
                 <ReactSpinner/>
                 <Switch>
-                <ProtectedRoute exact path='/' Component={GoogleMap} />
+                <ProtectedRoute exact path='/home' Component={GoogleMap} />
                 <ProtectedRoute exact path="/dashboard" Component={Home} />
                 <ProtectedRoute exact path='/cameras' Component={Cameras} />
                 <ProtectedRoute exact path='/nasa' Component={Nasa} />
                 <ProtectedRoute exact path='/live/:id' Component={LiveView} />
                 <ProtectedRoute exact path='/camlive/:id' Component={Live} />
                 <ProtectedRoute exact path='/statistics/:id' Component={CameraDetailsPage} />
-                <OnlyPublicRoute exact path='/login' Component={Login} />
+              
+                <OnlyPublicRoute  exact path='/' Component={Landing} />
+                <OnlyPublicRoute exact path='/login' component={Login} />
+                
                 <ProtectedRoute exact path='/change-password' Component={ChangePassword}/>
                 <Route exact path='/logout' render={(props) => <Logout {...props}/>}/>
                 <Route path='/reset-password' render={(props) => <ResetPassword {...props}/>}/>

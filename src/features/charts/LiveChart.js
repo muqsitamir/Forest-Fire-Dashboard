@@ -59,7 +59,7 @@ const LiveChart = ({ cameraId, cameraName }) => {
       text: `Total Night Events ${data.total_night_event_count}`,
     },
     subtitle:{
-      text:` Events with more than one species: ${data.night_event_with_more_than_one_species}
+      text:` Events with both (fire and smoke): ${data.night_event_with_more_than_one_species}
     `
     },colors: [
       'rgb(243, 156, 18)' , // Color for the first slice (Fire)
@@ -102,7 +102,7 @@ const LiveChart = ({ cameraId, cameraName }) => {
       text: `Total Day Events ${data.total_day_event_count}`,
        },
     subtitle:{
-      text:` Events with more than one species:${data.day_event_with_more_than_one_species}`
+      text:` Events with both (fire and smoke):${data.day_event_with_more_than_one_species}`
   
     }
     ,colors: [

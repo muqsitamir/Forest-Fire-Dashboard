@@ -66,7 +66,7 @@ export default function MiniMap(props) {
         const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
         const day = currentDate.getDate().toString().padStart(2, '0');
         const formattedDate = `${year}${month}${day}`;
-        const url = `${backend_url}/media/kmz/${formattedDate}.kmz`;
+        const url = `https://firms.modaps.eosdis.nasa.gov/api/kml_fire_footprints/south_asia/24h/c6.1/FirespotArea_south_asia_c6.1_24h.kmz`;
         console.log("kmz file url:" + url);
         const token=localStorage.getItem("token");
         const response = await fetch(url)
@@ -109,7 +109,7 @@ export default function MiniMap(props) {
     setCircleRadius(newRadius);
 
     if (map) {
-      map.setMapTypeId(window.google.maps.MapTypeId.SATELLITE);
+      
       map.addListener('zoom_changed', handleZoomChange);
       setIsMarkerClicked(true);
 
@@ -185,6 +185,7 @@ export default function MiniMap(props) {
       center={circleCenter}
       zoom={8}
       mapContainerStyle={{ height: '280px', width: '300px' ,borderRadius:'25px' ,margin:'10px'}}
+      onRightClick={handleMarkerClick}
     >
       <Marker
         position={circleCenter}
@@ -214,17 +215,18 @@ export default function MiniMap(props) {
       />
 
       {isMarkerClicked && (
-        <OverlayView position={circleCenter} mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}>
-          <div
-            className="light-beam"
-            ref={lightBeamRef}
-            style={{
-              top: '50%',
-              left: '50%',
-              transform: `translate(-50%, -50%) rotate(${circleRadius * 0.036}deg)`,
-            }}
-          ></div>
-        </OverlayView>
+          <InfoWindow
+            position={circleCenter}
+            onCloseClick={() => setIsMarkerClicked(false)} // Hide InfoWindow on close
+          >
+            <div style={{display:'flex',flexDirection:'column'}}>
+              
+              <button onClick={() => window.location.href="/"} style={{marginBottom:'10px',borderRadius:'25px'}}>Fire Spread</button>
+              <button onClick={() => window.location.href="/"} style={{marginBottom:'10px',borderRadius:'25px'}}>Prediction</button>
+              <button onClick={() => window.location.href="/"} style={{marginBottom:'10px',borderRadius:'25px'}}>Route Planing</button>
+            </div>
+          </InfoWindow>
+        
       )}
 
       {fireFootprints &&
