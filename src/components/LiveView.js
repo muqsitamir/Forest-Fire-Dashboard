@@ -13,7 +13,7 @@ import { selectSiteData } from "../reusable_components/site_data/siteDataSlice";
 import SideNav from "../Headers/SideNav/SideNav";
 import { useLocation, withRouter ,useParams} from "react-router-dom";
 import { backend_url } from "../App";
-import MiniMap from './MiniMap';
+import MiniMap from './MiniMap'; 
 import LiveChart from '../features/charts/LiveChart';
 import { LiveFilter } from '../features/filters/LiveFilter';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -393,7 +393,7 @@ const toggleDropdown = () => {
   setDropdownOpen(!dropdownOpen);
 };
 const sidebarStyle = {
-  height: '100vh',
+ 
   width: isSidebarVisible ? '250px' : '60px',
   backgroundColor: 'rgb(44, 62, 80)',
   color: 'rgb(243, 156, 18)',
@@ -624,7 +624,7 @@ const avatarStyle = {
             
            </div>
           <div className='row' style={{paddingLeft:'0px',marginTop:'-20px'}}>
-            <div style={{width:'25%',marginTop:'-52px',}}>
+            <div  className='tempDiv'>
               <TemperatureHumidityGraph id={id} live={live} isSidebar={isSidebarVisible}/>
             </div>
            <div style={{width:'75%'}}>

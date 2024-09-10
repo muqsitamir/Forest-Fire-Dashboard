@@ -33,7 +33,7 @@ body {
 }
 .sidebar {
     width: 250px;
-    height: 100vh;
+    
     background: rgb(44, 62, 80);
     color: rgb(243, 156, 18);
     display: flex;
@@ -83,4 +83,13 @@ body {
     text-align: center;
     margin-top: 10px;
   }
-  
+  .tempDiv{
+    width:25%;
+    margin-top:-52px;
+  }
+  @media screen and (max-height: 600px) {
+    .tempDiv{
+      
+      margin-top:0px;
+    }
+  }

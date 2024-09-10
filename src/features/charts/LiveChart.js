@@ -140,7 +140,7 @@ const LiveChart = ({ cameraId, cameraName }) => {
   };
 
   return (
-    <div style={{overflowY:'scroll',overflowX:'hidden',width:'100%', height:'37vh',display:'flex',justifyContent:'space-evenly',background:'#eeee',borderRadius:'25px',border:'5px solid #eee'}}>
+    <div style={{overflowY:'scroll',overflowX:'hidden',width:'100%', height:'auto',display:'flex',justifyContent:'space-evenly',background:'#eeee',borderRadius:'25px',border:'5px solid #eee'}}>
       <div style={{ display: 'flex',justifyContent: 'space-evenly', alignItems: 'center', width: '45%',marginTop:'20px',borderRadius:'25px',border:'1px solid white' ,background:'white'}}>
         <HighchartsReact highcharts={Highcharts} options={options1} />
         </div>

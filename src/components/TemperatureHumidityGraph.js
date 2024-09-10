@@ -321,7 +321,7 @@ const TemperatureHumidityGraph = ({ id ,live,isSidebar}) => {
   
     return (
       <div style={{ overflowY: 'hidden', overflowX: 'hidden', height: '45vh' }}>
-        <div>
+        
           {loading ? (
             <div>
               <img src={'/spinner.gif'} alt="Loading" style={{ width: '50px', height: '50px' }} />
@@ -378,7 +378,7 @@ const TemperatureHumidityGraph = ({ id ,live,isSidebar}) => {
               </div>
             </div>
           )}
-        </div>
+        
       </div>
     );
   };
