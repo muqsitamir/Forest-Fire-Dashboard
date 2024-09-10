@@ -498,9 +498,9 @@ const avatarStyle = {
           </div>
         )}</div>
       <div >
-          <div className='row' style={{alignItems:'flex-start',margin:'0',height:'62vh'}}>
+          <div className='row' style={{alignItems:'flex-start',margin:'0',height: '-webkit-fill-available'}}>
           <div className='col-md-4 d-flex justify-content-center' style={{ width: '25%' }}>
-  <div className='row d-flex justify-content-center' style={{ margin: 0, backgroundColor: "white", justifyContent: 'space-around', paddingRight: 0 }}>
+  <div className='row d-flex justify-content-center' style={{ margin: 0, backgroundColor: "white", justifyContent: 'space-around', paddingRight: 0 ,width: '-webkit-fill-available'}}>
     <div className='sidebar-section' style={{ paddingRight: 0, textAlign: 'center', border: '1px solid white', borderRadius: '25px', background: 'rgba(238, 238, 238, 0.933)', margin: '10px' }}>
       <p style={{ fontSize: '14px', margin: '5px 0' }}>{date} {currentTime}</p>
       {air_humidity && air_temp && (
@@ -584,13 +584,13 @@ const avatarStyle = {
 
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <Tooltip title="Zoom In">
-              <button style={{ border: 'none' }} onClick={() => { if (zoom !== maxzoom && zoom + 10 <= maxzoom) { setZoom(zoom + 10); } }}>
+              <button style={{ border: 'none',padding:'0px' }} onClick={() => { if (zoom !== maxzoom && zoom + 10 <= maxzoom) { setZoom(zoom + 10); } }}>
                 <img src={zoomIn} style={{ width: '48px', height: '48px' }} />
               </button>
             </Tooltip>
             {zoom}
             <Tooltip title="Zoom Out">
-              <button style={{ border: 'none' }} onClick={() => { if (zoom !== minzoom && zoom - 10 >= minzoom) { setZoom(zoom - 10); } }}>
+              <button style={{ border: 'none' ,padding:'0px'}} onClick={() => { if (zoom !== minzoom && zoom - 10 >= minzoom) { setZoom(zoom - 10); } }}>
                 <img src={zoomout} style={{ width: '48px', height: '48px' }} />
               </button>
             </Tooltip>
@@ -623,7 +623,7 @@ const avatarStyle = {
             </div>
             
            </div>
-          <div className='row' style={{paddingLeft:'0px'}}>
+          <div className='row' style={{paddingLeft:'0px',marginTop:'-20px'}}>
             <div style={{width:'25%',marginTop:'-52px',}}>
               <TemperatureHumidityGraph id={id} live={live} isSidebar={isSidebarVisible}/>
             </div>
