@@ -102,8 +102,8 @@ import LiveWeather from './LiveWeather';
   return (
   
      
-    <div style={{width:'fit-content',overflowX:'hidden',overflowY:'hidden',display:'flex',flexDirection:'column',alignItems:'flex-end',height:'60vh',backgroundColor: 'rgba(238, 238, 238, 0.933)',padding:'10px',borderRadius:'25px',margin:'10px'}}>
-      <h5 style={{display:'flex',justifyContent:'space-evenly',alignContent:'flex-start',marginTop:'12px',justifyContent:'space-between',width:'100%',paddingLeft:"12px"}}>Events <LiveFilter/></h5>
+    <div className="liveevent">
+      <h5 >Events  <LiveFilter/> </h5>
       {events.length !== 0 ? (
       <TablePagination
       style={{overflow:'hidden'}}

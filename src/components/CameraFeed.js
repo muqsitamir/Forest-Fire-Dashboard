@@ -286,7 +286,7 @@ export default function CameraFeed(props) {
       setShowButton(false);
     };
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start',width:'fit-content', alignItems:'center',margin:'10px',backgroundColor: 'rgba(238, 238, 238, 0.933)',padding:'10px',borderRadius:'25px' }}>
+    <div className='camerafeed'>
       <div className='my-5 py-5' style={{ display: loading ? 'flex' : 'none',
           
           alignItems:'stretch' }}>
