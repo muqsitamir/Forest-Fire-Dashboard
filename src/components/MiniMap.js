@@ -222,7 +222,7 @@ export default function MiniMap(props) {
             <div style={{display:'flex',flexDirection:'column'}}>
               
               <button onClick={() => window.location.href="/"} style={{marginBottom:'10px',borderRadius:'25px'}}>Fire Spread</button>
-              <button onClick={() => window.location.href="/"} style={{marginBottom:'10px',borderRadius:'25px'}}>Prediction</button>
+              <button onClick={() => window.location.href="http://10.99.0.66:3000/?displayHotspots=true"} style={{marginBottom:'10px',borderRadius:'25px'}}>Prediction</button>
               <button onClick={() => window.location.href="/"} style={{marginBottom:'10px',borderRadius:'25px'}}>Route Planing</button>
             </div>
           </InfoWindow>
