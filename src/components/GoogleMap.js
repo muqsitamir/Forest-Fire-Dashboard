@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { GoogleMap,  Circle, Marker, InfoWindow, useLoadScript } from "@react-google-maps/api";
+import React, { useState, useEffect,useRef } from 'react';
+import { GoogleMap,  Circle, Marker, InfoWindow, useLoadScript ,StreetViewPanorama} from "@react-google-maps/api";
 import { Link } from 'react-router-dom';
 import { AiOutlineZoomIn, AiOutlineZoomOut } from 'react-icons/ai';
 import { BsArrowUpRightSquare } from 'react-icons/bs';
@@ -30,18 +30,30 @@ function MapContainer() {
   const [center, setCenter] = useState({ center: defaultCenter, zoom: 10, isZoom: false });
   const [selected, setSelected] = useState({ theta: 0, item: {} });
   const [circleCenter, setCircleCenter] = useState({ lat: 34.534508, lng: 73.003801 });
-  const [circleRadius, setCircleRadius] = useState(0);
+  const [circleRadius, setCircleRadius] = useState(10000);
   const [isMarkerClicked, setIsMarkerClicked] = useState(false);
   const [fireFootprints, setFireFootprints] = useState('');
   const { side_nav: side_nav_check } = useSelector(selectSiteData);
   const [selectedFeature, setSelectedFeature] = useState(null);
   const [selectedInterval, setSelectedInterval] = useState(null);
   const side_nav = side_nav_check ? <SideNav /> : null;
-
+ 
   const mapStyles = {
     height: "90vh",
     width: "100%"
   };
+
+ 
+
+  const handleMapLoad = (map) => {
+   
+    setMap(map)
+  };
+
+
+  // Toggle 3D view function
+  
+
 
  
   useEffect(() => {
@@ -142,9 +154,7 @@ function MapContainer() {
         setLoading(false);
       });
   }, []);
-  const handleMapLoad = (map) => {
-    setMap(map);
-  };
+ 
 
 
   const handleMarkerClick = () => {
@@ -284,7 +294,7 @@ function MapContainer() {
     style={{ marginLeft: 'auto', marginRight: '0px' , background: '#2c3e50'}}
     onClick={() => handleReset()} 
   >
-    <FaUndo style={{color: '#f39c12' }}/> {/* Use the FontAwesome Undo icon */}
+    <FaUndo style={{color: '#f39c12' }}/>
   </button>
     </a>
   </div>
@@ -294,7 +304,7 @@ function MapContainer() {
       id="maroon-radio"
       name="fire-interval-radio"
       value="maroon"
-      onChange={() => handleRadioChange('0&&1')} // Add a function to handle radio button change
+      onChange={() => handleRadioChange('0&&1')} 
     />
     
       <span className="legend-color" style={{ background: 'maroon' }}></span>
@@ -360,169 +370,161 @@ function MapContainer() {
                   {!isLoaded ? (
                     <h1>Loading...{loading}</h1>
                   ) : (
-                      <GoogleMap mapContainerStyle={mapStyles} 
-                      onLoad={handleMapLoad}
-                      zoom={center.zoom} 
-                      center={center.center}>
-                          
-                        {data && data.map((item, index) => {
-                          item.location = { lat: item.lat, lng: item.lng };
-                          return (
-                            <Marker icon={"https://maps.google.com/mapfiles/ms/icons/red-dot.png"} 
+                    <GoogleMap
+                    mapContainerStyle={mapStyles}
+                    onLoad={handleMapLoad}
+                    zoom={center.zoom}
+                    center={center.center}
+                    
+                    options={{
+                      mapTypeId: 'satellite', // Satellite view for 3D effect
+                      streetViewControl: true,
+                      scaleControl: true,
+                      mapTypeControl: true,
+                      rotateControl: true,
+                      zoomControl: true,
+                    }}
+                  >
+                
+                    {/* Render Markers */}
+                    {data &&
+                      data.map((item, index) => {
+                        item.location = { lat: item.lat, lng: item.lng };
+                        console.log(item.location6666666666)
+                        return (
+                          <Marker
+                            icon={"https://maps.google.com/mapfiles/ms/icons/red-dot.png"}
                             key={item.name}
-                             position={item.location} 
-                             onClick={() => onSelect(item)} />
-                              
-
+                            position={item.location}
+                            onClick={() => onSelect(item)}
+                          />
+                        );
+                      })}
+              
+                    {/* Render Circles and Street View when a marker is clicked */}
+                    {selected.item.location && (
+                      <>
+                        <Circle
+                          center={selected.item.location}
+                          radius={circleRadius}
+                          options={{
+                            fillColor: "#FF0000",
+                            fillOpacity: 0.1,
+                            strokeColor: "#FF0000",
+                            strokeOpacity: 0.8,
+                            strokeWeight: 2,
+                          }}
+                        />
+                        
+                      </>
+                    )}
+              
+                    {/* Render InfoWindow */}
+                    {selected.item.location && (
+                      <InfoWindow
+                        position={selected.item.location}
+                        onCloseClick={() => setSelected({ theta: selected.theta, item: {} })}
+                      >
+                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                          <p className="mx-2" style={{ fontSize: "15px" }}>
+                            {selected.item.user ? selected.item.description : selected.item.name}
+                          </p>
+                          <span>
+                            {center.isZoom ? (
+                              <a
+                                className="px-1"
+                                type="button"
+                                onClick={() => setCenter({ center: { lat: 33.6844, lng: 73.0479 }, zoom: 10, isZoom: false })}
+                              >
+                                <AiOutlineZoomOut style={{ verticalAlign: "baseline" }} color="#000000" size={20} />
+                              </a>
+                            ) : (
+                              <a
+                                className="px-1"
+                                type="button"
+                                onClick={() => setCenter({ center: selected.item.location, zoom: 12, isZoom: true })}
+                              >
+                                <AiOutlineZoomIn style={{ verticalAlign: "baseline" }} color="#000000" size={20} />
+                              </a>
+                            )}
+                          </span>
+                          <span style={{ align: "center" }}>
+                            {selected.item.user ? (
+                              <Link target={"framename"} to={`/live/${selected.item.id}`}>
+                                <BsArrowUpRightSquare style={{ verticalAlign: "baseline" }} color="#000000" size={20} />
+                              </Link>
+                            ) : (
+                              <a target="framename1" href={selected.item.things_board_link}>
+                                <BsArrowUpRightSquare style={{ verticalAlign: "baseline" }} color="#000000" size={20} />
+                              </a>
+                            )}
+                          </span>
+                        </div>
+                      </InfoWindow>
+                    )}
+              
+                    {/* Render Fire Footprints */}
+                    {fireFootprints &&
+                      fireFootprints.features.map((feature, featureIndex) => {
+                        if (feature.geometry.type === "Polygon") {
+                          const isInsidePakistan = feature.geometry.coordinates[0].some(([lng, lat]) =>
+                            isCoordinateInsidePakistan(lat, lng)
                           );
-                        })}
-                        {center.isZoom && (
-                          <div>
-                            {data && data.map((item, index) => {
-                              return (
-                                item.cameras.map((i, idx) => (
-                                  <Marker icon={"https://maps.google.com/mapfiles/ms/icons/blue-dot.png"}
-                                   key={i.description} 
-                                   position={{ lat: i.latitude, lng: i.longitude }} 
-                                   onClick={() => onSelect(i)} />
-                                ))
-                              );
-                            })}
-                            {data && data.map((item, index) => {
-                              return (
-                                item.sensors.map((i, idx) => (<>
-                                  <Marker icon={"https://maps.google.com/mapfiles/ms/icons/green-dot.png"}
-                                   key={i.name} 
-                                   position={{ lat: i.lat, lng: i.lng }} 
-                                   onClick={() => onSelect(i)} />
-                                   <Circle
-                               center={center.center}
-                               radius={circleRadius}
-                               options={{
-                                fillColor: '#FF0000',
-                                fillOpacity: 0.1,
-                                strokeColor: '#FF0000',
-                                strokeOpacity: 0.8,
-                                strokeWeight: 2,
-                                clickable: false,
-                                editable: false,
-                                draggable: false,
-                                visible: true,
-                                zIndex: 1,
+                          if (isInsidePakistan) {
+                            return (
+                              <Polygon
+                                key={featureIndex}
+                                path={feature.geometry.coordinates[0].map(([lng, lat]) => ({ lat, lng }))}
+                                options={{
+                                  fillColor: "#FF0000",
+                                  fillOpacity: 0.4,
+                                  strokeColor: "#000000",
+                                  strokeOpacity: 1,
+                                  strokeWeight: 2,
                                 }}
-                                />
-
-                                 {/* Add the rotating light beam effect */}
-                                {isMarkerClicked && (
-                                 <div
-                                  className="light-beam"
-                                  style={{top: '50%',left: '50%', height: '95px', transform: `translate(-50%, -50%) rotate(${circleRadius * 0.036}deg)`, // Adjust the rotation factor as needed
-                                   }}
-                                  />
-                                  )}
-                            </>
-                                ))
-                              );
-                            })}
-
-
-                          </div>
-                        )}
-                        {selected.item.location && (
-                          <InfoWindow
-                          position={selected.item.location}
-                          clickable={true}
-                          // onCloseClick={() => setSelected({paths: selected.paths, theta: selected.theta, item : {}})}
-                          onCloseClick={() => setSelected({ theta: selected.theta, item : {}})}
-                        >
-                          <div style={{ display: "flex",  justifyContent: "space-between" }}>
-                          <p className='mx-2' style={{fontSize:"15px" }}>{selected.item.user ? selected.item.description: selected.item.name}</p>
-                            <span>
-                              {center.isZoom ? <a className="px-1" type="button"  
-                              onClick={() => setCenter({center:defaultCenter, zoom:10, isZoom:false})}>
-                                <AiOutlineZoomOut tyle={{verticalAlign: 'baseline'}} color='#000000' size={20}/></a>
-                              : <a className="px-1" type="button" onClick={() => setCenter({center:selected.item.location, zoom:12, isZoom:true})}>
-                                <AiOutlineZoomIn tyle={{verticalAlign: 'baseline'}} color='#000000' size={20}/></a>}
-                            </span>
-                            <span style={{align:"centre" }}>
-                              {selected.item.user ? <Link target={"framename"} to={`/live/${selected.item.id}`}><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20}/> </Link> : <a  target="framename1" href={selected.item.things_board_link}><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20} /> </a> }
-                              {/*{selected.item.device == "camera" ? <Link  target="framename" to={`/live/${selected.item.name}`}><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20}/> </Link> : ""}*/}
-                              {/*/!* {(selected.item.device == "sensor")  ? <Link  target="framename" to={`/sensor/${selected.item.name}`}><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20} /> </Link> : ""} *!/*/}
-                              {/*{(selected.item.device == "sensor")  ? <a  target="framename1" href='https://thingsboard.cloud/dashboard/4d9f5cb0-a201-11ed-9f28-5358e02f9b82?publicId=84e5cbd0-9b1e-11ed-9dfd-cfdf96a89571'><BsArrowUpRightSquare style={{verticalAlign: 'baseline'}} color='#000000' size={20} /> </a> : ""}*/}
-                            </span>
-                          </div>
-                        </InfoWindow>
-                        )}
-                        {fireFootprints && fireFootprints.features.map((feature, featureIndex) => {
-  if (feature.geometry.type === 'Polygon') {
-    
-    const isInsidePakistan = feature.geometry.coordinates[0].some(([lng, lat]) =>
-    isCoordinateInsidePakistan(lat, lng)
-  );
-     console.log(isInsidePakistan)
-      if (isInsidePakistan) {
-    return (
-      <Polygon
-        key={featureIndex}
-        path={feature.geometry.coordinates[0].map(([lng, lat]) => ({ lat, lng }))}
-        options={{
-          fillColor: '#FF0000',
-          fillOpacity: 0.4,
-          strokeColor: '#000000',
-          strokeOpacity: 1,
-          strokeWeight: 2,
-        }}
-      />
-    );}
-  } else if (feature.geometry.type === 'Point') {
-   
-    if (isCoordinateInsidePakistan(feature.geometry.coordinates[1], feature.geometry.coordinates[0])) {
-    return (
-      <Marker
-        key={featureIndex}
-        position={{
-          lat: feature.geometry.coordinates[1],
-          lng: feature.geometry.coordinates[0],
-        }}
-        icon={{
-          url: getMarkerIcon(feature.properties.description),
-          scaledSize: new window.google.maps.Size(20, 20), 
-        }}
-    
-        onClick={() => {
-          setSelectedFeature(feature);
-        }}
-      >
-     
-      </Marker>
-      
-    );}
-    
-  } else {
-    // Handle other geometry types as needed
-    return null;
-  }
-  
-})}
-   {selectedFeature && (
-  <InfoWindow
-    position={{
-      lat: selectedFeature.geometry.coordinates[1],
-      lng: selectedFeature.geometry.coordinates[0],
-    }}
-    onCloseClick={() => {
-      // Clear the selected feature when InfoWindow is closed
-      setSelectedFeature(null);
-    }}
-  >
-    <div>
-      {/* Customize the content inside the InfoWindow */}
-      <h6>{selectedFeature.properties.name}</h6>
-      <p dangerouslySetInnerHTML={{ __html: selectedFeature.properties.description }} />
-   </div>
-  </InfoWindow>
-)}
-                      </GoogleMap>
+                              />
+                            );
+                          }
+                        } else if (feature.geometry.type === "Point") {
+                          if (isCoordinateInsidePakistan(feature.geometry.coordinates[1], feature.geometry.coordinates[0])) {
+                            return (
+                              <Marker
+                                key={featureIndex}
+                                position={{
+                                  lat: feature.geometry.coordinates[1],
+                                  lng: feature.geometry.coordinates[0],
+                                }}
+                                icon={{
+                                  url: getMarkerIcon(feature.properties.description),
+                                  scaledSize: new window.google.maps.Size(20, 20),
+                                }}
+                                onClick={() => {
+                                  setSelectedFeature(feature);
+                                }}
+                              />
+                            );
+                          }
+                        } else {
+                          return null;
+                        }
+                      })}
+              
+                    {/* Render InfoWindow for selected fire footprint */}
+                    {selectedFeature && (
+                      <InfoWindow
+                        position={{
+                          lat: selectedFeature.geometry.coordinates[1],
+                          lng: selectedFeature.geometry.coordinates[0],
+                        }}
+                        onCloseClick={() => setSelectedFeature(null)}
+                      >
+                        <div>
+                          <h6>{selectedFeature.properties.name}</h6>
+                          <p dangerouslySetInnerHTML={{ __html: selectedFeature.properties.description }} />
+                        </div>
+                      </InfoWindow>
+                    )}
+                  </GoogleMap>
                     )}
                 </div>
               </Col><Col style={{ width: "15.5%", padding: '0 0rem' ,flex: "0 0 .499%", maxWidth: "30.499%" }}> 

@@ -18,8 +18,11 @@ const TemperatureHumidityGraph = ({ id, live, isSidebar }) => {
       const Header = { Authorization: `Token ${localStorage.getItem("token")}` };
       const config = { headers: Header };
       var startTs = calculateStartTimestamp();
+      console.log("start time:"+startTs)
       var endTs = new Date().getTime();
+      console.log("end time:"+endTs)
       const url = `${backend_url}/core/api/weatherdata/?camera_id=${id}&end_time=${endTs}&start_time=${startTs}&page_size=1000`;
+      console.log(url)
       const response = await axios.get(url, config);
       const { data: combinedData } = response;
       
@@ -154,7 +157,7 @@ const TemperatureHumidityGraph = ({ id, live, isSidebar }) => {
         </div>
       ) : error ? ( // Check error state and show message if weather station is down
         <div style={{ textAlign: 'center', color: 'red', background:'#eeee',height:'40vh',borderRadius:'25px',margin:'0px 20px',width:'100%',display:'flex',alignItems:'center' ,justifyContent:'center',flexDirection:'column'}}>
-          <h5>Weather station is down.</h5>
+          
         </div>
       ) : (
         <div style={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', overflow: 'hidden' }}>

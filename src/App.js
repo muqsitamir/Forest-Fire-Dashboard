@@ -40,7 +40,7 @@ export default function App () {
                 <ProtectedRoute exact path='/live/:id' Component={LiveView} />
                 <ProtectedRoute exact path='/camlive/:id' Component={Live} />
                 <ProtectedRoute exact path='/statistics/:id' Component={CameraDetailsPage} />
-              
+                
                 <OnlyPublicRoute  exact path='/' Component={Landing} />
                 <OnlyPublicRoute exact path='/login' component={Login} />
                 

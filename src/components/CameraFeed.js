@@ -13,7 +13,7 @@ const max="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAA
 export default function CameraFeed(props) {
   const [picture, setPicture] = useState({ pic: '', rnd: 0 });
   const cameraId = props.cameraId;
-  console.log(cameraId)
+  //console.log(cameraId)
   const view = props.view;
   const live = props.live;
   const stream=props.liveStream;
