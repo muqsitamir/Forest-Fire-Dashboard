@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>3D Maps Codelab</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+		#markerModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    max-width: 400px;
+    width: 100%;
+}
+
+#markerModal button {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+#markerModal button:hover {
+    background-color: #0056b3;
+}
+
+    </style>
+</head>
+<body>
+    <script async defer>
+       (g => { 
+    var h, a, k, p = "The Google Maps JavaScript API", c = "google", l = "importLibrary", q = "__ib__", m = document, b = window; 
+    b = b[c] || (b[c] = {}); 
+    var d = b.maps || (b.maps = {}), r = new Set, e = new URLSearchParams, 
+    u = () => h || (h = new Promise(async (f, n) => { 
+        await (a = m.createElement("script")); 
+        e.set("libraries", [...r, 'visualization'] + ""); // Add 'visualization' library
+        for (k in g) e.set(k.replace(/[A-Z]/g, t => "_" + t[0].toLowerCase()), g[k]); 
+        e.set("callback", c + ".maps." + q); 
+        a.src = `https://maps.${c}apis.com/maps/api/js?` + e; 
+        d[q] = f; 
+        a.onerror = () => h = n(Error(p + " could not load.")); 
+        a.nonce = m.querySelector("script[nonce]")?.nonce || ""; 
+        m.head.append(a); 
+    })); 
+    d[l] ? console.warn(p + " only loads once. Ignoring:", g) : d[l] = (f, ...n) => r.add(f) && u().then(() => d[l](f, ...n)); 
+})({
+    key: "AIzaSyBup6K7zk3Hp7u53HmAVCMwqeEfFCEf70Q",
+    v: "alpha",
+});
+
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.7.1/jszip.min.js"></script>
+    <script>
+        async function init() {
+            const { Map3DElement, Polygon3DElement, Marker3DInteractiveElement,InfoWindow3DElement } = await google.maps.importLibrary("maps3d");
+            
+            const map = new Map3DElement({
+                center: { lat: 34.4690, lng: 73.1074, altitude: 0 },
+                tilt: 67.5,
+                range: 45000
+            });
+            
+			
+            // Fetch the KMZ file
+              const kmzUrl = `https://firms.modaps.eosdis.nasa.gov/api/kml_fire_footprints/south_asia/24h/c6.1/FirespotArea_south_asia_c6.1_24h.kmz`;
+
+            // Fetch and process KMZ file
+            const response = await fetch(kmzUrl);
+            const kmzData = await response.blob();
+            const zip = await JSZip.loadAsync(kmzData);
+            const kmlFile = Object.values(zip.files).find(file => file.name.endsWith('.kml'));
+
+            if (kmlFile) {
+                const kmlData = await kmlFile.async("text");
+                const parser = new DOMParser();
+                const kmlDoc = parser.parseFromString(kmlData, "application/xml");
+
+                // Process placemarks
+                const placemarks = kmlDoc.getElementsByTagName("Placemark");
+                for (const placemark of placemarks) {
+				//console.log(placemark)
+                    const name = placemark.getElementsByTagName("name")[0]?.textContent;
+                    const point = placemark.getElementsByTagName("Point")[0];
+                    const polygon = placemark.getElementsByTagName("Polygon")[0];
+            
+                    if (point) {
+                        const coordinates = point.getElementsByTagName("coordinates")[0].textContent.trim();
+						//console.log(coordinates)
+						const description=placemark.getElementsByTagName("description")[0]?.textContent;
+						//console.log(description)
+                        const [lng, lat, altitude] = coordinates.split(",").map(coord => parseFloat(coord.trim()));
+
+                         if (!isNaN(lat) && !isNaN(lng) && !isNaN(altitude)) {
+                           //  console.log("Parsed coordinates:", { lat, lng, altitude });
+    // Now you can use lat, lng, and altitude for further processing
+                          } else {
+                          console.error("Failed to parse coordinates:", coordinates);
+                           }
+						// const elevation = await getElevation(lat, lng);  
+                       const fireFlagImg = document.createElement('img');
+                       fireFlagImg.src = "data:image/png;base64,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"
+                        // Add 3D marker
+						//console.log(elevation)
+						 
+                       const marker = new Marker3DInteractiveElement({
+                           position: { lat, lng, altitude: 400 || 0 },
+                           altitudeMode: "RELATIVE_TO_GROUND", // Use a valid altitude mode
+                           extruded: true, // Keeps the 3D extrusion
+                        });
+						  const templateForImg = document.createElement('template');
+                          templateForImg.content.append(fireFlagImg);
+                          marker.append(templateForImg);
+						
+                          
+                         // Add event listener to the marker to open the InfoWindow on click
+                       marker.addEventListener("gmp-click", (event) => {
+   
+                        console.log(`Marker clicked: ${name}`);
+                          
+						  document.getElementById("placeName").innerHTML=name;
+						  document.getElementById("position").style.display="none";
+						 // document.getElementById("elevation").innerHTML=elevation.toFixed(2);
+						  document.getElementById("description").innerHTML=description;
+                    openModal()
+                        });
+
+                        map.append(marker);
+                    } else if (polygon) {
+                       const coordinates = polygon.getElementsByTagName("coordinates")[0].textContent.trim();
+                      // console.log("Raw Coordinates:", coordinates);
+					   
+                         const coordinatesArray = coordinates.trim().split("\n").map(coord => {
+                          // Split each coordinate set by commas
+                           const [lng, lat, alt] = coord.split(",");
+  
+                           // Return the object in the required format
+                           return {
+                             lat: parseFloat(lat),
+                             lng: parseFloat(lng),
+                             altitude: parseFloat(alt)
+                            };
+                           });
+                       
+                        processCoordinates(coordinatesArray).then(updatedCoordinates => {
+                        //console.log("Updated Coordinates with Elevation:", updatedCoordinates);
+ 
+						 const poly = new Polygon3DElement({
+						strokeColor: "#EA4335",
+						strokeWidth: 4,  // Set the color for filling the polygon
+						extruded: true,
+						altitudeMode: 'RELATIVE_TO_GROUND',
+						drawsOccludedSegments: true,
+						});
+						poly.outerCoordinates = updatedCoordinates;
+						//poly.paths=polygonCoords;
+						//console.log(poly)
+                       // Convert polygon coordinates into a Google Maps Polygon
+					poly.addEventListener("click", (event) => {
+   
+                        console.log(`Marker clicked: ${name}`);
+                          
+						  document.getElementById("placeName").innerHTML=name;
+						  document.getElementById("position").style.display="none";
+						  document.getElementById("elevation").innerHTML=elevation.toFixed(2);
+						  document.getElementById("description").innerHTML=updatedCoordinates;
+                    openModal()
+                        });
+ 	                   map.append(poly)
+
+                        });
+                       
+                    }
+                }
+
+                console.log("KML data processed successfully");
+            } else {
+                console.error("No KML file found in the KMZ archive.");
+            }
+			
+			
+			
+               
+			   const createCircleCoordinates = (center, radiusInMeters, numSides = 72) => {
+                const R = 6371000; // Radius of Earth in meters
+                const circleCoordinates = [];
+                const lat = center.lat * (Math.PI / 180);
+                const lng = center.lng * (Math.PI / 180);
+
+                for (let i = 0; i <= numSides; i++) {
+                    const angle = (i * 2 * Math.PI) / numSides;
+                    const latOffset = (radiusInMeters / R) * Math.cos(angle);
+                    const lngOffset = (radiusInMeters / R) * Math.sin(angle) / Math.cos(lat);
+
+                    const pointLat = (lat + latOffset) * (180 / Math.PI);
+                    const pointLng = (lng + lngOffset) * (180 / Math.PI);
+                    circleCoordinates.push({ lat: pointLat, lng: pointLng, altitude: 600 });
+                }
+
+                return circleCoordinates;
+            };
+
+            // Function to show circle around clicked marker
+            const showCircleAroundMarker = (markerPosition) => {
+			      //console.log(markerPosition)
+			 if (markerPosition.lat === 34.439466 && markerPosition.lng === 73.347998) {
+        // Create the 3D polygon using the dnnapolygon coordinates
+		const dnnapolygon =[
+			   { lat: 34.4394, lng: 73.3479, altitude: 0 },
+                { lat: 34.501, lng: 73.318, altitude: 0 },
+                
+                { lat: 34.431, lng: 73.440, altitude: 0 },
+                { lat: 34.4394, lng: 73.3479, altitude: 0 },
+				
+            ];
+			// processCoordinates(dnnapolygon).then(updatedCoordinates => {
+                       // console.log("Updated Coordinates with Elevation:", updatedCoordinates);
+ 
+        const circle = new Polygon3DElement({
+            strokeColor: "#EA4335",
+            strokeWidth: 4,
+            altitudeMode: "RELATIVE_TO_GROUND",
+            extruded: true,
+            drawsOccludedSegments: true,
+        });
+
+        // Assign the coordinates for the polygon
+        circle.outerCoordinates = dnnapolygon;
+
+        // Add the polygon to the map
+        map.append(circle);
+		
+// Assuming you have a Polygon3DElement object called "polygon"
+     //circle.addEventListener('click', showPolygonEdgeOrVertex);
+		//})
+    } 
+			else{
+                const circleCoordinates = createCircleCoordinates(markerPosition, 1000); // 1km radius
+                const circle = new Polygon3DElement({
+                    strokeColor: "#EA4335",
+                    strokeWidth: 4,
+                    fillColor: "red",
+                    altitudeMode: "RELATIVE_TO_GROUND",
+                    extruded: true,
+                    drawsOccludedSegments: true,
+                });
+
+                circle.outerCoordinates = circleCoordinates;
+
+                map.append(circle); }// Append circle to the map
+            };
+			
+            // Marker positions array
+            const positions = [
+                { lat: 34.534508, lng: 73.003801, altitude: 400 },
+                { lat: 34.439466, lng: 73.347998, altitude: 400 },
+                { lat: 34.450441, lng: 73.0784379, altitude: 400 },
+                { lat: 34.5306595, lng: 73.212631705, altitude: 400 },
+                { lat: 34.50416284628569, lng: 73.30717293846877, altitude: 400 },
+                { lat: 31.4707, lng: 74.4098, altitude: 400 }
+            ];
+			
+			  //processCoordinates(positions).then(updatedCoordinates => {
+                       // console.log("Updated positions Coordinates with Elevation:", updatedCoordinates);
+						//})
+            // Function to create a marker
+            const createMarker = (position,name,elevation) => {
+                const marker = new Marker3DInteractiveElement({
+                    position,
+                    altitudeMode: 'RELATIVE_TO_GROUND',
+                    extruded: true,
+                });
+				
+                
+                       
+					 
+                marker.addEventListener('gmp-click', (event) => {
+                  
+						  document.getElementById("placeName").innerHTML=name;
+						  document.getElementById("position").style.display="block";
+						  document.getElementById("ele").style.display="block";
+						  document.getElementById("latPos").innerHTML=position.lat;
+						  document.getElementById("lngPos").innerHTML=position.lng;
+						  document.getElementById("elevation").innerHTML=elevation.toFixed(2);
+						    document.getElementById("description").innerHTML="";
+                   // If the position doesn't match, show a circle around the marker
+                   showCircleAroundMarker(event.target.position);
+				     openModal();
+ 
+                });
+
+                return marker;
+            };
+
+            // Loop through positions and create markers
+            for (const position of positions) {
+			
+				var name=await getPlaceName(position.lat,position.lng)
+				const elevation = await getElevation(position.lat,position.lng);
+                const interactiveMarker = createMarker(position,name,elevation);
+
+                map.append(interactiveMarker);
+            }
+
+            document.body.append(map);
+        }
+async function getElevation(lat, lng) {
+    const elevationUrl = `https://maps.googleapis.com/maps/api/elevation/json?locations=${lat},${lng}&key=AIzaSyBup6K7zk3Hp7u53HmAVCMwqeEfFCEf70Q`;
+    const response = await fetch(elevationUrl);
+    const data = await response.json()
+	//console.log(data)
+    return data.results?.[0]?.elevation || 0;
+}
+async function processCoordinates(coordinatesArray) {
+  const updatedCoordinates = [];  // Array to store updated coordinates
+
+  for (const coord of coordinatesArray) {
+    try {
+      const elevation = await getElevation(coord.lat, coord.lng);
+      //console.log(`Elevation at (${coord.lat}, ${coord.lng}): ${elevation} meters`);
+      coord.altitude = elevation; // Replace the altitude with the elevation
+      updatedCoordinates.push(coord);  // Add updated coord to the array
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  return updatedCoordinates;  // Return the updated array with elevations
+}
+
+const getPlaceName = async (lat, lng) => {
+  const apiKey = 'AIzaSyBup6K7zk3Hp7u53HmAVCMwqeEfFCEf70Q';
+  const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
+
+  try {
+    const response =  await fetch(url);
+	const data = await response.json()
+    const placeName = data.results[0]?.formatted_address;
+    console.log("Place name: ", placeName);
+	 if (placeName) {
+      return placeName;  // Return place name
+    } else {
+      throw new Error("No results found");
+    }
+  } catch (error) {
+    console.error("Error getting place name:", error);
+  }
+};
+function openModal() {
+    document.getElementById("markerModal").style.display = "block";
+}
+
+// Function to close the modal
+function closeModal() {
+    document.getElementById("markerModal").style.display = "none";
+}
+   init();
+    </script>
+	
+	<!-- Modal Structure -->
+<div id="markerModal" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%); padding:20px; background-color:white; border:1px solid #ccc; z-index:100;">
+    <div id="modalContent">
+        <h2>Marker Info</h2>
+        <p id="name"><strong>Name:</strong> <span id="placeName"></span></p>
+        <p id="position"><strong>Position:</strong> Lat: <span id="latPos"></span>, Lng: <span id="lngPos"></span></p>
+        <p id="ele"><strong>Elevation:</strong> <span id="elevation"></span> meters</p>
+		<p id="description"></p>
+        <button onclick="closeModal()">Close</button>
+    </div>
+</div>
+
+</body>
+</html>
