@@ -131,7 +131,6 @@ export function EventsTable() {
       }
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
-    debugger
     dispatch(getEvents(state.page + 1, filters.filterApplied, status(tab), rowsPerPage));
   };
 
@@ -153,7 +152,6 @@ export function EventsTable() {
 
   const handleChangeRowsPerPage = (event) => {
     setState({ page: 0, rowsPerPage: parseInt(event.target.value, 10) });
-    debugger
   };
 
   const handleArchive = () => {
@@ -181,6 +179,7 @@ export function EventsTable() {
   };
 
   const handleDelete = () => {
+    debugger;
     dispatch(deleteEvent(selected));
     setShowDeleteConfirmation(false);
     setSelected([]);
@@ -336,7 +335,6 @@ export function EventsTable() {
           {events.length !== 0 ? (
             <TableBody>
               {(rowsPerPage > 0 ? events.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : events).map((row) => {
-                // debugger;
                 return (
                   <TableRow key={row.uuid}>
                   <TableCell>

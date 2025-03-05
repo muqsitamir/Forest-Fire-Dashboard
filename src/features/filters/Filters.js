@@ -16,11 +16,13 @@ export function Filters() {
     const cameraItems = availCameras.map((v,i)=>({key:v.id,value:v.description}));
     const speciesItems = availSpecies.map((v,i)=>({key:v.id,value:v.name}));
     const dispatch = useDispatch();
+
     const [newRange, setNewRange] = useState({
       startDate: null,
       endDate: new Date(),
       key: 'range'
     });
+
     const [startTime, setStartTime] = useState(new Date('2018-01-01T19:00:00.000Z'));
     const [endTime, setEndTime] = useState(new Date('2018-01-01T19:00:00.000Z'));
     const [newCameras, setNewCameras] = useState([]);
