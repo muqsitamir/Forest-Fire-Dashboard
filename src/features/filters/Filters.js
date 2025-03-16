@@ -68,22 +68,6 @@ export function Filters() {
                 onClose={handleClose}
                 closeAfterTransition>
                         <DatePicker ranges={newRange} onChange={handleDateChange} sx={{marginBottom:0}}/>
-                         <LocalizationProvider dateAdapter={AdapterDateFns}>
-                             <Stack spacing={2}>
-                                <DesktopTimePicker
-                                  label="Start Date Time"
-                                  value={startTime}
-                                  onChange={handleStartTimeChange}
-                                  renderInput={(params) => <TextField {...params} />}
-                                />
-                                <DesktopTimePicker
-                                  label="End Date Time"
-                                  value={endTime}
-                                  onChange={handleEndTimeChange}
-                                  renderInput={(params) => <TextField sx={{height:40}} {...params} />}
-                                />
-                             </Stack>
-                         </LocalizationProvider>
                         <MultiSelect label={"Cameras"} onChange={handleCameraSelect} values={newCameras} items={cameraItems}  />
                         <MultiSelect label={"Species"} onChange={handleSpecieSelect} values={newSpecies} items={speciesItems}/>
                         <div className="center tc pv3 ph2">
