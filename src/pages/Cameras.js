@@ -6,6 +6,7 @@ import { getCameras, selectCameras } from '../features/cameras/cameraSlice';
 import MiniMap from './MiniMap';
 import {Tabs,Tab} from "@mui/material";
 export default function Cameras() {
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getCameras());
@@ -16,11 +17,9 @@ export default function Cameras() {
   const [center, setCenter] = useState({ center: location, zoom: 5 });
   const [showLive, setShowLive] = useState(false);
   const [showOfline,setShowOfline]=useState(false);
-  const [state, setState] = useState({ open: false });
   const [tab, setTab] = useState(0);
   const [headingArea, setheadingArea] = useState(null);
-  const [filter,setfilter]=useState(false);
- 
+
 
   const handleLiveFilter = () => {
     setShowLive(true);
@@ -78,7 +77,7 @@ export default function Cameras() {
       }else{
     const gridItems = filteredCameras.map((camera, index) => (
       <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
-        <Camera content={camera}  latestEvent={camera.live_image ? `${camera.live_image}` : 'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image-300x225.png'}
+        <Camera content={camera}  latestEvent={camera.latest_event ? `${camera.latest_event}` : 'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image-300x225.png'}
                                updateMapCenter={updateMapCenter} />
       </Grid>
     ));

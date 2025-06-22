@@ -4,12 +4,13 @@ import Typography from '@mui/material/Typography';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import {Button,Tooltip} from "@mui/material";
-//import CameraDetailsPage from "../../pages/CameraDetailsPage";
+import {backend_url} from "../../App";
 import {Link} from 'react-router-dom';
 
 
 export default function Camera(props){
     let content = props.content;
+    let latest = `${backend_url}/media/${props.content.latest_event}`;
     let liveC=content.live;
     let live = content.live ? "success" : "disabled";
     let id=content.id;
@@ -61,36 +62,23 @@ let location='Lat:'+content.latitude+' ,Lng:'+content.longitude;
                 </Typography>
                 <Typography  style={{borderTop:'groove',borderBottom:'groove',display:'flex',justifyContent:'center',marginBottom:'5px'}}><span  style={{fontSize:'12px'}}>{getDate(content.created_at)}</span>   </Typography>               
                <div style={{display: 'flex',alignItems: 'center', justifyContent: 'center'}}>
-               {props.latestEvent === 'https://storage.googleapis.com/proudcity/mebanenc/uploads/2021/03/placeholder-image-300x225.png' ||null? (
-  <img
-    src='/video.png' // Replace with the path to your black image
-    alt=""
-    className="card-img-top time"
-    style={{
-      width: '150px',
-      height: '150px',
-      borderRadius: '15px'
-    }}
-  />
-) : (
-  <img
-    src={props.latestEvent}
-    alt=""
-    className="card-img-top time"
-    style={{
-      width: '150px',
-      height: '150px',
-      borderRadius: '15px'
-    }}
-    onError={(e) => {
-      e.target.src = '/video.png'; // Replace with the path to your black image
-    }}
-  />
-)} </div>
+          <img
+            src={latest}
+            alt=""
+            className="card-img-top time"
+            style={{
+              width: '150px',
+              height: '150px',
+              borderRadius: '15px'
+            }}
+            onError={(e) => {
+              e.target.src = '/video.png';
+            }}
+          />
+         </div>
                 <Typography  style={{borderTop:'groove',borderBottom:'groove',display:'flex',justifyContent:'center',marginTop:'5px'}}>
           <span  style={{fontSize:'12px'}}>Last Reported Event: {getDate(content.last_reported_at)}</span>
-        </Typography> 
-               
+        </Typography>
                 <div style={{display: 'flex',alignItems: 'center', justifyContent: 'space-around',margin:'5px'}}>
                 <Tooltip title={location} placement="top">
                 <Button size="small"  component="span" style={{ border: '1px solid',color:'black',opacity:'0.8' ,fontSize:'10px'}}
@@ -105,8 +93,6 @@ let location='Lat:'+content.latitude+' ,Lng:'+content.longitude;
                <LeaderboardIcon/>  Statistics
                  </Button>
                  </div>
-                
-          
         </div>
     );
 }

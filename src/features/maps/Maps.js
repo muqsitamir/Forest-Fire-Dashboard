@@ -18,7 +18,6 @@ export function Maps() {
     script.defer = true;
     document.head.appendChild(script);
 
-    // Clean up the script on component unmount
     return () => {
       document.head.removeChild(script);
     };

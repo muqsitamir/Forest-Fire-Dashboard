@@ -21,10 +21,10 @@ export default function Home() {
   const [eventComponent, setEventComponent] = useState(null);
 
   useEffect(() => {
-    if (eventComponent === "WWF") {
+    if (eventComponent !== "CVGL") {
       setEventComponent(<EventsTableWWF />);
     }
-    if (eventComponent === "CVGL") {
+    else {
       setEventComponent(<EventsTable />);
     }
   }, [eventComponent]);

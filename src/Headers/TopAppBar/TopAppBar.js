@@ -35,11 +35,6 @@ export default function TopAppBar() {
     const handleLogout = () => {
         window.location = '/logout';
     };
-
-    const handleChangePassword = () => {
-        window.location = '/change-password';
-    };
-
  
 
     const toggleDropdown = () => {
@@ -80,7 +75,6 @@ export default function TopAppBar() {
                             {organization === "CVGL" && (
                              <button  onClick={handle_admin_click}>Admin</button>
                             )}
-                            <button onClick={handleChangePassword}>Change Password</button>
                             <button onClick={handleLogout}>Log out</button>
                         </div>
                     )}

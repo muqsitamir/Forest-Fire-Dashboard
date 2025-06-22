@@ -19,6 +19,7 @@ export const cameraSlice = createSlice({
   },
   reducers: {
       setCameras: (state, action) => {
+          debugger
           state.cameras.count = action.payload.count;
           state.cameras.next = action.payload.next;
           state.cameras.previous = action.payload.previous;
@@ -27,6 +28,7 @@ export const cameraSlice = createSlice({
             ...camera,
             lastRecordedImage: null,
           }));
+          debugger
         },
         setLastRecordedImage: (state, action) => {
           const { cameraId, imageUrl } = action.payload;
@@ -74,7 +76,7 @@ export const getCameras = () => (dispatch, getState) => {
 
 
     }).catch((err) => {
-        dispatch(setSnackBar(err.response.data.non_field_errors[0]));
+        dispatch(setSnackBar(err.message + "\nLine 78; cameraSlice.js"));
     }).finally(() => {
         dispatch(showLoadingScreen(false));
     })

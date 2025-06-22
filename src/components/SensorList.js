@@ -1,8 +1,6 @@
-import sensors from "../static/sensors"
 import { AiOutlineCamera } from 'react-icons/ai';
 import { CiTempHigh } from 'react-icons/ci';
 import { WiHumidity } from 'react-icons/wi';
-import ListGroup from 'react-bootstrap/ListGroup';
 import { Tooltip } from "@mui/material";
 import {useState, useEffect} from 'react';
 import './SensorList.css'

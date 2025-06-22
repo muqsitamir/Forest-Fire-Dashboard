@@ -2,6 +2,7 @@ import {createSlice} from '@reduxjs/toolkit'
 import axios from "axios";
 import {setSnackBar, showLoadingScreen} from "../../reusable_components/site_data/siteDataSlice";
 import {backend_url} from "../../App";
+import {selectFilters} from "../filters/filterSlice";
 
 
 export const lineChartSlice = createSlice({
@@ -18,14 +19,7 @@ export const lineChartSlice = createSlice({
       setLineChart: (state, action) => {
           state.line_chart = {
             labels: action.payload.labels,
-            datasets: action.payload.datasets.map(dataset => ({
-                ...dataset,
-                backgroundColor: ['rgb(255, 187, 51)',
-                'rgb(179, 179, 203)'], 
-                // Modify the backgroundColor property here
-                borderColor: ['rgb(255, 187, 51)',
-                'rgb(179, 179, 203)'],
-              })),
+            datasets: action.payload.datasets
           }
       },
   },
@@ -33,16 +27,24 @@ export const lineChartSlice = createSlice({
 
 const Header = {};
 
-export const getLineChart = (start_date, end_date) => dispatch => {
+export const getLineChart = (start_date, end_date) => (dispatch, getState) => {
     dispatch(showLoadingScreen(true));
     Header["Authorization"] = `Token ${localStorage.getItem("token")}`;
     dispatch(showLoadingScreen(true));
     let config = {
         headers: Header,
     };
-    axios.get(`${backend_url}/core/api/box/linechart/?image__date__gte=${start_date}&image__date__lte=${end_date}`, config).then(res => {
-        dispatch(setLineChart(res.data));
 
+    const filters = selectFilters(getState());
+    let cameras_selected = filters.cameras.join(",");
+    let species_selected = filters.species.join(",");
+
+    end_date = end_date.slice(0,end_date.indexOf('T'))
+    start_date = start_date.slice(0,start_date.indexOf('T'))
+
+
+    axios.get(`${backend_url}/core/api/event/linechart/?date_gte=${start_date}&date_lte=${end_date}&cameras=${cameras_selected}&species=${species_selected}`, config).then(res => {
+        dispatch(setLineChart(res.data));
     }).catch(err => {
         debugger;
         dispatch(setSnackBar(err.response.data.non_field_errors[0]));

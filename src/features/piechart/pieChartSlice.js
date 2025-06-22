@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import axios from "axios";
 import {setSnackBar, showLoadingScreen} from "../../reusable_components/site_data/siteDataSlice";
 import {backend_url} from "../../App";
+import {selectFilters} from "../filters/filterSlice";
 
 
 export const pieChartSlice = createSlice({
@@ -17,12 +18,11 @@ export const pieChartSlice = createSlice({
   reducers: {
       setPieChart: (state, action) => {
           state.pie_chart = {
-            labels: ['Fire','Smoke'],
+            labels: action.payload.labels,
             datasets: [
                 {
                     data: action.payload.data,
-                    backgroundColor: ['rgb(255, 187, 51)',
-                                      'rgb(179, 179, 203)'],
+                    backgroundColor: action.payload.colors,
                     borderWidth: 1,
                 },
             ]
@@ -33,14 +33,18 @@ export const pieChartSlice = createSlice({
 
 const Header = {};
 
-export const getPieChart = (start_date, end_date) => dispatch => {
+export const getPieChart = (start_date, end_date) => (dispatch, getState) => {
     dispatch(showLoadingScreen(true));
     Header["Authorization"] = `Token ${localStorage.getItem("token")}`;
     dispatch(showLoadingScreen(true));
     let config = {
         headers: Header,
     };
-    axios.get(`${backend_url}/core/api/box/piechart/?image__date__gte=${start_date}&image__date__lte=${end_date}`, config).then(res => {
+    const filters = selectFilters(getState());
+    let cameras_selected = filters.cameras.join(",");
+    let species_selected = filters.species.join(",");
+
+    axios.get(`${backend_url}/core/api/event/piechart/?image__date__gte=${start_date}&image__date__lte=${end_date}&cameras=${cameras_selected}&species=${species_selected}`, config).then(res => {
         dispatch(setPieChart(res.data));
     }).catch(err => {
         dispatch(setSnackBar(err.response.data.non_field_errors[0]));

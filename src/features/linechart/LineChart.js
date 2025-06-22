@@ -23,21 +23,21 @@ export function LineChart() {
             justifyContent: 'center',
         }}>
             <Line
-                height="100px"
                 data={line_chart}
-                type="line"
                 options={{
                     responsive: true,
+                    maintainAspectRatio: false,
                     plugins: {
                         legend: {
                             position: 'top',
                         },
                         title: {
                             display: false,
-                            text: 'Chart.js Line Chart'
-                        }
-                    }
+                            text: 'Chart.js Line Chart',
+                        },
+                    },
                 }}
+                style={{ height: '100%', width: '100%' }}
             />
         </div>);
 }

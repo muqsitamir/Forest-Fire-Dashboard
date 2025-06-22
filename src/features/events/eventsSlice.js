@@ -49,7 +49,9 @@ export const getEvents =
     let cameras_selected = filters.cameras.join(",");
     let species_selected = filters.species.join(",");
     let eventStatus = status ? `&status=${status}` : "";
-    let endDate = new Date(`${result.end.split("T")[0]}`);
+
+    const [year, month, day] = result.end.split("T")[0].split("-");
+    let endDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day));
 
     // Add one day to the date
     endDate.setDate(endDate.getDate() + 1);
@@ -60,10 +62,6 @@ export const getEvents =
     const adjustedEndyear=endDate.getFullYear();
     const  endDatefilter=adjustedEndyear+"-"+adjustedEndmonth+"-"+adjustedEndDate;
 
-    // Log the results
-    console.log("end date before:", result.end.split("T")[0]);
-    console.log("end date after:", endDatefilter);
-    //debugger;
 
     axios
       .get(
