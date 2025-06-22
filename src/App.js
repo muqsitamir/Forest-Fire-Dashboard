@@ -24,7 +24,7 @@ import NewPassword from "./pages/password_reset";
 // export const backend_url = 'http://0.0.0.0:8001';
 export const backend_url = 'https://api.forestwatch.org.pk';
 export const googleMapsApiKey='AIzaSyCzaEvpRf9sblvVA18Sxe829LqnTlUyO8o';
-check
+
 export default function App () {
         return (
             <React.Fragment>
