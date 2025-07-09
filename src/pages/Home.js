@@ -11,6 +11,7 @@ import { PieChart } from "../features/piechart/PieChart";
 import { Maps } from "../features/maps/Maps";
 import { EventsTableWWF } from "../features/events/EventsTableWWF";
 import "./Home.css";
+
 export default function Home() {
   const dispatch = useDispatch();
   const organization = useSelector(selectOrganization);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Redirect, Route, Switch} from "react-router-dom"
 import MessageSnackbar from "./reusable_components/SnackBar";
 import ResetPassword from "./Authentication/ResetPassword";
@@ -26,6 +26,26 @@ export const backend_url = 'https://api.forestwatch.org.pk';
 export const googleMapsApiKey='AIzaSyCzaEvpRf9sblvVA18Sxe829LqnTlUyO8o';
 
 export default function App () {
+        useEffect(() => {
+                const user = JSON.parse(localStorage.getItem('user'));
+                let faviconPath = '/LUMS.png';
+
+                if (user?.username === "punjabadmin") {
+                    faviconPath = '/punjabadmin.jpeg';
+                }
+
+
+                const link = document.querySelector("link[rel~='icon']");
+                if (link) {
+                    link.href = faviconPath;
+                } else {
+                    const newLink = document.createElement('link');
+                    newLink.rel = 'icon';
+                    newLink.href = faviconPath;
+                    document.head.appendChild(newLink);
+                }
+    }, []);
+
         return (
             <React.Fragment>
                 <TopAppBarProtection Component={TopAppBar} />

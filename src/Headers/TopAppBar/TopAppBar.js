@@ -1,20 +1,16 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { Link } from "react-router-dom";
-import MenuIcon from '@mui/icons-material/Menu';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { showSideNav } from '../../reusable_components/site_data/siteDataSlice';
-import { useDispatch } from "react-redux";
 import './style.css'
+import punjabAdminLogo from '../../images/punjabadmin.jpeg';
+import fireLogo from '../../images/firelogo.jpeg';
+
 export default function TopAppBar() {
     const user = JSON.parse(localStorage['user']);
-    console.log("organization: " + user.organization);
     const organization = user.organization;
-    const dispatch = useDispatch();
     const [dropdownOpen, setDropdownOpen] = useState(false);
-
-    const handle_side_nav = () => {
-        dispatch(showSideNav());
-    };
+    const logo = user.username === "punjabadmin" ? punjabAdminLogo : fireLogo;
+    const logoSize = user.username === "punjabadmin" ? "50" : "150";
 
     const handle_camera_click = () => {
         window.location = '/cameras';
@@ -22,14 +18,6 @@ export default function TopAppBar() {
 
     const handle_admin_click = () => {
         window.location = 'https://api.forestwatch.org.pk/admin';
-    };
-
-    const handle_dashboard_click = () => {
-        window.location = '/dashboard';
-    };
-
-    const handle_home_click = () => {
-        window.location = '/home';
     };
 
     const handleLogout = () => {
@@ -47,37 +35,49 @@ export default function TopAppBar() {
             <div className="mdc-top-app-bar__row contain-full-bleed links--muted ">
                 <section className="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
                     <Link to="/" className="mdc-top-app-bar__title">
-                        <img width='200' src={require("../../images/firelogo.jpeg")} alt="Project Logo"/>
+                        <img width={logoSize} src={logo} alt="Project Logo"/>
                     </Link>
                 </section>
-                <section className="mdc-top-app-bar__section app-shop mdc-top-app-bar__section--align-end mr4"
-                         role="toolbar">
-                    <button className="mdc-button mdc-theme--primary mdc-top-app-bar__action-item" onClick={handle_home_click}>
-                        <span className="mdc-button__ripple"/>
-                        <span className="mdc-button__label">Home</span>
-                    </button>
-                    <button className="mdc-button mdc-theme--primary mdc-top-app-bar__action-item" onClick={handle_dashboard_click}>
+                <section
+                 className="mdc-top-app-bar__section app-shop mdc-top-app-bar__section--align-end mr4"
+                 role="toolbar"
+                 style={{ position: 'relative' }}
+                >
+                    <Link to="/" className="show-lg link-mute">
+                        <button className="mdc-button mdc-theme--primary mdc-top-app-bar__action-item" >
+                            <span className="mdc-button__ripple"/>
+                            <span className="mdc-button__label">Home</span>
+                        </button>
+                    </Link>
+                    <Link to="/dashboard" className="show-lg link-mute">
+                    <button className="mdc-button mdc-theme--primary mdc-top-app-bar__action-item" >
                         <span className="mdc-button__ripple"/>
                         <span className="mdc-button__label">Dashboard</span>
                     </button>
-                    <button className="mdc-button mdc-theme--primary mdc-top-app-bar__action-item" onClick={handle_camera_click}>
-                        <span className="mdc-button__ripple"/>
-                        <span className="mdc-button__label">Cameras</span>
-                    </button>
-                    
-                    
+                    </Link>
+                        <button className="mdc-button mdc-theme--primary mdc-top-app-bar__action-item" onClick={handle_camera_click}>
+                            <span className="mdc-button__ripple"/>
+                            <span className="mdc-button__label">Cameras</span>
+                        </button>
+
                     <button className="mdc-button mdc-theme--primary mdc-top-app-bar__action-item profile-button" onClick={toggleDropdown}>
-                        <AccountCircleIcon style={{ fontSize: 40 }} /> {/* Use the icon */}
+                        <AccountCircleIcon style={{ fontSize: 40 }} />
                     </button>
-                    
-                    {dropdownOpen && (
-                        <div className="dropdown-menu1" style={{display:'flex !important'}}>
+
+                    {dropdownOpen ? (
+                        <div className="dropdown-menu1" >
+                            <span style={{color:'black',fontWeight:'700',textAlign:'center'}}>{user.username}</span>
+                            <br/>
                             {organization === "CVGL" && (
                              <button  onClick={handle_admin_click}>Admin</button>
                             )}
                             <button onClick={handleLogout}>Log out</button>
                         </div>
-                    )}
+                    ) : (<></>)}
+                    <button
+                        className="menu-mobile material-icons mdc-theme--primary mdc-top-app-bar__navigation-icon mdc-icon-button dn-l js-trigger-mdc-drawer"
+                        aria-label="Open navigation menu">menu
+                    </button>
                 </section>
             </div>
         </header>
