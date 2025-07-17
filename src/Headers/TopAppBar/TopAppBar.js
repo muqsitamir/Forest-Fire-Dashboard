@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import { Link } from "react-router-dom";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import './style.css'
-import punjabAdminLogo from '../../images/punjabadmin.jpeg';
+import punjabAdminLogo from '../../images/forest_fire_new_logo.jpeg';
 import fireLogo from '../../images/firelogo.jpeg';
 
 export default function TopAppBar() {
@@ -10,7 +10,7 @@ export default function TopAppBar() {
     const organization = user.organization;
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const logo = user.username === "punjabadmin" ? punjabAdminLogo : fireLogo;
-    const logoSize = user.username === "punjabadmin" ? "50" : "150";
+    const logoSize = user.username === "punjabadmin" ? "220" : "150";
 
     const handle_camera_click = () => {
         window.location = '/cameras';

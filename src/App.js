@@ -34,7 +34,6 @@ export default function App () {
                     faviconPath = '/punjabadmin.jpeg';
                 }
 
-
                 const link = document.querySelector("link[rel~='icon']");
                 if (link) {
                     link.href = faviconPath;
@@ -60,6 +59,7 @@ export default function App () {
                 <ProtectedRoute exact path='/statistics/:id' Component={CameraDetailsPage} />
                 <OnlyPublicRoute exact path='/resetpassword/:uid/:token' Component={NewPassword} />
                 <OnlyPublicRoute  exact path='/' Component={Landing} />
+                <OnlyPublicRoute exact path='/punjablogin' component={Login} />
                 <OnlyPublicRoute exact path='/login' component={Login} />
                 <ProtectedRoute exact path='/change-password' Component={ChangePassword}/>
                 <Route exact path='/logout' render={(props) => <Logout {...props}/>}/>

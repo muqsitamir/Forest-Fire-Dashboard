@@ -7,6 +7,8 @@ import axios from "axios";
 import {connect} from "react-redux";
 import {showLoadingScreen, setSnackBar, resetSnackBar} from "../reusable_components/site_data/siteDataSlice";
 import {backend_url} from "../App";
+import punjabAdminLogo from '../images/forest_fire_new_logo.jpeg';
+import fireLogo from '../images/firelogo.jpeg';
 
 class Login extends Form {
 
@@ -18,6 +20,8 @@ class Login extends Form {
         },
         errors: {}
     };
+
+
 
     schema = {
         username: Joi.string().required().error(errors => {
@@ -65,17 +69,17 @@ class Login extends Form {
     };
 
     render() {
+        const path = this.props.location.pathname;
+        const logo = path.includes("punjab") ? punjabAdminLogo : fireLogo; // ✅ Dynamic logo
+
         return (
             <div className="page">
                 <div className="page__content">
                     <div className="auth_master-form tc center">
                         <div className="shadow-0 pa3 auth_page-auth">
-
-                            {/* */}
                             <div className="mb4 mt3">
-                            <img className="w-20 h-20" onClick={()=>{window.location.href='/'}} src={require("../images/firelogo.jpeg")} alt="" style={{width:'80%', marginBottom: '10px'}}/><h4>Sign in to your account</h4>
+                            <img className="w-20 h-20" onClick={()=>{window.location.href='/'}} src={logo} alt="" style={{width:'80%', marginBottom: '10px'}}/><h4>Sign in to your account</h4>
                             </div>
-                            {/* */}
                             <div className="mb4">
                                 <form className="form-register">
                                     {/* */}
@@ -109,8 +113,6 @@ class Login extends Form {
                                             </div>
                                         </div>
                                     </div>
-                                    {/* */}
-
                                     <div className="mv2 pt3">
                                         <button className="btn btn-xl btn-primary btn-block text-white btn-shadow"
                                                 disabled={this.validateForm()} onClick={this.handleSubmit}>SIGN
@@ -121,12 +123,6 @@ class Login extends Form {
                               <a href="/">back</a>
                             </div>
                         </div>
-                        {/* */}
-                        {/*<div className="mv2" style={{fontSize: '.875rem'}}>*/}
-                        {/*    <p>Need a Bambiha account?*/}
-                        {/*        <Link title="Sign up" to="/register"> Create an account</Link></p>*/}
-                        {/*</div>*/}
-                        {/* */}
                         <div className="mv3 ">
                             <div className="flex items-center justify-center">
                                 ©
@@ -151,7 +147,6 @@ class Login extends Form {
 
 const mapStateToProps = state => ({
     loginStatus: state.site_data,
-    // error: state.authentication.error
 });
 
 export default connect(mapStateToProps, {showLoadingScreen, setSnackBar, resetSnackBar})(Login);
