@@ -56,7 +56,7 @@ function EventList({eventClick}) {
                 <TableBody>
                 {data && data.map((item,index) => (
                  <TableRow key={index} onClick={() => {
-                    window.location.href=`/live/${item.camera}`
+                    // window.location.href=`/live/${item.camera}`
                    }}>
                  
                   <TableCell  id={index}><LatestEvents data={item} /></TableCell>

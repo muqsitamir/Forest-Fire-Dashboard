@@ -448,9 +448,10 @@ function MapContainer() {
                           </span>
                           <span style={{ align: "center" }}>
                             {selected.item.user ? (
-                              <Link target={"framename"} to={`/live/${selected.item.id}`}>
-                                <BsArrowUpRightSquare style={{ verticalAlign: "baseline" }} color="#000000" size={20} />
-                              </Link>
+                              // <Link target={"framename"} to={`/live/${selected.item.id}`}>
+                              //   <BsArrowUpRightSquare style={{ verticalAlign: "baseline" }} color="#000000" size={20} />
+                              // </Link>
+                                <></>
                             ) : (
                               <a target="framename1" href={selected.item.things_board_link}>
                                 <BsArrowUpRightSquare style={{ verticalAlign: "baseline" }} color="#000000" size={20} />
